@@ -1,0 +1,47 @@
+﻿using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Powers;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.ValueProps;
+using STS2RitsuLib.Interop.AutoRegistration;
+using STS2RitsuLib.Scaffolding.Content;
+
+namespace JanusSpire2.JanusSpire2Code.Powers;
+
+[RegisterPower]
+public sealed class SmokePower : ModPowerTemplate
+{
+    public override PowerType Type => PowerType.Buff;
+    public override PowerStackType StackType => PowerStackType.Counter;
+
+    public override PowerAssetProfile AssetProfile => new(
+        IconPath: "res://Test/images/powers/test_power.png",
+        BigIconPath: "res://Test/images/powers/test_power.png"
+    );
+
+    public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
+        Creature? dealer, CardModel? cardSource)
+    {
+        if (target == base.Owner)
+        {
+            return 0.5m;
+        }
+        
+        return 1m;
+    }
+    
+    public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult result, ValueProp props, Creature? dealer, CardModel? cardSource)
+    {
+        if (target == base.Owner && result.TotalDamage != 0 && props.HasFlag(ValueProp.Move))
+        {
+            Flash();
+            await PowerCmd.ModifyAmount(new ThrowingPlayerChoiceContext(), this, -Amount * 0.5m, null, null);
+        }
+    }
+
+    public override async Task AfterRemoved(Creature oldOwner)
+    {
+        await PowerCmd.Apply<HiddenAttackPower>(new ThrowingPlayerChoiceContext(), base.Owner, 1m, base.Owner, null);
+    }
+}

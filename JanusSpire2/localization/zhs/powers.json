@@ -1,0 +1,5 @@
+{
+  "JANUS_POWER_TEST_POWER.description": "每次抽牌时，获得一点[gold]力量[/gold]。",
+  "TEST_POWER_TEST_POWER.smartDescription": "每次抽牌时，获得[blue]{Amount}[/blue]点[gold]力量[/gold]。",
+  "TEST_POWER_TEST_POWER.title": "邪火"
+}
