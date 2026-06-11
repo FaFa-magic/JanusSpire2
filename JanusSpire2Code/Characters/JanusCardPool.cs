@@ -1,10 +1,11 @@
 ﻿using Godot;
+using STS2RitsuLib.Scaffolding.Characters;
 using STS2RitsuLib.Scaffolding.Content;
 using STS2RitsuLib.Utils;
 
 namespace JanusSpire2.JanusSpire2Code.Characters;
 
-public sealed class JanusCardPool : TypeListCardPoolModel
+public sealed class JanusCardPool : TypeListCardPoolModel, IModColorfulPhilosophersCardPool
 {
     public override string Title => JanusCharacter.CharacterId;
     public override string EnergyColorName => JanusCharacter.CharacterColor;
@@ -14,8 +15,8 @@ public sealed class JanusCardPool : TypeListCardPoolModel
     public override string TextEnergyIconPath => 
         "res://JanusSpire2/images/packed/sprite_fonts/Janus_energy_icon.png";
     
-    public override Color DeckEntryCardColor => new("FFB2FF");
-    public override Color EnergyOutlineColor => new("FFB2FF");
+    public override Color DeckEntryCardColor => new("7BABC2");
+    public override Color EnergyOutlineColor => new("7BABC2");
     
     private static readonly Material? _poolFrameMaterial = MaterialUtils.CreateReplaceHueShaderMaterial(0.5f, 0.5f, 1f);
     public override Material? PoolFrameMaterial => _poolFrameMaterial;

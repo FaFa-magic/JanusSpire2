@@ -1,4 +1,5 @@
 using System.Reflection;
+using JanusSpire2.JanusSpire2Code.Configs;
 using JanusSpire2.JanusSpire2Code.Patches;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
@@ -23,6 +24,7 @@ public static class MainFile
 		ModTypeDiscoveryHub.RegisterModAssembly(ModId, assembly);
 		RitsuLibFramework.EnsureGodotScriptsRegistered(assembly, Logger);
 
+		JanusConfigPage.Register();
 		// var patcher = RitsuLibFramework.CreatePatcher(ModId, "core-patches");
 		// patcher.RegisterPatch<JanusPatches>();
 		//

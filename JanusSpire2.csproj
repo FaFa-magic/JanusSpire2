@@ -62,7 +62,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="STS2.RitsuLib" Version="0.4.10" PrivateAssets="All" GeneratePathProperty="true" />
+        <PackageReference Include="STS2.RitsuLib" Version="0.4.18" PrivateAssets="All" GeneratePathProperty="true" />
         <AdditionalFiles Include="JanusSpire2/localization/**/*.json"/>
     </ItemGroup>
 
@@ -88,6 +88,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="JanusSpire2Code\Cards\Common\" />
         <Folder Include="JanusSpire2\images\card_portraits\big\"/>
         <Folder Include="JanusSpire2\images\packed\sprite_fonts\" />
         <Folder Include="JanusSpire2\images\powers\big\"/>
@@ -112,11 +113,11 @@
 
     <Target Name="DeployRitsuLibToMods" AfterTargets="PostBuildEvent" Condition="'$(RitsuLibDeployDir)' != ''">
         <ItemGroup>
-            <RitsuLibFiles Include="$(PkgSTS2_RitsuLib)\lib\net9.0\**\*.*" Condition="Exists('$(PkgSTS2_RitsuLib)\lib\net9.0')" />
-            <RitsuLibContent Include="$(PkgSTS2_RitsuLib)\content\**\*.*" Condition="Exists('$(PkgSTS2_RitsuLib)\content')" />
+            <RitsuLibDll Include="$(PkgSTS2_RitsuLib)\lib\net9.0\STS2-RitsuLib.dll" Condition="Exists('$(PkgSTS2_RitsuLib)\lib\net9.0\STS2-RitsuLib.dll')" />
+            <RitsuLibManifest Include="$(PkgSTS2_RitsuLib)\content\mod_manifest.json" Condition="Exists('$(PkgSTS2_RitsuLib)\content\mod_manifest.json')" />
         </ItemGroup>
-        <Copy SourceFiles="@(RitsuLibFiles)" DestinationFolder="$(RitsuLibDeployDir)" SkipUnchangedFiles="true" />
-        <Copy SourceFiles="@(RitsuLibContent)" DestinationFolder="$(RitsuLibDeployDir)" SkipUnchangedFiles="true" Condition="'@(RitsuLibContent)' != ''" />
+        <Copy SourceFiles="@(RitsuLibDll)" DestinationFolder="$(RitsuLibDeployDir)" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="@(RitsuLibManifest)" DestinationFolder="$(RitsuLibDeployDir)" SkipUnchangedFiles="true" />
     </Target>
 
     <Target Name="GodotPublish" AfterTargets="Publish" Condition="'$(GodotPath)' != '' and Exists('$(GodotPath)') and '$(IsInnerGodotExport)' != 'true'">

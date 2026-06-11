@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://crw8oin1yk5ym"]
+
+[ext_resource type="Material" uid="uid://c4ycqv0gdxvmr" path="res://JanusSpire2/materials/canvas_item_material_additive_shared.tres" id="2_3n4v0"]
+[ext_resource type="Texture2D" uid="uid://ndte67bqlpsi" path="res://JanusSpire2/images/combatui/energy_counter/energy_orb_burst.png" id="2_dpu13"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sv3af"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 98, 0)
+
+[node name="TashkentEnergyVfxFront" type="Node2D"]
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+material = ExtResource("2_3n4v0")
+emitting = false
+amount = 1
+texture = ExtResource("2_dpu13")
+lifetime = 0.5
+one_shot = true
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_sv3af")

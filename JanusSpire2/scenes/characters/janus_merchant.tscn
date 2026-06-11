@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dwj5066emwjuk"]
+
+[ext_resource type="Texture2D" uid="uid://dpc3cyj1q4gvd" path="res://JanusSpire2/images/characters/Janus.png" id="1_y6a05"]
+
+[node name="JanusMerchant" type="Node2D"]
+
+[node name="JanusMerchant" type="Sprite2D" parent="."]
+position = Vector2(1, -130)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("1_y6a05")

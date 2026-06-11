@@ -2,10 +2,13 @@
   "id": "JanusSpire2",
   "name": "JanusSpire2",
   "author": "HCP_A3",
-  "description": "Adds 'Janus' from AzurLane and Worldofwarships as a playable character for Slay the Spire 2.",
+  "description": "Adds 'Janus' from AzurLane as a playable character for Slay the Spire 2.",
   "version": "v0.0.1",
+  "min_game_version": "0.107.0",
   "has_pck": true,
   "has_dll": true,
-  "dependencies": [ "STS2-RitsuLib" ],
+  "dependencies": [
+    { "id": "STS2-RitsuLib", "min_version": "0.4.10" }
+  ],
   "affects_gameplay": true
 }

@@ -9,9 +9,17 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Basic;
 
+[RegisterCard(typeof(JanusCardPool))]
 [RegisterCharacterStarterCard(typeof(JanusCharacter), 4)]
 public sealed class Strike() : ModCardTemplate(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
 {
+    public override CardAssetProfile AssetProfile => new(
+        PortraitPath: $"res://JanusSpire2/images/cards/{GetType().Name}.png"
+        // FramePath: "", // 卡牌背景
+        // PortraitBorderPath: "", // 边框（状态牌感染使用的）
+        // BannerTexturePath: "" // 横幅（不同类型）
+    );
+    
     protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(6M, ValueProp.Move)];

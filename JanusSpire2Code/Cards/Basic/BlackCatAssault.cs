@@ -4,17 +4,28 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using JanusSpire2.JanusSpire2Code.Characters;
+using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace JanusSpire2.JanusSpire2Code.Cards.Common;
+namespace JanusSpire2.JanusSpire2Code.Cards.Basic;
 
-[RegisterCharacterStarterCard(typeof(JanusCharacter), 4)]
-public sealed class BlackCatAssault() : ModCardTemplate(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+[RegisterCard(typeof(JanusCardPool))]
+public sealed class BlackCatAssault() : ModCardTemplate(0, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
 {
+    public override CardAssetProfile AssetProfile => new(
+        PortraitPath: $"res://JanusSpire2/images/cards/{GetType().Name}.png"
+        // FramePath: "", // 卡牌背景
+        // PortraitBorderPath: "", // 边框（状态牌感染使用的）
+        // BannerTexturePath: "" // 横幅（不同类型）
+    );
+    
     protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
     
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(6M, ValueProp.Move)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [
+        new DamageVar(2M, ValueProp.Move),
+        ModCardVars.Int("BlackCatSeel", 3)
+    ];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

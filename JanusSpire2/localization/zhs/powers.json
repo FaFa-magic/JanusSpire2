@@ -1,5 +1,14 @@
 {
-  "JANUS_POWER_TEST_POWER.description": "每次抽牌时，获得一点[gold]力量[/gold]。",
-  "TEST_POWER_TEST_POWER.smartDescription": "每次抽牌时，获得[blue]{Amount}[/blue]点[gold]力量[/gold]。",
-  "TEST_POWER_TEST_POWER.title": "邪火"
+  "JANUS_SPIRE2_POWER_BLACK_CAT_SEAL_POWER.description": "每次抽牌时，获得一点[gold]力量[/gold]。",
+  "JANUS_SPIRE2_POWER_BLACK_CAT_SEAL_POWER.smartDescription": "每次抽牌时，获得[blue]{Amount}[/blue]点[gold]力量[/gold]。",
+  "JANUS_SPIRE2_POWER_BLACK_CAT_SEAL_POWER.title": "黑猫之印",
+  "JANUS_SPIRE2_POWER_HIDDEN_ATTACK_POWER.description": "每次抽牌时，获得一点[gold]力量[/gold]。",
+  "JANUS_SPIRE2_POWER_HIDDEN_ATTACK_POWER.smartDescription": "每次抽牌时，获得[blue]{Amount}[/blue]点[gold]力量[/gold]。",
+  "JANUS_SPIRE2_POWER_HIDDEN_ATTACK_POWER.title": "破隐一击",
+  "JANUS_SPIRE2_POWER_SHY_POWER.description": "每次抽牌时，获得一点[gold]力量[/gold]。",
+  "JANUS_SPIRE2_POWER_SHY_POWER.smartDescription": "每次抽牌时，获得[blue]{Amount}[/blue]点[gold]力量[/gold]。",
+  "JANUS_SPIRE2_POWER_SHY_POWER.title": "害羞",
+  "JANUS_SPIRE2_POWER_SMOKE_POWER.description": "每次抽牌时，获得一点[gold]力量[/gold]。",
+  "JANUS_SPIRE2_POWER_SMOKE_POWER.smartDescription": "每次抽牌时，获得[blue]{Amount}[/blue]点[gold]力量[/gold]。",
+  "JANUS_SPIRE2_POWER_SMOKE_POWER.title": "烟雾"
 }

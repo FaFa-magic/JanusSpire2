@@ -1,0 +1,16 @@
+{
+  "JANUS_SPIRE2_CHARACTER_JANUS_CHARACTER.title": "雅努斯",
+  "JANUS_SPIRE2_CHARACTER_JANUS_CHARACTER.titleObject": "雅努斯",
+  "JANUS_SPIRE2_CHARACTER_JANUS_CHARACTER.pronounObject": "她",
+  "JANUS_SPIRE2_CHARACTER_JANUS_CHARACTER.pronounSubject": "她",
+  "JANUS_SPIRE2_CHARACTER_JANUS_CHARACTER.pronounPossessive": "她的",
+  "JANUS_SPIRE2_CHARACTER_JANUS_CHARACTER.possessiveAdjective": "她的",
+  "JANUS_SPIRE2_CHARACTER_JANUS_CHARACTER.description": "塔什干是北方联合的驱逐领舰。\n来到尖塔的她会像塞瓦斯托波尔那时一样努力战斗。\n",
+  "JANUS_SPIRE2_CHARACTER_JANUS_CHARACTER.banter.alive.endTurnPing": "同志酱，还没有结束吗……这样",
+  "JANUS_SPIRE2_CHARACTER_JANUS_CHARACTER.banter.dead.endTurnPing": "[sine]塔什干才没有输！[/sine]",
+  "JANUS_SPIRE2_CHARACTER_JANUS_CHARACTER.eventDeathPrevention": "不要…!塔什干还能再战斗！",
+  "JANUS_SPIRE2_CHARACTER_JANUS_CHARACTER.aromaPrinciple": "[sine][blue]我要回到指挥官身边……[/blue][/sine]",
+  "JANUS_SPIRE2_CHARACTER_JANUS_CHARACTER.goldMonologue": "[sine]这些金币绝对能帮得上指挥官呢……[/sine]",
+  "JANUS_SPIRE2_CHARACTER_JANUS_CHARACTER.cardsModifierTitle": "雅努斯卡牌",
+  "JANUS_SPIRE2_CHARACTER_JANUS_CHARACTER.cardsModifierDescription": "雅努斯的卡牌现在会出现在奖励和商店中。"
+}
