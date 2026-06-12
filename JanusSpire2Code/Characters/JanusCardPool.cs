@@ -18,7 +18,7 @@ public sealed class JanusCardPool : TypeListCardPoolModel, IModColorfulPhilosoph
     public override Color DeckEntryCardColor => new("7BABC2");
     public override Color EnergyOutlineColor => new("7BABC2");
     
-    private static readonly Material? _poolFrameMaterial = MaterialUtils.CreateReplaceHueShaderMaterial(0.5f, 0.5f, 1f);
+    private static readonly Material? _poolFrameMaterial = MaterialUtils.CreateUnmodulatedHsvShaderMaterial();
     public override Material? PoolFrameMaterial => _poolFrameMaterial;
     
     public override bool IsColorless => false;

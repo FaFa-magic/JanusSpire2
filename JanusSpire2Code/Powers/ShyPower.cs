@@ -17,8 +17,8 @@ public sealed class ShyPower : ModPowerTemplate
     public override PowerStackType StackType => PowerStackType.Counter;
 
     public override PowerAssetProfile AssetProfile => new(
-        IconPath: "res://Test/images/powers/test_power.png",
-        BigIconPath: "res://Test/images/powers/test_power.png"
+        IconPath: "res://JanusSpire2/images/powers/big/ShyPower.png",
+        BigIconPath: "res://JanusSpire2/images/powers/packed/ShyPower.png"
     );
     
     private class Data
@@ -52,7 +52,6 @@ public sealed class ShyPower : ModPowerTemplate
             if (damageResult != null && damageResult.UnblockedDamage != 0)
             {
                 HasGainedBlockThisTurn = true;
-                SfxCmd.Play("event:/sfx/enemy/enemy_attacks/phantasmal_gardeners/phantasmal_gardeners_retract");
                 await CreatureCmd.TriggerAnim(base.Owner, "BlockStart", 0.3f);
                 await CreatureCmd.GainBlock(base.Owner, base.Amount, ValueProp.Unpowered, null);
             }

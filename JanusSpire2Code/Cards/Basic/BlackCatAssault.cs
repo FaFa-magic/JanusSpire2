@@ -4,27 +4,18 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using JanusSpire2.JanusSpire2Code.Characters;
+using JanusSpire2.JanusSpire2Code.Powers;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Basic;
 
-[RegisterCard(typeof(JanusCardPool))]
-public sealed class BlackCatAssault() : ModCardTemplate(0, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
+[RegisterCharacterStarterCard(typeof(JanusCharacter), 1)]
+public sealed class BlackCatAssault() : JanusCardModel(0, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
 {
-    public override CardAssetProfile AssetProfile => new(
-        PortraitPath: $"res://JanusSpire2/images/cards/{GetType().Name}.png"
-        // FramePath: "", // 卡牌背景
-        // PortraitBorderPath: "", // 边框（状态牌感染使用的）
-        // BannerTexturePath: "" // 横幅（不同类型）
-    );
-    
-    protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
-    
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DamageVar(2M, ValueProp.Move),
-        ModCardVars.Int("BlackCatSeel", 3)
+        ModCardVars.Int("BlackCatSeal", 3)
     ];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -36,6 +27,8 @@ public sealed class BlackCatAssault() : ModCardTemplate(0, CardType.Attack, Card
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
+        
+        await PowerCmd.Apply<BlackCatSealPower>(choiceContext, base.Owner.Creature, DynamicVars["BlackCatSeal"].BaseValue, base.Owner.Creature, this);
     }
     
     protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(3M);

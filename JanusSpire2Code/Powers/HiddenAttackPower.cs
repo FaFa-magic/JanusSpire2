@@ -18,8 +18,8 @@ public sealed class HiddenAttackPower : ModPowerTemplate
     public override PowerStackType StackType => PowerStackType.Counter;
 
     public override PowerAssetProfile AssetProfile => new(
-        IconPath: "res://Test/images/powers/test_power.png",
-        BigIconPath: "res://Test/images/powers/test_power.png"
+        IconPath: "res://JanusSpire2/images/powers/big/HiddenAttackPower.png",
+        BigIconPath: "res://JanusSpire2/images/powers/packed/HiddenAttackPower.png"
     );
     
     private class Data

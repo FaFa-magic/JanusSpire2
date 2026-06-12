@@ -12,7 +12,7 @@ namespace JanusSpire2.JanusSpire2Code.Characters;
 public sealed class JanusCharacter : ModCharacterTemplate<JanusCardPool, JanusRelicPool, JanusPotionPool>
 {
 	public override Color NameColor => new("#9FDCFA");
-	public override Color EnergyLabelOutlineColor => new Color("1E283CFF");
+	public override Color EnergyLabelOutlineColor => new Color("7BABC2");
 	public override Color MapDrawingColor => new("#9FDCFA");
 
 	public const string CharacterId = "Janus";

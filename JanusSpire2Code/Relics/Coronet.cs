@@ -1,9 +1,12 @@
 using JanusSpire2.JanusSpire2Code.Characters;
+using JanusSpire2.JanusSpire2Code.Powers;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -15,7 +18,9 @@ public sealed class Coronet : ModRelicTemplate
 {
     public override RelicRarity Rarity => RelicRarity.Starter;
 
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new CardsVar(1)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [
+        ModCardVars.Int("Smoke", 2)
+    ];
 
     public override RelicAssetProfile AssetProfile => new(
         IconPath: $"res://JanusSpire2/images/relics/packed/{GetType().Name}.png",
@@ -23,8 +28,11 @@ public sealed class Coronet : ModRelicTemplate
         BigIconPath: $"res://JanusSpire2/images/relics/big/{GetType().Name}.png"
     );
     
-    public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
+    public override async Task BeforeSideTurnStart(PlayerChoiceContext choiceContext, CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
     {
-        await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, player);
+        if (participants.Contains(base.Owner.Creature) && base.Owner.PlayerCombatState?.TurnNumber <= 1)
+        {
+            await PowerCmd.Apply<SmokePower>(choiceContext, base.Owner.Creature, DynamicVars["Smoke"].BaseValue, base.Owner.Creature, null);
+        }
     }
 }

@@ -1,4 +1,4 @@
 {
   "JANUS_SPIRE2_KEYWORD_PERK.title" : "振作",
-  "JANUS_SPIRE2_KEYWORD_PERK.description" : ""
+  "JANUS_SPIRE2_KEYWORD_PERK.description" : "当你受到伤害时，这张卡的费用减少{energyPrefix:energyIcons(1)}。"
 }
