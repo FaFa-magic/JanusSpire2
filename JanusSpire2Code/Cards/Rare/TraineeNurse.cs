@@ -21,4 +21,6 @@ public sealed class TraineeNurse() : JanusCardModel(1, CardType.Power, CardRarit
     {
         await PowerCmd.Apply<TraineeNursePower>(choiceContext, base.Owner.Creature, DynamicVars["TraineeNurse"].BaseValue, base.Owner.Creature, this);
     }
+    
+    protected override void OnUpgrade() => DynamicVars["TraineeNurse"].UpgradeValueBy(1M);
 }

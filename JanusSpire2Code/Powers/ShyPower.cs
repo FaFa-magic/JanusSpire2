@@ -5,21 +5,13 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.ValueProps;
-using STS2RitsuLib.Interop.AutoRegistration;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Powers;
 
-[RegisterPower]
-public sealed class ShyPower : ModPowerTemplate
+public sealed class ShyPower : JanusPowerModel
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
-
-    public override PowerAssetProfile AssetProfile => new(
-        IconPath: "res://JanusSpire2/images/powers/big/ShyPower.png",
-        BigIconPath: "res://JanusSpire2/images/powers/packed/ShyPower.png"
-    );
     
     private class Data
     {

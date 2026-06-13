@@ -62,7 +62,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="STS2.RitsuLib" Version="0.4.18" PrivateAssets="All" GeneratePathProperty="true" />
+        <PackageReference Include="STS2.RitsuLib" Version="0.4.21" PrivateAssets="All" GeneratePathProperty="true" />
         <AdditionalFiles Include="JanusSpire2/localization/**/*.json"/>
     </ItemGroup>
 

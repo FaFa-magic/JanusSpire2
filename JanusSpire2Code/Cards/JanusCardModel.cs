@@ -16,6 +16,12 @@ public abstract class JanusCardModel : ModCardTemplate
     
     public override CardAssetProfile AssetProfile => new(
         PortraitPath: $"res://JanusSpire2/images/cards/{GetType().Name}.png",
+        BannerTexturePath: Rarity switch
+        {
+            CardRarity.Ancient => "",
+            _ =>"res://JanusSpire2/images/card_frames/janus_Banner.png"
+        },
+        AncientBorderPath: "res://JanusSpire2/images/card_frames/janus_ancient.png",
         FramePath: Type switch
         {
             CardType.Attack => JanusConfigPage.CardFrameBinding.Read() == JanusCardFrameMode.卡框一
@@ -28,12 +34,6 @@ public abstract class JanusCardModel : ModCardTemplate
                 ? "res://JanusSpire2/images/card_frames/janus_power_1.png"
                 : "res://JanusSpire2/images/card_frames/janus_power_2.png",
             _ => ""
-        },
-        PortraitBorderPath: Rarity switch
-        {
-            CardRarity.Ancient => "res://JanusSpire2/images/card_frames/janus_ancient.png",
-            _ => null
         }
-        // BannerTexturePath: ""
     );
 }

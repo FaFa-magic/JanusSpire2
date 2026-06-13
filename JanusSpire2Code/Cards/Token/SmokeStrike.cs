@@ -2,23 +2,12 @@
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models.CardPools;
 using MegaCrit.Sts2.Core.ValueProps;
-using STS2RitsuLib.Interop.AutoRegistration;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 
-[RegisterCard(typeof(TokenCardPool))]
-public sealed class SmokeStrike() : ModCardTemplate(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
+public sealed class SmokeStrike() : JanusTokenCardModel(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
 {
-    public override CardAssetProfile AssetProfile => new(
-        PortraitPath: $"res://JanusSpire2/images/cards/{GetType().Name}.png"
-        // FramePath: "", // 卡牌背景
-        // PortraitBorderPath: "", // 边框（状态牌感染使用的）
-        // BannerTexturePath: "" // 横幅（不同类型）
-    );
-    
     protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(6M, ValueProp.Move)];

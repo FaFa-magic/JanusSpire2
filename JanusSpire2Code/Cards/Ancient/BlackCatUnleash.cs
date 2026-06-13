@@ -8,7 +8,7 @@ using STS2RitsuLib.Cards.DynamicVars;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Ancient;
 
-public sealed class BlackCatUnleash() : JanusCardModel(1, CardType.Attack, CardRarity.Ancient, TargetType.AnyEnemy)
+public sealed class BlackCatUnleash() : JanusCardModel(0, CardType.Attack, CardRarity.Ancient, TargetType.AnyEnemy)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DamageVar(2M, ValueProp.Move),
@@ -25,7 +25,7 @@ public sealed class BlackCatUnleash() : JanusCardModel(1, CardType.Attack, CardR
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
         
-        await PowerCmd.Apply<BlackCatSealPower>(choiceContext, base.Owner.Creature, 2m, base.Owner.Creature, this);
+        await PowerCmd.Apply<BlackCatSealPower>(choiceContext, base.Owner.Creature, DynamicVars["BlackCatSeal"].BaseValue, base.Owner.Creature, this);
     }
     
     protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(3M);

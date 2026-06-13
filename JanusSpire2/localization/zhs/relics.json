@@ -1,5 +1,9 @@
 {
+  "SEA_GLASS.JANUS_SPIRE2_CHARACTER_JANUS_CHARACTER.title": "碧波玻璃",
   "JANUS_SPIRE2_RELIC_CORONET.title": "小王冠",
   "JANUS_SPIRE2_RELIC_CORONET.description": "第一回合开始时，获得[blue]{Smoke}[/blue]层[gold]烟雾[/gold]。",
-  "JANUS_SPIRE2_RELIC_CORONET.flavor": ""
+  "JANUS_SPIRE2_RELIC_CORONET.flavor": "",
+  "JANUS_SPIRE2_RELIC_SHINING_CROWN.title": "闪亮王冠",
+  "JANUS_SPIRE2_RELIC_SHINING_CROWN.description": "第一回合开始时，获得[blue]{Smoke}[/blue]层[gold]烟雾[/gold]。",
+  "JANUS_SPIRE2_RELIC_SHINING_CROWN.flavor": ""
 }

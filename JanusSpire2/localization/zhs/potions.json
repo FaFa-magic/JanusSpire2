@@ -1,4 +1,6 @@
 {
   "JANUS_SPIRE2_POTION_PAW_PRINT_POTION.description": "给予[blue]{BlackCatSealPower}[/blue]层[gold]黑猫之印[/gold]。",
-  "JANUS_SPIRE2_POTION_PAW_PRINT_POTION.title": "爪印药水"
+  "JANUS_SPIRE2_POTION_PAW_PRINT_POTION.title": "猫薄荷药水",
+  "JANUS_SPIRE2_POTION_SMOKE_POTION.description": "给予[blue]{SmokePower}[/blue]层[gold]烟雾[/gold]。",
+  "JANUS_SPIRE2_POTION_SMOKE_POTION.title": "短途支援烟雾"
 }

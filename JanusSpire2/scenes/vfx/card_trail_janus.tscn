@@ -1,7 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://cd1kh8npjb3up"]
+[gd_scene load_steps=13 format=3 uid="uid://cd1kh8npjb3up"]
 
+[ext_resource type="Script" uid="uid://bqcv6a85wscfb" path="res://JanusSpire2Code/Scripts/NCardTrailVfxJanus.cs" id="1_d5na8"]
 [ext_resource type="Texture2D" uid="uid://dx85tmmvyuyj7" path="res://JanusSpire2/images/vfx/trail.png" id="1_jsda5"]
 [ext_resource type="Texture2D" uid="uid://dcii5muwbdvmu" path="res://JanusSpire2/images/relics/packed/Coronet.png" id="2_odty7"]
+[ext_resource type="Script" uid="uid://cxs4b773hnh0r" path="res://JanusSpire2Code/Scripts/NCardTrailJanus.cs" id="3_06paa"]
 [ext_resource type="Texture2D" uid="uid://dw8n55vkpe7ee" path="res://JanusSpire2/images/vfx/small_card_silhouette.png" id="3_d5na8"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_w018a"]
@@ -26,6 +28,7 @@ point_count = 5
 
 [node name="CardTrailJanus" type="Node2D"]
 show_behind_parent = true
+script = ExtResource("1_d5na8")
 
 [node name="Trails" type="Node2D" parent="."]
 
@@ -38,6 +41,7 @@ gradient = SubResource("Gradient_xaxga")
 texture = ExtResource("1_jsda5")
 texture_mode = 2
 joint_mode = 2
+script = ExtResource("3_06paa")
 
 [node name="InnerTrail" type="Line2D" parent="Trails"]
 modulate = Color(1, 0.69803923, 1, 1)
@@ -48,6 +52,7 @@ gradient = SubResource("Gradient_e05df")
 texture = ExtResource("1_jsda5")
 texture_mode = 2
 joint_mode = 2
+script = ExtResource("3_06paa")
 
 [node name="Sprites" type="Node2D" parent="."]
 

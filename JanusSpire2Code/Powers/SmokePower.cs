@@ -4,21 +4,13 @@ using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
-using STS2RitsuLib.Interop.AutoRegistration;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Powers;
 
-[RegisterPower]
-public sealed class SmokePower : ModPowerTemplate
+public sealed class SmokePower : JanusPowerModel
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
-
-    public override PowerAssetProfile AssetProfile => new(
-        IconPath: "res://JanusSpire2/images/powers/big/SmokePower.png",
-        BigIconPath: "res://JanusSpire2/images/powers/packed/SmokePower.png"
-    );
 
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
         Creature? dealer, CardModel? cardSource)
@@ -36,7 +28,7 @@ public sealed class SmokePower : ModPowerTemplate
         if (target == base.Owner && result.TotalDamage != 0 && props.HasFlag(ValueProp.Move))
         {
             Flash();
-            await PowerCmd.ModifyAmount(new ThrowingPlayerChoiceContext(), this, -Amount * 0.5m, null, null);
+            await PowerCmd.Decrement(this);
         }
     }
 

@@ -43,7 +43,7 @@ public sealed class JanusCharacter : ModCharacterTemplate<JanusCardPool, JanusRe
                 // 人物头像路径。
                 IconTexturePath: "res://JanusSpire2/images/characters/character_icon_janus.png",
                 // 人物头像2号带边框。
-                IconPath: "res://JanusSpire2/images/characters/character_icon_janus_outline.png",
+                IconPath: "res://JanusSpire2/scenes/characters/Janus_icon.tscn",
                 // 人物选择背景。
                 CharacterSelectBgPath: "res://JanusSpire2/scenes/characters/char_select_bg_Janus.tscn",
                 // 人物选择图标。
@@ -92,12 +92,16 @@ public sealed class JanusCharacter : ModCharacterTemplate<JanusCardPool, JanusRe
             // Spine: null,
             // VisualCues: null, // 帧动画静态图人物使用，查看角色动画一章
             // WorldProceduralVisuals: null,
-            // VanillaCardVisualOverrides: [],
+            VanillaCardVisualOverrides: [
+	            new ("BAD_LUCK", new(
+		            "res://JanusSpire2/images/cards/BadLuck.png"
+	            ))
+            ],
             VanillaRelicVisualOverrides: [
                 new (CharacterOwnedVanillaRelicModelId.YummyCookie, new(
-	                // "res://JanusSpire2/images/relics/packed/YummyCookie_Janus.png",
-	                // "res://JanusSpire2/images/relics/outline/YummyCookie_Janus.png",
-	                // "res://JanusSpire2/images/relics/big/YummyCookie_Janus.png"
+	                "res://JanusSpire2/images/relics/packed/YummyCookie_Janus.png",
+	                "res://JanusSpire2/images/relics/outline/YummyCookie_Janus.png",
+	                "res://JanusSpire2/images/relics/big/YummyCookie_Janus.png"
 	                )) // 美味饼干覆盖
             ]
             // VanillaPotionVisualOverrides: []

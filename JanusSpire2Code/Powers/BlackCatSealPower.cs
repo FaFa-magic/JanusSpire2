@@ -6,28 +6,20 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Interactions.RightClick;
-using STS2RitsuLib.Interop.AutoRegistration;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Powers;
 
-[RegisterPower]
-public sealed class BlackCatSealPower : ModPowerTemplate, IModRightClickablePower
+public sealed class BlackCatSealPower : JanusPowerModel, IModRightClickablePower
 {
     public override PowerType Type => PowerType.Debuff;
     public override PowerStackType StackType => PowerStackType.Counter;
 
-    public override PowerAssetProfile AssetProfile => new(
-        IconPath: "res://JanusSpire2/images/powers/big/BlackCatSealPower.png",
-        BigIconPath: "res://JanusSpire2/images/powers/packed/BlackCatSealPower.png"
-    );
-
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
-        if (this.Owner?.CombatState == null || !props.HasFlag(ValueProp.Unpowered))
+        if (this.Owner?.CombatState == null || !props.HasFlag(ValueProp.Unpowered) || target != this.Owner)
             return 1M;
         
-        return 1M + 0.05M * amount;
+        return 1M + 0.05M * this.Amount;
     }
     
     public async Task OnRightClick(ModRightClickExecutionContext context)

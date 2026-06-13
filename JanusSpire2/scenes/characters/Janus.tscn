@@ -4,10 +4,10 @@
 
 [node name="Janus" type="Node2D"]
 
-[node name="Visuals2" type="Sprite2D" parent="."]
+[node name="Visuals" type="Sprite2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(0, -106)
-scale = Vector2(0.3, 0.3)
+position = Vector2(0, -140)
+scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_a21s4")
 
 [node name="Bounds" type="Control" parent="."]
