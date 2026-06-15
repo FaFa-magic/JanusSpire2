@@ -1,4 +1,6 @@
 {
   "JANUS_SPIRE2_KEYWORD_PERK.title" : "振作",
-  "JANUS_SPIRE2_KEYWORD_PERK.description" : "当你受到伤害后，这张卡的费用减少{energyPrefix:energyIcons(1)}。"
+  "JANUS_SPIRE2_KEYWORD_PERK.description" : "当你受到伤害后，这张卡的费用减少{energyPrefix:energyIcons(1)}。",
+  "JANUS_SPIRE2_KEYWORD_REVERSIBLE.title" : "及时",
+  "JANUS_SPIRE2_KEYWORD_REVERSIBLE.description" : "当你于敌方回合抽到此牌后，将其打出。"
 }

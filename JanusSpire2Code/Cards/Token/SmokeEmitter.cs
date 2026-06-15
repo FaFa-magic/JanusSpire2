@@ -4,10 +4,11 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using STS2RitsuLib.Cards.DynamicVars;
+using STS2RitsuLib.Combat.CardTargeting;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 
-public sealed class SmokeEmitter() : JanusTokenCardModel(0, CardType.Skill, CardRarity.Token, TargetType.AnyPlayer)
+public sealed class SmokeEmitter() : JanusTokenCardModel(0, CardType.Skill, CardRarity.Token, CustomTargetType.Anyone)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Retain, CardKeyword.Exhaust];
     
@@ -19,7 +20,7 @@ public sealed class SmokeEmitter() : JanusTokenCardModel(0, CardType.Skill, Card
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target, nameof(cardPlay.Target));
         
-        await PowerCmd.Apply<SmokePower>(choiceContext, base.Owner.Creature, DynamicVars["Smoke"].BaseValue, base.Owner.Creature, this);
+        await PowerCmd.Apply<SmokePower>(choiceContext, cardPlay.Target, DynamicVars["Smoke"].BaseValue, base.Owner.Creature, this);
     }
     
     protected override void OnUpgrade() => DynamicVars["Smoke"].UpgradeValueBy(1M);

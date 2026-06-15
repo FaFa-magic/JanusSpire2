@@ -1,11 +1,11 @@
 [gd_scene load_steps=9 format=3 uid="uid://y7gnon7owxr"]
 
-[ext_resource type="PackedScene" path="res://JanusSpire2/scenes/vfx/JanusEnergyVfxBack.tscn" id="1_jluy8"]
+[ext_resource type="PackedScene" uid="uid://crf8mm5qvppu0" path="res://JanusSpire2/scenes/vfx/JanusEnergyVfxBack.tscn" id="1_jluy8"]
 [ext_resource type="Texture2D" uid="uid://v0fm7sibh1rr" path="res://JanusSpire2/images/combatui/energy_counter/Layer2.png" id="3_e0jbg"]
 [ext_resource type="Texture2D" uid="uid://biktfxjg80vw4" path="res://JanusSpire2/images/combatui/energy_counter/Layer_bottom.png" id="3_wij7b"]
 [ext_resource type="Texture2D" uid="uid://b8nddibpo328d" path="res://JanusSpire2/images/combatui/energy_counter/Layer3.png" id="4_76wkg"]
 [ext_resource type="Texture2D" uid="uid://dw61rp77tbtsl" path="res://JanusSpire2/images/combatui/energy_counter/Layer_top.png" id="6_wij7b"]
-[ext_resource type="PackedScene" path="res://JanusSpire2/scenes/vfx/JanusEnergyVfxFront.tscn" id="7_2deyc"]
+[ext_resource type="PackedScene" uid="uid://crw8oin1yk5ym" path="res://JanusSpire2/scenes/vfx/JanusEnergyVfxFront.tscn" id="7_2deyc"]
 [ext_resource type="Texture2D" uid="uid://clm800joq8est" path="res://JanusSpire2/images/combatui/energy_counter/Layer5.png" id="7_o2if5"]
 [ext_resource type="FontFile" uid="uid://df5rj1oegsvgx" path="res://JanusSpire2/fonts/kreon_bold.ttf" id="9_wij7b"]
 
@@ -17,7 +17,6 @@ offset_bottom = 128.0
 pivot_offset = Vector2(64, 64)
 
 [node name="EnergyVfxBack" parent="." instance=ExtResource("1_jluy8")]
-script = null
 
 [node name="Layers" type="Control" parent="."]
 unique_name_in_owner = true
@@ -75,10 +74,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -39.0
-offset_top = -51.0
-offset_right = -39.0
-offset_bottom = -51.0
+offset_left = -40.000004
+offset_top = -47.000004
+offset_right = -40.0
+offset_bottom = -47.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.6, 1.6)
@@ -98,7 +97,6 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="EnergyVfxFront" parent="." instance=ExtResource("7_2deyc")]
-script = null
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
@@ -111,9 +109,9 @@ offset_right = -16.0
 offset_bottom = 29.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0.9439689, 0.6639611, 0.9999998, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
-theme_override_colors/font_outline_color = Color(0.2733229, 0.120026, 0.33406317, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.3764706)
+theme_override_colors/font_outline_color = Color(0, 0.17820448, 0.40202105, 1)
 theme_override_constants/shadow_offset_x = 3
 theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 16

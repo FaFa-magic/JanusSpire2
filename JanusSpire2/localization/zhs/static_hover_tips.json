@@ -1,5 +1,5 @@
 {
-  "JANUS_SPIRE2_CARDPILE_VOID_PILE.title": "日记本",
-  "JANUS_SPIRE2_CARDPILE_VOID_PILE.description": "记录的卡牌不进入消耗牌堆而是进入日记本。",
-  "JANUS_SPIRE2_CARDPILE_VOID_PILE.empty": "日记本是空的。"
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.title": "日记本",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.description": "记录的卡牌不进入消耗牌堆而是进入日记本。",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.empty": "日记本是空的。"
 }

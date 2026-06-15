@@ -1,4 +1,5 @@
 using JanusSpire2.JanusSpire2Code.Powers;
+using JanusSpire2.JanusSpire2Code.Tags;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -13,6 +14,10 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 public sealed class Scratch() : JanusTokenCardModel(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Retain, CardKeyword.Exhaust];
+    
+    protected override HashSet<CardTag> CanonicalTags => [
+        JanusTags.Scratch
+    ];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DamageVar(2M, ValueProp.Move),

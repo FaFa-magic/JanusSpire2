@@ -23,9 +23,8 @@ public sealed class Maneuver() : JanusCardModel(0, CardType.Skill, CardRarity.Un
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
-        decimal baseValue = base.DynamicVars.Strength.BaseValue;
-        await PowerCmd.Apply<ManeuverPower>(choiceContext, base.Owner.Creature, baseValue, base.Owner.Creature, this);
-        
+
+        await PowerCmd.Apply<ManeuverPower>(choiceContext, base.Owner.Creature, -base.DynamicVars.Strength.BaseValue, base.Owner.Creature, this);
         await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.IntValue, base.Owner);
     }
     

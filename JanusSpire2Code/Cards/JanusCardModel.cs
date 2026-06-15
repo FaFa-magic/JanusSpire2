@@ -16,11 +16,8 @@ public abstract class JanusCardModel : ModCardTemplate
     
     public override CardAssetProfile AssetProfile => new(
         PortraitPath: $"res://JanusSpire2/images/cards/{GetType().Name}.png",
-        BannerTexturePath: Rarity switch
-        {
-            CardRarity.Ancient => "",
-            _ =>"res://JanusSpire2/images/card_frames/janus_Banner.png"
-        },
+        BannerTexturePath: "res://JanusSpire2/images/card_frames/janus_Banner.png",
+        AncientBannerPath: "res://JanusSpire2/images/card_frames/janus_Banner.png",
         AncientBorderPath: "res://JanusSpire2/images/card_frames/janus_ancient.png",
         FramePath: Type switch
         {
