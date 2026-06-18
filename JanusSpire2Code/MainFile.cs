@@ -3,12 +3,14 @@ using Godot;
 using JanusSpire2.JanusSpire2Code.Cards.Ancient;
 using JanusSpire2.JanusSpire2Code.Cards.Basic;
 using JanusSpire2.JanusSpire2Code.Configs;
+using JanusSpire2.JanusSpire2Code.Patches;
 using JanusSpire2.JanusSpire2Code.Relics;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Modding;
 using STS2RitsuLib;
 using STS2RitsuLib.CardPiles;
 using STS2RitsuLib.Interop;
+using STS2RitsuLib.Patching.Core;
 using Logger = MegaCrit.Sts2.Core.Logging.Logger;
 
 namespace JanusSpire2.JanusSpire2Code;
@@ -56,15 +58,10 @@ public static class MainFile
 			VisibleWhen = ctx => ctx.Player != null,
 		}).PileType;
 		
-		// var patcher = RitsuLibFramework.CreatePatcher(ModId, "core-patches");
-		// patcher.RegisterPatch<JanusPatches>();
-		//
-		// if (!patcher.PatchAll())
-		// 	throw new InvalidOperationException("Critical patches failed.");
-	}
-	
-	private static void DisableMod()
-	{
-		// Mark your own mod disabled when a required patch cannot apply.
+		ModPatcher patcher = RitsuLibFramework.CreatePatcher(ModId, "janus_patches");
+		patcher.RegisterPatch<CheckForEmptyHandPatch>();
+
+		if (!patcher.PatchAll())
+			throw new InvalidOperationException("Critical patches failed.");
 	}
 }

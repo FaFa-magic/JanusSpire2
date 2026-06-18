@@ -1,25 +1,24 @@
-﻿using JanusSpire2.JanusSpire2Code.Cards.Rare;
-using MegaCrit.Sts2.Core.Entities.Players;
+﻿using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.HoverTips;
 
 namespace JanusSpire2.JanusSpire2Code.Powers;
 
-public sealed class BattlePlanCardDebuffPower : JanusPowerModel
+public sealed class EnergyDebuffPower : JanusPowerModel
 {
     public override PowerType Type => PowerType.Debuff;
     public override PowerStackType StackType => PowerStackType.Counter;
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-        HoverTipFactory.FromCard<BattlePlan>()
+        HoverTipFactory.ForEnergy(this)
     ];
     
-    public override decimal ModifyHandDraw(Player player, decimal count)
+    public override decimal ModifyMaxEnergy(Player player, decimal amount)
     {
         if (player != base.Owner.Player)
         {
-            return count;
+            return amount;
         }
-        return count - (decimal)base.Amount;
+        return amount - (decimal)base.Amount;
     }
 }

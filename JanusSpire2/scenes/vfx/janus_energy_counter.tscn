@@ -1,10 +1,10 @@
 [gd_scene load_steps=9 format=3 uid="uid://y7gnon7owxr"]
 
 [ext_resource type="PackedScene" uid="uid://crf8mm5qvppu0" path="res://JanusSpire2/scenes/vfx/JanusEnergyVfxBack.tscn" id="1_jluy8"]
-[ext_resource type="Texture2D" uid="uid://v0fm7sibh1rr" path="res://JanusSpire2/images/combatui/energy_counter/Layer2.png" id="3_e0jbg"]
-[ext_resource type="Texture2D" uid="uid://biktfxjg80vw4" path="res://JanusSpire2/images/combatui/energy_counter/Layer_bottom.png" id="3_wij7b"]
-[ext_resource type="Texture2D" uid="uid://b8nddibpo328d" path="res://JanusSpire2/images/combatui/energy_counter/Layer3.png" id="4_76wkg"]
-[ext_resource type="Texture2D" uid="uid://dw61rp77tbtsl" path="res://JanusSpire2/images/combatui/energy_counter/Layer_top.png" id="6_wij7b"]
+[ext_resource type="Texture2D" uid="uid://dmpeh22ggiogb" path="res://JanusSpire2/images/combatui/energy_counter/Layer_bottom_Janus.png" id="2_jluy8"]
+[ext_resource type="Texture2D" uid="uid://cx6l0j74ggyad" path="res://JanusSpire2/images/combatui/energy_counter/Layer2.png" id="3_e0jbg"]
+[ext_resource type="Texture2D" uid="uid://b8k3emw6o66xm" path="res://JanusSpire2/images/combatui/energy_counter/Layer3.png" id="4_76wkg"]
+[ext_resource type="Texture2D" uid="uid://dilmjhymbkefd" path="res://JanusSpire2/images/combatui/energy_counter/Layer_top_Janus.png" id="5_2deyc"]
 [ext_resource type="PackedScene" uid="uid://crw8oin1yk5ym" path="res://JanusSpire2/scenes/vfx/JanusEnergyVfxFront.tscn" id="7_2deyc"]
 [ext_resource type="Texture2D" uid="uid://clm800joq8est" path="res://JanusSpire2/images/combatui/energy_counter/Layer5.png" id="7_o2if5"]
 [ext_resource type="FontFile" uid="uid://df5rj1oegsvgx" path="res://JanusSpire2/fonts/kreon_bold.ttf" id="9_wij7b"]
@@ -34,7 +34,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("3_wij7b")
+texture = ExtResource("2_jluy8")
 expand_mode = 1
 stretch_mode = 5
 
@@ -81,7 +81,7 @@ offset_bottom = -47.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.6, 1.6)
-texture = ExtResource("6_wij7b")
+texture = ExtResource("5_2deyc")
 expand_mode = 1
 
 [node name="Layer5" type="TextureRect" parent="Layers"]

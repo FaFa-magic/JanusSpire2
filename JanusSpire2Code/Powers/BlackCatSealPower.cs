@@ -14,6 +14,43 @@ public sealed class BlackCatSealPower : JanusPowerModel, IModRightClickablePower
     public override PowerType Type => PowerType.Debuff;
     public override PowerStackType StackType => PowerStackType.Counter;
 
+    private const string FinalDmgKey = "JanusSpire2_BlackCat_FinalDmg";
+    
+    protected override IEnumerable<DynamicVar> CanonicalVars => [
+        new DynamicVar(FinalDmgKey, 0m)
+    ];
+
+    public override async Task AfterApplied(Creature? applier, CardModel? cardSource)
+    {
+        await base.AfterApplied(applier, cardSource);
+        UpdateFinalDamage();
+    }
+
+    public override Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power,
+        decimal oldAmount, Creature? __, CardModel? cardSource)
+    {
+        if (power == this)
+        {
+            UpdateFinalDamage();
+            InvokeDisplayAmountChanged();
+        }
+
+        return Task.CompletedTask;
+    }
+
+    private void UpdateFinalDamage()
+    {
+        if (Owner == null || !DynamicVars.ContainsKey(FinalDmgKey))
+            return;
+
+        int amount = this.Amount;
+        decimal calculatedDmg = amount * 2m * (1m + 0.05m * amount);
+
+        DynamicVars[FinalDmgKey].BaseValue = Math.Floor(calculatedDmg);
+
+        InvokeDisplayAmountChanged();
+    }
+    
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
         if (this.Owner?.CombatState == null || !props.HasFlag(ValueProp.Unpowered) || target != this.Owner)

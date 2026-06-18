@@ -13,7 +13,7 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 
 public sealed class Scratch() : JanusTokenCardModel(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
 {
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Retain, CardKeyword.Exhaust];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
     
     protected override HashSet<CardTag> CanonicalTags => [
         JanusTags.Scratch
@@ -61,7 +61,7 @@ public sealed class Scratch() : JanusTokenCardModel(0, CardType.Attack, CardRari
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
         
-        await PowerCmd.Apply<BlackCatSealPower>(choiceContext, base.Owner.Creature, DynamicVars["BlackCatSeal"].BaseValue, base.Owner.Creature, this);
+        await PowerCmd.Apply<BlackCatSealPower>(choiceContext, cardPlay.Target, DynamicVars["BlackCatSeal"].BaseValue, base.Owner.Creature, this);
     }
     
     protected override void OnUpgrade() => DynamicVars["BlackCatSeal"].UpgradeValueBy(1M);

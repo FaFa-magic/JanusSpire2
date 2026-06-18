@@ -22,8 +22,8 @@ public sealed class BattlePlan() : JanusCardModel(1, CardType.Power, CardRarity.
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await PowerCmd.Apply<BattlePlanPower>(choiceContext, base.Owner.Creature, DynamicVars["BattlePlan"].BaseValue, base.Owner.Creature, this);
-        await PowerCmd.Apply<BattlePlanEnergyDebuffPower>(choiceContext, base.Owner.Creature, DynamicVars.Energy.BaseValue, base.Owner.Creature, this);
-        await PowerCmd.Apply<BattlePlanCardDebuffPower>(choiceContext, base.Owner.Creature, DynamicVars.Cards.BaseValue, base.Owner.Creature, this);
+        await PowerCmd.Apply<EnergyDebuffPower>(choiceContext, base.Owner.Creature, DynamicVars.Energy.BaseValue, base.Owner.Creature, this);
+        await PowerCmd.Apply<CardDebuffPower>(choiceContext, base.Owner.Creature, DynamicVars.Cards.BaseValue, base.Owner.Creature, this);
     }
     
     protected override void OnUpgrade()

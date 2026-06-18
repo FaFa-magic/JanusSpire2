@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://biktfxjg80vw4"
-path="res://.godot/imported/Layer_bottom.png-39782aa177f194ff55835b7bf0470079.ctex"
+uid="uid://bsl5c66nx7p7i"
+path="res://.godot/imported/HiddenAttackPower.png-328afc7e2a0e6eb6232c8be95d468492.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://JanusSpire2/images/combatui/energy_counter/Layer_bottom.png"
-dest_files=["res://.godot/imported/Layer_bottom.png-39782aa177f194ff55835b7bf0470079.ctex"]
+source_file="res://JanusSpire2/images/powers/packed/HiddenAttackPower.png"
+dest_files=["res://.godot/imported/HiddenAttackPower.png-328afc7e2a0e6eb6232c8be95d468492.ctex"]
 
 [params]
 

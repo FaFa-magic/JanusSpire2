@@ -68,7 +68,7 @@ public sealed class HiddenAttackPower : JanusPowerModel
         Data internalData = GetInternalData<Data>();
         if (internalData.commandToModify == null || cardSource == internalData.commandToModify.ModelSource)
         {
-            return 1m + 0.5m * Amount;
+            return 1m + (decimal)base.Amount / 100m;
         }
         return 1m;
     }

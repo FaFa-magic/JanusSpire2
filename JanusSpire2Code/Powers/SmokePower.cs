@@ -2,6 +2,7 @@
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -12,6 +13,10 @@ public sealed class SmokePower : JanusPowerModel
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
 
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
+        HoverTipFactory.FromPower<HiddenAttackPower>()
+    ];
+    
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
         Creature? dealer, CardModel? cardSource)
     {
@@ -34,6 +39,6 @@ public sealed class SmokePower : JanusPowerModel
 
     public override async Task AfterRemoved(Creature oldOwner)
     {
-        await PowerCmd.Apply<HiddenAttackPower>(new ThrowingPlayerChoiceContext(), base.Owner, 1m, base.Owner, null);
+        await PowerCmd.Apply<HiddenAttackPower>(new ThrowingPlayerChoiceContext(), base.Owner, 50m, base.Owner, null);
     }
 }

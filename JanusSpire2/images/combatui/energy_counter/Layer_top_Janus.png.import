@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dw61rp77tbtsl"
-path="res://.godot/imported/Layer_top.png-2db9cbfcf8df6e4ab0ab491cf2957576.ctex"
+uid="uid://dilmjhymbkefd"
+path="res://.godot/imported/Layer_top_Janus.png-d737d7da435c855794c4e7e6e78d7319.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://JanusSpire2/images/combatui/energy_counter/Layer_top.png"
-dest_files=["res://.godot/imported/Layer_top.png-2db9cbfcf8df6e4ab0ab491cf2957576.ctex"]
+source_file="res://JanusSpire2/images/combatui/energy_counter/Layer_top_Janus.png"
+dest_files=["res://.godot/imported/Layer_top_Janus.png-d737d7da435c855794c4e7e6e78d7319.ctex"]
 
 [params]
 
