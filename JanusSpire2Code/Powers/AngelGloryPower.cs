@@ -9,7 +9,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace JanusSpire2.JanusSpire2Code.Powers;
 
-public sealed class HiddenAttackPower : JanusPowerModel
+public sealed class AngelGloryPower : JanusPowerModel
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
@@ -18,7 +18,7 @@ public sealed class HiddenAttackPower : JanusPowerModel
     {
         public AttackCommand? commandToModify;
     }
-
+    
     protected override object InitInternalData()
     {
         return new Data();
@@ -68,7 +68,7 @@ public sealed class HiddenAttackPower : JanusPowerModel
         Data internalData = GetInternalData<Data>();
         if (internalData.commandToModify == null || cardSource == internalData.commandToModify.ModelSource)
         {
-            return 1m + (decimal)base.Amount / 100m;
+            return 3m;
         }
         return 1m;
     }
@@ -79,7 +79,7 @@ public sealed class HiddenAttackPower : JanusPowerModel
         if (command == internalData.commandToModify)
         {
             internalData.commandToModify = null;
-            await PowerCmd.Remove(this);
+            await PowerCmd.Decrement(this);
         }
     }
 }

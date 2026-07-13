@@ -6,13 +6,13 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Ancient;
 
-public sealed class AngelPrayer() : JanusCardModel(0, CardType.Skill, CardRarity.Ancient, TargetType.Self)
+public sealed class AngelGlory() : JanusCardModel(0, CardType.Skill, CardRarity.Ancient, TargetType.Self)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Collection];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await PowerCmd.Apply<AngelPrayerPower>(choiceContext, base.Owner.Creature, 1m, base.Owner.Creature, this);
+        await PowerCmd.Apply<AngelGloryPower>(choiceContext, base.Owner.Creature, 1m, base.Owner.Creature, this);
     }
     
     protected override void OnUpgrade()

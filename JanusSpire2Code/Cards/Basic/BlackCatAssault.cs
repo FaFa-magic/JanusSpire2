@@ -11,25 +11,20 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace JanusSpire2.JanusSpire2Code.Cards.Basic;
 
 [RegisterCharacterStarterCard(typeof(JanusCharacter), 1)]
-public sealed class BlackCatAssault() : JanusCardModel(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
+public sealed class BlackCatAssault() : JanusCardModel(1, CardType.Skill, CardRarity.Basic, TargetType.Self)
 {
+    public override bool GainsBlock => true;
+    
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(2M, ValueProp.Move),
-        ModCardVars.Int("BlackCatSeal", 3)
+        new BlockVar(9M, ValueProp.Move),
+        ModCardVars.Int("BlackCatSeal", 1)
     ];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target, nameof(cardPlay.Target));
-        
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this)
-            .Targeting(cardPlay.Target)
-            .WithHitFx("vfx/vfx_attack_slash")
-            .Execute(choiceContext);
-        
-        await PowerCmd.Apply<BlackCatSealPower>(choiceContext, cardPlay.Target, DynamicVars["BlackCatSeal"].BaseValue, base.Owner.Creature, this);
+        await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
+        await PowerCmd.Apply<BlackCatSealPower>(choiceContext, base.Owner.Creature, DynamicVars["BlackCatSeal"].BaseValue, base.Owner.Creature, this);
     }
     
-    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(3M);
+    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(3M);
 }

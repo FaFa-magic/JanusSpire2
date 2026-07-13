@@ -60,6 +60,10 @@ public static class MainFile
 		
 		ModPatcher patcher = RitsuLibFramework.CreatePatcher(ModId, "janus_patches");
 		patcher.RegisterPatch<CheckForEmptyHandPatch>();
+		patcher.RegisterPatch<SkipPlayerFlushPatch>();
+		patcher.RegisterPatch<EnemyTurnFlushPatch>();
+		patcher.RegisterPatch<DiaryHasEnoughResourcesPatch>();
+		patcher.RegisterPatch<DiarySpendResourcesPatch>();
 
 		if (!patcher.PatchAll())
 			throw new InvalidOperationException("Critical patches failed.");

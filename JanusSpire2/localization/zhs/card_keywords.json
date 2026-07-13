@@ -1,6 +1,8 @@
 {
   "JANUS_SPIRE2_KEYWORD_PERK.title" : "振作",
-  "JANUS_SPIRE2_KEYWORD_PERK.description" : "当你受到伤害后，这张卡的费用减少{energyPrefix:energyIcons(1)}。",
-  "JANUS_SPIRE2_KEYWORD_REVERSIBLE.title" : "及时",
-  "JANUS_SPIRE2_KEYWORD_REVERSIBLE.description" : "当你于敌方回合抽到此牌后，将其打出。"
+  "JANUS_SPIRE2_KEYWORD_PERK.description" : "可以通过消耗[gold]日记本[/gold]中的牌等量地减少本次所需打出的能量。",
+  "JANUS_SPIRE2_KEYWORD_COLLECTION.title" : "珍藏",
+  "JANUS_SPIRE2_KEYWORD_COLLECTION.description" : "这张卡在战斗开始时会加入[gold]日记本[/gold]。",
+  "JANUS_SPIRE2_KEYWORD_COUNTERATTACK.title" : "反击",
+  "JANUS_SPIRE2_KEYWORD_REVERSIBLE.description" : "当你受到伤害后，这张卡自动打出。"
 }

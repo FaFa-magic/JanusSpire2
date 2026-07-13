@@ -1,4 +1,5 @@
 using JanusSpire2.JanusSpire2Code.Characters;
+using JanusSpire2.JanusSpire2Code.Patches;
 using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -12,7 +13,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace JanusSpire2.JanusSpire2Code.Relics;
 
 [RegisterCharacterStarterRelic(typeof(JanusCharacter))]
-public sealed class Coronet : JanusRelicModel
+public sealed class Coronet : JanusRelicModel, ISkipPlayerFlushRelic
 {
     public override RelicRarity Rarity => RelicRarity.Starter;
 

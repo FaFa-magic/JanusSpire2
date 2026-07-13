@@ -1,4 +1,4 @@
-﻿using JanusSpire2.JanusSpire2Code.Characters;
+﻿using JanusSpire2.JanusSpire2Code.Patches;
 using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -10,7 +10,7 @@ using STS2RitsuLib.Cards.DynamicVars;
 
 namespace JanusSpire2.JanusSpire2Code.Relics;
 
-public sealed class ShiningCrown : JanusRelicModel
+public sealed class ShiningCrown : JanusRelicModel, ISkipPlayerFlushRelic
 {
     public override RelicRarity Rarity => RelicRarity.Starter;
 

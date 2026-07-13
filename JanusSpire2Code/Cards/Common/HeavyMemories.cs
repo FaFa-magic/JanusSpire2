@@ -3,20 +3,12 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
-using STS2RitsuLib.Cards.DynamicVars;
 
-namespace JanusSpire2.JanusSpire2Code.Cards.Token;
+namespace JanusSpire2.JanusSpire2Code.Cards.Common;
 
-public sealed class SmokeStrike() : JanusTokenCardModel(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
+public sealed class HeavyMemories() : JanusCardModel(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
 {
-    protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
-    
-    public override int MaxUpgradeLevel => 999;
-    
-    protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(6M, ValueProp.Move),
-        ModCardVars.Int("Smoke", 1)
-    ];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(6M, ValueProp.Move)];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

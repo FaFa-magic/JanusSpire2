@@ -5,9 +5,9 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 
-namespace JanusSpire2.JanusSpire2Code.Cards.Common;
+namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-public sealed class Evasion() : JanusCardModel(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+public sealed class Shy() : JanusCardModel(1, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [new BlockVar(5M, ValueProp.Move)];
 
