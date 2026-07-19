@@ -1,3 +1,4 @@
+using JanusSpire2.JanusSpire2Code.Interfaces;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -65,6 +66,44 @@ public sealed class BlackCatSealPower : JanusPowerModel, IModRightClickablePower
         var dmg = new DamageVar(Amount * 2, ValueProp.Unpowered);
         await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), Owner, dmg, Owner);
         
+        ArgumentNullException.ThrowIfNull(context.PlayerChoiceContext);
+        await TriggerAfterBlackCatSealExplode(context.PlayerChoiceContext, new BlackCatSealExplodeContext
+        {
+            ChoiceContext = context.PlayerChoiceContext,
+            Owner = Owner!
+        });
+        
         await PowerCmd.Remove(this);
+    }
+    
+    public static async Task TriggerAfterBlackCatSealExplode(
+        PlayerChoiceContext choiceContext,
+        BlackCatSealExplodeContext context)
+    {
+        foreach (var hook in GetHooks<IAfterBlackCatSealExplode>(context.Owner))
+        {
+            await hook.AfterBlackCatSealExplode(choiceContext, context);
+        }
+    }
+
+    private static IEnumerable<T> GetHooks<T>(Creature owner)
+    {
+        foreach (var card in owner.Player!.Piles.SelectMany(p => p.Cards))
+        {
+            if (card is T t)
+                yield return t;
+        }
+
+        foreach (var power in owner.Powers)
+        {
+            if (power is T t)
+                yield return t;
+        }
+
+        foreach (var relic in owner.Player.Relics)
+        {
+            if (relic is T t)
+                yield return t;
+        }
     }
 }

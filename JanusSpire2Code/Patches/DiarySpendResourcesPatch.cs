@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using HarmonyLib;
-using JanusSpire2.JanusSpire2Code.Tags;
+using JanusSpire2.JanusSpire2Code.Keywords;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -22,7 +22,7 @@ public sealed class DiarySpendResourcesPatch : IPatchMethod
     [HarmonyPrefix]
     public static bool Prefix(CardModel __instance, ref Task<(int, int)> __result)
     {
-        if (__instance.Tags == null || !__instance.Tags.Contains(JanusTags.DiaryTag) || __instance.Owner?.PlayerCombatState == null)
+        if (!__instance.Keywords.Contains(JanusKeywords.Perk) || __instance.Owner?.PlayerCombatState == null)
         {
             return true;
         }

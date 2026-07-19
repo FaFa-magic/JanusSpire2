@@ -4,6 +4,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using JanusSpire2.JanusSpire2Code.Characters;
+using JanusSpire2.JanusSpire2Code.Keywords;
 using JanusSpire2.JanusSpire2Code.Powers;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -11,20 +12,25 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace JanusSpire2.JanusSpire2Code.Cards.Basic;
 
 [RegisterCharacterStarterCard(typeof(JanusCharacter), 1)]
-public sealed class BlackCatAssault() : JanusCardModel(1, CardType.Skill, CardRarity.Basic, TargetType.Self)
+public sealed class BlackCatAssault() : JanusCardModel(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
 {
-    public override bool GainsBlock => true;
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Counterattack];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new BlockVar(9M, ValueProp.Move),
+        new DamageVar(9M, ValueProp.Move),
         ModCardVars.Int("BlackCatSeal", 1)
     ];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
+        ArgumentNullException.ThrowIfNull(cardPlay.Target, nameof(cardPlay.Target));
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+            .FromCard(this, cardPlay)
+            .Targeting(cardPlay.Target)
+            .WithHitFx("vfx/vfx_attack_slash")
+            .Execute(choiceContext);
         await PowerCmd.Apply<BlackCatSealPower>(choiceContext, base.Owner.Creature, DynamicVars["BlackCatSeal"].BaseValue, base.Owner.Creature, this);
     }
     
-    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(3M);
+    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(4M);
 }

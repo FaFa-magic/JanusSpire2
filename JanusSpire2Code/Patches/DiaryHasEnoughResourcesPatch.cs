@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-using JanusSpire2.JanusSpire2Code.Tags;
+using JanusSpire2.JanusSpire2Code.Keywords;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Models;
@@ -19,7 +19,7 @@ public sealed class DiaryHasEnoughResourcesPatch : IPatchMethod
     [HarmonyPostfix]
     public static void Postfix(PlayerCombatState __instance, CardModel card, ref UnplayableReason reason, ref bool __result)
     {
-        if (!__result && card.Tags != null && card.Tags.Contains(JanusTags.DiaryTag))
+        if (!__result && card.Keywords.Contains(JanusKeywords.Perk))
         {
             UnplayableReason energyReason = (UnplayableReason)16;
             

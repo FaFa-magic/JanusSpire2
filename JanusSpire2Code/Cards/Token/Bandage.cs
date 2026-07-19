@@ -1,4 +1,5 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+﻿using JanusSpire2.JanusSpire2Code.Keywords;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -7,7 +8,7 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 
 public sealed class Bandage() : JanusTokenCardModel(0, CardType.Skill, CardRarity.Token, TargetType.Self)
 {
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, JanusKeywords.Sticker];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new HealVar(3m)

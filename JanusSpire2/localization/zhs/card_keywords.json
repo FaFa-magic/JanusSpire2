@@ -4,5 +4,7 @@
   "JANUS_SPIRE2_KEYWORD_COLLECTION.title" : "珍藏",
   "JANUS_SPIRE2_KEYWORD_COLLECTION.description" : "这张卡在战斗开始时会加入[gold]日记本[/gold]。",
   "JANUS_SPIRE2_KEYWORD_COUNTERATTACK.title" : "反击",
-  "JANUS_SPIRE2_KEYWORD_REVERSIBLE.description" : "当你受到伤害后，这张卡自动打出。"
+  "JANUS_SPIRE2_KEYWORD_COUNTERATTACK.description" : "当你受到伤害后，这张卡自动打出。",
+  "JANUS_SPIRE2_KEYWORD_STICKER.title" : "贴纸",
+  "JANUS_SPIRE2_KEYWORD_STICKER.description" : "。"
 }

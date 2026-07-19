@@ -1,3 +1,4 @@
+using JanusSpire2.JanusSpire2Code.Keywords;
 using JanusSpire2.JanusSpire2Code.Powers;
 using JanusSpire2.JanusSpire2Code.Tags;
 using MegaCrit.Sts2.Core.Combat;
@@ -13,7 +14,7 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 
 public sealed class Scratch() : JanusTokenCardModel(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
 {
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, JanusKeywords.Sticker];
     
     protected override HashSet<CardTag> CanonicalTags => [
         JanusTags.Scratch

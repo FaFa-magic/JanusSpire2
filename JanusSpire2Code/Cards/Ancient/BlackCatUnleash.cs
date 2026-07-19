@@ -1,3 +1,4 @@
+using JanusSpire2.JanusSpire2Code.Keywords;
 using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -10,8 +11,10 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Ancient;
 
 public sealed class BlackCatUnleash() : JanusCardModel(0, CardType.Attack, CardRarity.Ancient, TargetType.AnyEnemy)
 {
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Counterattack];
+    
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(2M, ValueProp.Move),
+        new DamageVar(9M, ValueProp.Move),
         ModCardVars.Int("BlackCatSeal", 3)
     ];
     
@@ -28,5 +31,5 @@ public sealed class BlackCatUnleash() : JanusCardModel(0, CardType.Attack, CardR
         await PowerCmd.Apply<BlackCatSealPower>(choiceContext, base.Owner.Creature, DynamicVars["BlackCatSeal"].BaseValue, base.Owner.Creature, this);
     }
     
-    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(3M);
+    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(4M);
 }

@@ -1,4 +1,5 @@
-﻿using JanusSpire2.JanusSpire2Code.Powers;
+﻿using JanusSpire2.JanusSpire2Code.Keywords;
+using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -10,7 +11,7 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 
 public sealed class SmokeEmitter() : JanusTokenCardModel(0, CardType.Skill, CardRarity.Token, CustomTargetType.Anyone)
 {
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Retain, CardKeyword.Exhaust];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Retain, CardKeyword.Exhaust, JanusKeywords.Sticker];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         ModCardVars.Int("Smoke", 1)

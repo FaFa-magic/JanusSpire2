@@ -41,5 +41,10 @@ public sealed class SmokePower : JanusPowerModel
     public override async Task AfterRemoved(Creature oldOwner)
     {
         await PowerCmd.Apply<HiddenAttackPower>(new ThrowingPlayerChoiceContext(), base.Owner, 50m, base.Owner, null);
+        int escapeIntoSmokeAmount = base.Owner.GetPower<EscapeIntoSmokePower>()?.Amount ?? 0;
+        if (escapeIntoSmokeAmount > 0)
+        {
+            await PowerCmd.Apply<SmokePower>(new ThrowingPlayerChoiceContext(), base.Owner, escapeIntoSmokeAmount, base.Owner, null);
+        }
     }
 }
