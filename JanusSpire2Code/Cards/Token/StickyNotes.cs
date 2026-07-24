@@ -7,13 +7,13 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 
-public sealed class Plan() : JanusTokenCardModel(0, CardType.Skill, CardRarity.Token, TargetType.Self)
+public sealed class StickyNotes() : JanusTokenCardModel(0, CardType.Skill, CardRarity.Token, TargetType.Self)
 {
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
         HoverTipFactory.ForEnergy(this)
     ];
 
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, JanusKeywords.Sticker];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Retain, CardKeyword.Exhaust, JanusKeywords.Sticker];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new EnergyVar(1),

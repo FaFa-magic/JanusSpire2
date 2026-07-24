@@ -1,4 +1,5 @@
-﻿using JanusSpire2.JanusSpire2Code.Cards.Basic;
+﻿using JanusSpire2.JanusSpire2Code.Cards;
+using JanusSpire2.JanusSpire2Code.Cards.Basic;
 using JanusSpire2.JanusSpire2Code.Cards.Token;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -7,7 +8,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using STS2RitsuLib.Cards.DynamicVars;
 
-namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
+namespace JanusSpire2.JanusSpire2Code.Deprecated;
 
 public sealed class SmokeFormationTactics() : JanusCardModel(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
 {

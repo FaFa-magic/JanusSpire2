@@ -6,13 +6,13 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 
-namespace JanusSpire2.JanusSpire2Code.Cards.Common;
+namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-public sealed class HeavyMemories() : JanusCardModel(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+public sealed class HeavyMemories() : JanusCardModel(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new CalculationBaseVar(3m),
-        new ExtraDamageVar(2m),
+        new ExtraDamageVar(3m),
         new CalculatedDamageVar(ValueProp.Move).WithMultiplier((CardModel card, Creature? _) => MainFile.Diary.GetPile(card.Owner).Cards.Count)
     ];
     

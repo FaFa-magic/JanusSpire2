@@ -5,17 +5,15 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using STS2RitsuLib.Cards.DynamicVars;
 
-namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
+namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
-public sealed class Conceal() : JanusCardModel(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+public sealed class Courage() : JanusCardModel(2, CardType.Power, CardRarity.Rare, TargetType.Self)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [ModCardVars.Int("BlackCatSeal", 3)];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await CreatureCmd.TriggerAnim(base.Owner.Creature, "PowerUp", base.Owner.Character.PowerUpAnimDelay);
-        await PowerCmd.Apply<ConcealPower>(choiceContext, base.Owner.Creature, DynamicVars["BlackCatSeal"].BaseValue,
-            base.Owner.Creature, this);
+
     }
 
     protected override void OnUpgrade() => DynamicVars["BlackCatSeal"].UpgradeValueBy(1M);

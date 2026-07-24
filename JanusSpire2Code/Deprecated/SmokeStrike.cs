@@ -1,11 +1,12 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+﻿using JanusSpire2.JanusSpire2Code.Cards.Token;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 
-namespace JanusSpire2.JanusSpire2Code.Cards.Token;
+namespace JanusSpire2.JanusSpire2Code.Deprecated;
 
 public sealed class SmokeStrike() : JanusTokenCardModel(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
 {

@@ -9,12 +9,15 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
 public sealed class GoodTimes() : JanusCardModel(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [ModCardVars.Int("GoodTimes", 1)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [
+        ModCardVars.Int("GoodTimes", 1),
+        new EnergyVar(1)
+    ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await CreatureCmd.TriggerAnim(base.Owner.Creature, "PowerUp", base.Owner.Character.PowerUpAnimDelay);
-        await PowerCmd.Apply<GoodTimesPower>(choiceContext, base.Owner.Creature, DynamicVars.Block.BaseValue, base.Owner.Creature, this);
+        await PowerCmd.Apply<GoodTimesPower>(choiceContext, base.Owner.Creature, DynamicVars["GoodTimes"].BaseValue, base.Owner.Creature, this);
     }
     
     protected override void OnUpgrade() => base.EnergyCost.UpgradeBy(-1);

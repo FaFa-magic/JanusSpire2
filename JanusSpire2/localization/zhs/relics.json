@@ -1,10 +1,10 @@
 {
   "SEA_GLASS.JANUS_SPIRE2_CHARACTER_JANUS_CHARACTER.title": "碧波玻璃",
   "JANUS_SPIRE2_RELIC_CORONET.title": "小王冠",
-  "JANUS_SPIRE2_RELIC_CORONET.description": "第一回合开始时，获得[blue]{Smoke}[/blue]层[gold]烟雾[/gold]。\n你的回合结束弃牌改为在敌方回合结束时。",
+  "JANUS_SPIRE2_RELIC_CORONET.description": "第一回合开始时，获得[blue]{Smoke}[/blue]层[gold]烟雾[/gold]。\n回合结束弃牌改为在敌方回合结束时。",
   "JANUS_SPIRE2_RELIC_CORONET.flavor": "",
   "JANUS_SPIRE2_RELIC_SHINING_CROWN.title": "闪亮王冠",
-  "JANUS_SPIRE2_RELIC_SHINING_CROWN.description": "每回合开始时，获得[blue]{Smoke}[/blue]层[gold]烟雾[/gold]。\n你的回合结束弃牌改为在敌方回合结束时。",
+  "JANUS_SPIRE2_RELIC_SHINING_CROWN.description": "每回合开始时，获得[blue]{Smoke}[/blue]层[gold]烟雾[/gold]。\n回合结束弃牌改为在敌方回合结束时。",
   "JANUS_SPIRE2_RELIC_SHINING_CROWN.flavor": "",
   "JANUS_SPIRE2_RELIC_.title": "",
   "JANUS_SPIRE2_RELIC_.description": "从角色可获得[gold]卡牌奖励[/gold]中获得任意{Cards:diff()}张不同的卡牌。\n你之后的[gold]战斗奖励[/gold]将不再掉落[gold]卡牌奖励[/gold]。",

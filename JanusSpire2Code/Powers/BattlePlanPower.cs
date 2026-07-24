@@ -15,7 +15,7 @@ public sealed class BattlePlanPower : JanusPowerModel
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
     
-    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<Plan>(true)];
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<StickyNotes>(false)];
     
     public override async Task BeforeHandDraw(Player player, PlayerChoiceContext choiceContext, ICombatState combatState)
     {
@@ -29,12 +29,7 @@ public sealed class BattlePlanPower : JanusPowerModel
             List<CardModel> Plans = new List<CardModel>();
             for (int i = 0; i < Amount; i++)
             {
-                Plans.Add(combatState.CreateCard<Plan>(this.Owner.Player));
-            }
-            foreach (var item in Plans)
-            {
-                CardCmd.Upgrade(item);
-                item.AddKeyword(CardKeyword.Retain);
+                Plans.Add(combatState.CreateCard<StickyNotes>(this.Owner.Player));
             }
             await CardPileCmd.AddGeneratedCardsToCombat(Plans, PileType.Hand, this.Owner.Player);
         }

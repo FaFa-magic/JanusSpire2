@@ -48,10 +48,8 @@ public static class MainFile
 			// BottomLeft：战斗UI左下（抽牌堆附近）
 			// BottomRight：战斗UI右下（消耗堆附近）
 			// ExtraHand：额外手牌容器
-			Style = ModCardPileUiStyle.TopBarDeck,
-			Anchor = new ModCardPileAnchor(
-				ModCardPileAnchorKind.BottomLeftSecondary,
-				new Vector2(0, -2)),
+			Style = ModCardPileUiStyle.BottomLeft,
+			Anchor = ModCardPileAnchor.Default,
 			IconPath = "res://JanusSpire2/images/piles/Diary.png",
 			// 点击打开
 			OnOpen = ctx => ctx.ShowDefaultPileScreen(),
@@ -64,6 +62,8 @@ public static class MainFile
 		patcher.RegisterPatch<EnemyTurnFlushPatch>();
 		patcher.RegisterPatch<DiaryHasEnoughResourcesPatch>();
 		patcher.RegisterPatch<DiarySpendResourcesPatch>();
+		patcher.RegisterPatch<PlayerPopulateCombatStatePatch>();
+		patcher.RegisterPatch<DiaryOnPlayWrapperPatch>();
 
 		if (!patcher.PatchAll())
 			throw new InvalidOperationException("Critical patches failed.");

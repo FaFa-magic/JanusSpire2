@@ -9,7 +9,7 @@ using STS2RitsuLib.Cards.DynamicVars;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
-public sealed class BattlePlan() : JanusCardModel(1, CardType.Power, CardRarity.Rare, TargetType.Self)
+public sealed class Schedule() : JanusCardModel(1, CardType.Power, CardRarity.Rare, TargetType.Self)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         ModCardVars.Int("BattlePlan", 3),
@@ -17,7 +17,7 @@ public sealed class BattlePlan() : JanusCardModel(1, CardType.Power, CardRarity.
         new CardsVar(5)
     ];
 
-    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<Plan>(false)];
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<StickyNotes>(false)];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

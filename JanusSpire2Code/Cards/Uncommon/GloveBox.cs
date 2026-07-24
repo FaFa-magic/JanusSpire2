@@ -13,7 +13,7 @@ public sealed class GloveBox() : JanusCardModel(2, CardType.Power, CardRarity.Un
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await CreatureCmd.TriggerAnim(base.Owner.Creature, "PowerUp", base.Owner.Character.PowerUpAnimDelay);
-        await PowerCmd.Apply<GloveBoxPower>(choiceContext, base.Owner.Creature, DynamicVars.Cards.BaseValue, base.Owner.Creature, this);
+        await PowerCmd.Apply<GloveBoxPower>(choiceContext, base.Owner.Creature, 1m, base.Owner.Creature, this);
     }
     
     protected override void OnUpgrade() => base.EnergyCost.UpgradeBy(-1);

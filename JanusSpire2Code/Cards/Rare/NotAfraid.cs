@@ -11,7 +11,7 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
 public sealed class NotAfraid() : JanusCardModel(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
 {
-    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<Scratch>(base.IsUpgraded)];
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<CatSticker>(base.IsUpgraded)];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

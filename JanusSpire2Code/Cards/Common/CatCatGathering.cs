@@ -12,11 +12,11 @@ public sealed class CatCatGathering() : JanusCardModel(1, CardType.Skill, CardRa
         new CardsVar(3)
     ];
 
-    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<Scratch>()];
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<CatSticker>()];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await Scratch.CreateInHand(base.Owner, base.DynamicVars.Cards.IntValue, base.Owner.Creature.CombatState, false);
+        await CatSticker.CreateInHand(base.Owner, base.DynamicVars.Cards.IntValue, base.Owner.Creature.CombatState, false);
     }
     
     protected override void OnUpgrade() => DynamicVars.Cards.UpgradeValueBy(1M);

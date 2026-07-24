@@ -12,7 +12,7 @@ using STS2RitsuLib.Cards.DynamicVars;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 
-public sealed class Scratch() : JanusTokenCardModel(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
+public sealed class CatSticker() : JanusTokenCardModel(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, JanusKeywords.Sticker];
     
@@ -25,21 +25,21 @@ public sealed class Scratch() : JanusTokenCardModel(0, CardType.Attack, CardRari
         ModCardVars.Int("BlackCatSeal", 1)
     ];
     
-    public static async Task<IEnumerable<Scratch>> CreateInHand(Player owner, int amount, ICombatState? combatState, bool isUpgraded)
+    public static async Task<IEnumerable<CatSticker>> CreateInHand(Player owner, int amount, ICombatState? combatState, bool isUpgraded)
     {
-        IEnumerable<Scratch> scratchs = Create(owner, amount, combatState, isUpgraded);
+        IEnumerable<CatSticker> scratchs = Create(owner, amount, combatState, isUpgraded);
         await CardPileCmd.AddGeneratedCardsToCombat(scratchs, PileType.Hand, owner);
         return scratchs;
     }
 
-    public static IEnumerable<Scratch> Create(Player owner, int amount, ICombatState? combatState, bool isUpgraded)
+    public static IEnumerable<CatSticker> Create(Player owner, int amount, ICombatState? combatState, bool isUpgraded)
     {
-        List<Scratch> list = new List<Scratch>();
+        List<CatSticker> list = new List<CatSticker>();
         if (combatState != null)
         {
             for (int i = 0; i < amount; i++)
             {
-                list.Add(combatState.CreateCard<Scratch>(owner));
+                list.Add(combatState.CreateCard<CatSticker>(owner));
             }
             if (isUpgraded)
             {

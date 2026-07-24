@@ -7,7 +7,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Common;
 
-public sealed class Determination() : JanusCardModel(4, CardType.Attack, CardRarity.Common, TargetType.AllAllies)
+public sealed class Determination() : JanusCardModel(4, CardType.Attack, CardRarity.Common, TargetType.AllEnemies)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Perk];
     

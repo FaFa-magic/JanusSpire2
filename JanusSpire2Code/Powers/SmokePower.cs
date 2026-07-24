@@ -31,7 +31,7 @@ public sealed class SmokePower : JanusPowerModel
     
     public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult result, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
-        if (target == base.Owner && result.TotalDamage != 0 && props.HasFlag(ValueProp.Move))
+        if (target == base.Owner && result.TotalDamage != 0)
         {
             Flash();
             await PowerCmd.Decrement(this);
