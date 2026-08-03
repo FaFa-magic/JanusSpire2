@@ -2,8 +2,8 @@
 
 namespace JanusSpire2.JanusSpire2Code.Powers;
 
-public sealed class ConcealPower : JanusPowerModel
+public sealed class AHurriedDayPower : JanusPowerModel
 {
-    public override PowerType Type => PowerType.Buff;
+    public override PowerType Type => PowerType.Debuff;
     public override PowerStackType StackType => PowerStackType.Counter;
 }

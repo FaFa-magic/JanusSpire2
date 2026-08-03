@@ -4,10 +4,12 @@ using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Models.CardPools;
 using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Ancient;
 
+[RegisterCard(typeof(EventCardPool))]
 [RegisterCharacterStarterCard(typeof(JanusCharacter), 1)]
 public sealed class AngelGlory() : JanusCardModel(0, CardType.Skill, CardRarity.Ancient, TargetType.Self)
 {
