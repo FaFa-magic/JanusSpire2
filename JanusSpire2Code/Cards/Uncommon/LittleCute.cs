@@ -7,7 +7,7 @@ using STS2RitsuLib.Cards.DynamicVars;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-public sealed class LittleCute() : JanusCardModel(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+public sealed class LittleCute() : JanusCardModel(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [ModCardVars.Int("LittleCute", 1)];
 

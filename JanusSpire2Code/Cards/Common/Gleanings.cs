@@ -6,10 +6,10 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Common;
 
-public sealed class Gleanings() : JanusCardModel(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+public sealed class Gleanings() : JanusCardModel(0, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new CardsVar(3)
+        new CardsVar(2)
     ];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -32,5 +32,5 @@ public sealed class Gleanings() : JanusCardModel(1, CardType.Skill, CardRarity.C
         }
     }
     
-    protected override void OnUpgrade() => base.EnergyCost.UpgradeBy(-1);
+    protected override void OnUpgrade() => DynamicVars.Cards.UpgradeValueBy(1M);
 }

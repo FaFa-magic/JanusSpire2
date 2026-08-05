@@ -4,6 +4,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using STS2RitsuLib.Cards.DynamicVars;
 
@@ -21,7 +22,8 @@ public sealed class Overprotective() : JanusCardModel(1, CardType.Power, CardRar
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await PowerCmd.Apply<OverprotectivePower>(choiceContext, base.Owner.Creature, DynamicVars["Overprotective"].BaseValue, base.Owner.Creature, this);
+        CardModel card = CreateClone();
+        CardCmd.PreviewCardPileAdd(await CardPileCmd.AddGeneratedCardToCombat(card, MainFile.Diary, base.Owner), 0.2f);
     }
     
     protected override void OnUpgrade() => DynamicVars["Overprotective"].UpgradeValueBy(1M);
