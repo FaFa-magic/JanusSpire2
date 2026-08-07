@@ -2,11 +2,14 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Models.CardPools;
 using MegaCrit.Sts2.Core.Models.Potions;
+using STS2RitsuLib.Interop.AutoRegistration;
 
-namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
+namespace JanusSpire2.JanusSpire2Code.Cards.Ancient;
 
-public sealed class WeirdTeaParty() : JanusCardModel(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
+[RegisterCard(typeof(EventCardPool))]
+public sealed class WeirdTeaParty() : JanusCardModel(2, CardType.Skill, CardRarity.Ancient, TargetType.Self)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Collection];
     
@@ -19,7 +22,6 @@ public sealed class WeirdTeaParty() : JanusCardModel(2, CardType.Skill, CardRari
                 break;
             }
         }
-        
     }
     
     protected override void OnUpgrade() => base.EnergyCost.UpgradeBy(-1);

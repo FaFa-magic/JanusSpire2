@@ -1,6 +1,8 @@
-﻿namespace JanusSpire2.JanusSpire2Code.Cards.Multiplay;
+﻿using MegaCrit.Sts2.Core.Entities.Cards;
 
-public class AdvanceHandInHand
+namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
+
+public sealed class AdvanceHandInHand() : JanusCardModel(0, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
 {
     
 }

@@ -6,5 +6,7 @@
   "JANUS_SPIRE2_KEYWORD_COUNTERATTACK.title" : "反击",
   "JANUS_SPIRE2_KEYWORD_COUNTERATTACK.description" : "当你受到伤害后，这张卡自动打出。",
   "JANUS_SPIRE2_KEYWORD_STICKER.title" : "贴纸",
-  "JANUS_SPIRE2_KEYWORD_STICKER.description" : "。"
+  "JANUS_SPIRE2_KEYWORD_STICKER.description" : "。",
+  "JANUS_SPIRE2_KEYWORD_TRANSCRIBE.title": "誊抄",
+  "JANUS_SPIRE2_KEYWORD_TRANSCRIBE.description": "打出后将一张本牌的[gold]复制牌[/gold]加入[gold]日记本[/gold]。\n这张牌在[gold]日记本[/gold]中时后续效果生效。"
 }

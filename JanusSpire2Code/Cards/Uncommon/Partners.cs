@@ -7,7 +7,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-public sealed class ClassJDestroyer() : JanusCardModel(8, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+public sealed class Partners() : JanusCardModel(8, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
     public override bool GainsBlock => true;
     
