@@ -8,7 +8,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Basic;
 
-[RegisterCharacterStarterCard(typeof(JanusCharacter), 4)]
+[RegisterCharacterStarterCard(typeof(JanusCharacter), 4, Order = 1)]
 public sealed class Defend() : JanusCardModel(1, CardType.Skill, CardRarity.Basic, TargetType.Self)
 {
     public override bool GainsBlock => true;

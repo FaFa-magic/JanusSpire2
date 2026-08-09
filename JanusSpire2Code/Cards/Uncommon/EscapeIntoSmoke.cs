@@ -9,14 +9,14 @@ using STS2RitsuLib.Cards.DynamicVars;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-public sealed class EscapeIntoSmoke() : JanusCardModel(3, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+public sealed class EscapeIntoSmoke() : JanusCardModel(2, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
     public override bool GainsBlock => true;
     
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Counterattack];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new BlockVar(16M, ValueProp.Move),
+        new BlockVar(11M, ValueProp.Move),
         ModCardVars.Int("Smoke", 1),
         ModCardVars.Int("EscapeIntoSmoke", 1)
     ];
@@ -28,5 +28,5 @@ public sealed class EscapeIntoSmoke() : JanusCardModel(3, CardType.Skill, CardRa
         await PowerCmd.Apply<EscapeIntoSmokePower>(choiceContext, base.Owner.Creature, DynamicVars["EscapeIntoSmoke"].BaseValue, base.Owner.Creature, this);
     }
     
-    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(6M);
+    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(4M);
 }

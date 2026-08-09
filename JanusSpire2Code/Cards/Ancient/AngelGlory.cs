@@ -10,17 +10,15 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace JanusSpire2.JanusSpire2Code.Cards.Ancient;
 
 [RegisterCard(typeof(EventCardPool))]
-[RegisterCharacterStarterCard(typeof(JanusCharacter), 1)]
-public sealed class AngelGlory() : JanusCardModel(0, CardType.Skill, CardRarity.Ancient, TargetType.Self)
+[RegisterCharacterStarterCard(typeof(JanusCharacter), 1, Order = 4)]
+public sealed class AngelGlory() : JanusRecordCardModel(0, CardType.Skill, CardRarity.Ancient, TargetType.Self)
 {
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Collection];
+    public override int MaxUpgradeLevel => 0;
+    
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, JanusKeywords.Collection];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await PowerCmd.Apply<AngelGloryPower>(choiceContext, base.Owner.Creature, 1m, base.Owner.Creature, this);
-    }
-    
-    protected override void OnUpgrade()
-    {
     }
 }

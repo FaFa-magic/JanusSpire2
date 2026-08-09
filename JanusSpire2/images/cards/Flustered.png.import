@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bt3tianfs66h7"
-path="res://.godot/imported/Remedy.png-f2cfd1b80fad2fb0828a4865fa40e5d6.ctex"
+uid="uid://cyj36syv1q7jk"
+path="res://.godot/imported/Flustered.png-7d63d3d68497cbb479a0552d00c07845.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://JanusSpire2/images/cards/Remedy.png"
-dest_files=["res://.godot/imported/Remedy.png-f2cfd1b80fad2fb0828a4865fa40e5d6.ctex"]
+source_file="res://JanusSpire2/images/cards/Flustered.png"
+dest_files=["res://.godot/imported/Flustered.png-7d63d3d68497cbb479a0552d00c07845.ctex"]
 
 [params]
 

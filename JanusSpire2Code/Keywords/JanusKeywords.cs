@@ -10,6 +10,8 @@ namespace JanusSpire2.JanusSpire2Code.Keywords;
 [RegisterOwnedCardKeyword(nameof(Counterattack), CardDescriptionPlacement = ModKeywordCardDescriptionPlacement.BeforeCardDescription)]
 [RegisterOwnedCardKeyword(nameof(Sticker), CardDescriptionPlacement = ModKeywordCardDescriptionPlacement.None)]
 [RegisterOwnedCardKeyword(nameof(Transcribe), CardDescriptionPlacement = ModKeywordCardDescriptionPlacement.None)]
+[RegisterOwnedCardKeyword(nameof(Record), CardDescriptionPlacement = ModKeywordCardDescriptionPlacement.AfterCardDescription)]
+[RegisterOwnedCardKeyword(nameof(Recollection), CardDescriptionPlacement = ModKeywordCardDescriptionPlacement.None)]
 public sealed class JanusKeywords
 {
     public static readonly CardKeyword Perk = ModContentRegistry.GetQualifiedKeywordId(MainFile.ModId, nameof(Perk)).GetModCardKeyword();
@@ -17,4 +19,6 @@ public sealed class JanusKeywords
     public static readonly CardKeyword Counterattack = ModContentRegistry.GetQualifiedKeywordId(MainFile.ModId, nameof(Counterattack)).GetModCardKeyword();
     public static readonly CardKeyword Sticker = ModContentRegistry.GetQualifiedKeywordId(MainFile.ModId, nameof(Sticker)).GetModCardKeyword();
     public static readonly CardKeyword Transcribe = ModContentRegistry.GetQualifiedKeywordId(MainFile.ModId, nameof(Transcribe)).GetModCardKeyword();
+    public static readonly CardKeyword Record = ModContentRegistry.GetQualifiedKeywordId(MainFile.ModId, nameof(Record)).GetModCardKeyword();
+    public static readonly CardKeyword Recollection = ModContentRegistry.GetQualifiedKeywordId(MainFile.ModId, nameof(Recollection)).GetModCardKeyword();
 }

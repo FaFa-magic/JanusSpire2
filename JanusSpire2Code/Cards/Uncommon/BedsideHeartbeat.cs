@@ -6,7 +6,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-public sealed class BedsideHeartbeat() : JanusCardModel(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+public sealed class BedsideHeartbeat() : JanusRecordCardModel(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
     public override bool GainsBlock => true;
     

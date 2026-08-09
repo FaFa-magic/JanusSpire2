@@ -1,5 +1,4 @@
-﻿using GodotPlugins.Game;
-using MegaCrit.Sts2.Core.CardSelection;
+﻿using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -21,8 +20,17 @@ public sealed class KeepADiary() : JanusCardModel(1, CardType.Skill, CardRarity.
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-        CardSelectorPrefs prefs = new CardSelectorPrefs(base.SelectionScreenPrompt, DynamicVars.Cards.IntValue);
-        CardModel? cardModel = (await CardSelectCmd.FromCombatPile(choiceContext, PileType.Discard.GetPile(base.Owner), base.Owner, prefs)).FirstOrDefault();
+        
+        CardSelectorPrefs cardSelectorPrefs = new CardSelectorPrefs(base.SelectionScreenPrompt, DynamicVars.Cards.IntValue);
+        
+        CardModel? cardModel = (await CardSelectCmd.FromHand(
+            choiceContext, 
+            base.Owner, 
+            cardSelectorPrefs, 
+            null, 
+            this
+        )).FirstOrDefault();
+        
         if (cardModel != null)
         {
             await CardPileCmd.Add(cardModel, MainFile.Diary);

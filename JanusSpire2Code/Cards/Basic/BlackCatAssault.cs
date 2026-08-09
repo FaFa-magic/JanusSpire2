@@ -11,7 +11,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Basic;
 
-[RegisterCharacterStarterCard(typeof(JanusCharacter), 1)]
+[RegisterCharacterStarterCard(typeof(JanusCharacter), 1, Order = 2)]
 public sealed class BlackCatAssault() : JanusCardModel(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Counterattack];
@@ -29,7 +29,7 @@ public sealed class BlackCatAssault() : JanusCardModel(1, CardType.Attack, CardR
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
-        await PowerCmd.Apply<BlackCatSealPower>(choiceContext, base.Owner.Creature, DynamicVars["BlackCatSeal"].BaseValue, base.Owner.Creature, this);
+        await PowerCmd.Apply<BlackCatSealPower>(choiceContext, cardPlay.Target, DynamicVars["BlackCatSeal"].BaseValue, base.Owner.Creature, this);
     }
     
     protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(4M);

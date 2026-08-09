@@ -18,12 +18,12 @@ public sealed class EnemyTurnFlushPatch : IPatchMethod
         [new(typeof(CombatManager), "EndEnemyTurnInternal")];
 
     [HarmonyPostfix]
-    public static void Postfix(ref Task __result, CombatManager __instance)
+    public static void Postfix(ref Task __result, CombatManager __instance, object[] __args)
     {
-        __result = PostfixWrapper(__result, __instance);
+        __result = PostfixWrapper(__result, __instance, __args);
     }
 
-    private static async Task PostfixWrapper(Task originalTask, CombatManager instance)
+    private static async Task PostfixWrapper(Task originalTask, CombatManager instance, object[] args)
     {
         if (originalTask != null)
         {
@@ -33,6 +33,8 @@ public sealed class EnemyTurnFlushPatch : IPatchMethod
         CombatState? currentState = instance.DebugOnlyGetState();
 
         if (currentState == null || !LocalContext.NetId.HasValue) return;
+
+        object turnState = args[0];
 
         MethodInfo? flushMethod = AccessTools.Method(typeof(CombatManager), "FlushPlayerHand");
 
@@ -44,7 +46,7 @@ public sealed class EnemyTurnFlushPatch : IPatchMethod
             {
                 HookPlayerChoiceContext playerChoiceContext = new HookPlayerChoiceContext(player, LocalContext.NetId.Value, GameActionType.CombatPlayPhaseOnly);
 
-                Task? flushTask = flushMethod.Invoke(instance, new object[] { player, playerChoiceContext }) as Task;
+                Task? flushTask = flushMethod.Invoke(instance, new object[] { turnState, player, playerChoiceContext }) as Task;
 
                 if (flushTask != null)
                 {

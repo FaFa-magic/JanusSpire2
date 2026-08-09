@@ -8,7 +8,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Basic;
 
-[RegisterCharacterStarterCard(typeof(JanusCharacter), 4)]
+[RegisterCharacterStarterCard(typeof(JanusCharacter), 4, Order = 0)]
 public sealed class Strike() : JanusCardModel(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
 {
     protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];

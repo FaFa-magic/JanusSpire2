@@ -13,7 +13,7 @@ public sealed class Runaway() : JanusCardModel(1, CardType.Skill, CardRarity.Com
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new CardsVar(2),
-        new DynamicVar("SwiftAmount", 1m)
+        new DynamicVar("SwiftAmount", 1M)
     ];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<CatSticker>(this.IsUpgraded)];
