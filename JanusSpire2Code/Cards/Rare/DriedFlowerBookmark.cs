@@ -9,7 +9,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
-public sealed class DriedFlowerBookmark() : JanusCardModel(0, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
+public sealed class DriedFlowerBookmark() : JanusCardModel(0, CardType.Skill, CardRarity.Rare, TargetType.AnyEnemy)
 {
     public override int MaxUpgradeLevel => 999;
     

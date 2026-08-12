@@ -13,8 +13,7 @@ public sealed class LittleCute() : JanusCardModel(1, CardType.Skill, CardRarity.
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await CreatureCmd.TriggerAnim(base.Owner.Creature, "PowerUp", base.Owner.Character.PowerUpAnimDelay);
-        await PowerCmd.Apply<LittleCutePower>(choiceContext, base.Owner.Creature, DynamicVars.Cards.BaseValue, base.Owner.Creature, this);
+
     }
     
     protected override void OnUpgrade() => base.EnergyCost.UpgradeBy(-1);

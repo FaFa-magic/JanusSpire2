@@ -1,7 +1,8 @@
 ﻿using MegaCrit.Sts2.Core.CardSelection;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
@@ -42,14 +43,17 @@ public sealed class TeaPartyTime() : JanusRecordCardModel(0, CardType.Skill, Car
         }
     }
     
-    public override Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
+    public override Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
     {
-        if (player != base.Owner || Pile?.Type != MainFile.Diary)
+        if (!participants.Contains(base.Owner.Creature))
         {
             return Task.CompletedTask;
         }
+        if (Pile?.Type == MainFile.Diary)
+        {
+            canTake = true;
+        }
         
-        canTake = true;
         return Task.CompletedTask;
     }
 

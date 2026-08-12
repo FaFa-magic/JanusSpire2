@@ -52,7 +52,7 @@ public sealed class GloveBoxPower : JanusPowerModel
                     from c in Owner.Player.Character.CardPool.GetUnlockedCards(
                         Owner.Player.UnlockState,
                         Owner.Player.RunState.CardMultiplayerConstraint)
-                    where c.Rarity == CardRarity.Token && cardPlay.Card.Keywords.Contains(JanusKeywords.Sticker)
+                    where cardPlay.Card.Keywords.Contains(JanusKeywords.Sticker)
                     select c,
                     1,
                     Owner.Player.RunState.Rng.CombatCardGeneration)

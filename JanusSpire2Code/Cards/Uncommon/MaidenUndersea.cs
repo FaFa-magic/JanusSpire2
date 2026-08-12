@@ -2,7 +2,7 @@
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-public sealed class MaidenUndersea() : JanusCardModel(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+public sealed class MaidenUndersea() : JanusCardModel(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
     
 }
