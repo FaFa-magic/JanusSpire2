@@ -21,9 +21,16 @@ public sealed class CatSticker() : JanusTokenCardModel(0, CardType.Attack, CardR
     ];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(2M, ValueProp.Move),
+        new DamageVar(1M, ValueProp.Move),
         ModCardVars.Int("BlackCatSeal", 1)
     ];
+    
+    public static async Task<IEnumerable<CatSticker>> CreateInDiary(Player owner, int amount, ICombatState? combatState, bool isUpgraded)
+    {
+        IEnumerable<CatSticker> scratchs = Create(owner, amount, combatState, isUpgraded);
+        await CardPileCmd.AddGeneratedCardsToCombat(scratchs, MainFile.Diary, owner);
+        return scratchs;
+    }
     
     public static async Task<IEnumerable<CatSticker>> CreateInHand(Player owner, int amount, ICombatState? combatState, bool isUpgraded)
     {

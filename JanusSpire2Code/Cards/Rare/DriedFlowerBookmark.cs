@@ -9,25 +9,23 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
-public sealed class DriedFlowerBookmark() : JanusCardModel(0, CardType.Skill, CardRarity.Rare, TargetType.AnyEnemy)
+public sealed class DriedFlowerBookmark() : JanusCardModel(0, CardType.Skill, CardRarity.Rare, TargetType.Self)
 {
     public override int MaxUpgradeLevel => 999;
+    
+    public override bool GainsBlock => true;
     
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Ethereal, JanusKeywords.Sticker];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(10M, ValueProp.Move),
+        new BlockVar(6M, ValueProp.Move),
         new CardsVar(2)
     ];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target, nameof(cardPlay.Target));
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .WithHitFx("vfx/vfx_attack_slash")
-            .Execute(choiceContext);
+        await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
     }
     
     public override async Task AfterCardExhausted(PlayerChoiceContext choiceContext, CardModel card, bool causedByEthereal)
@@ -39,5 +37,5 @@ public sealed class DriedFlowerBookmark() : JanusCardModel(0, CardType.Skill, Ca
         }
     }
     
-    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(3M);
+    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(2M);
 }

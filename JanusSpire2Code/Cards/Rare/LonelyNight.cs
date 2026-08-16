@@ -7,6 +7,8 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
 public sealed class LonelyNight() : JanusCardModel(2, CardType.Skill, CardRarity.Rare, TargetType.AllEnemies)
 {
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Retain];
+    
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         var combatState = base.Owner?.Creature?.CombatState;

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://8vu5lgo2dp26"
-path="res://.godot/imported/Awkwardness.png-efe361d385b73e95aeb3718e2012aaba.ctex"
+uid="uid://ds5g07nt8jg30"
+path="res://.godot/imported/HeavyMemories.png-65353300bf949d596c0d277f35439eeb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://JanusSpire2/images/cards/Awkwardness.png"
-dest_files=["res://.godot/imported/Awkwardness.png-efe361d385b73e95aeb3718e2012aaba.ctex"]
+source_file="res://JanusSpire2/images/cards/HeavyMemories.png"
+dest_files=["res://.godot/imported/HeavyMemories.png-65353300bf949d596c0d277f35439eeb.ctex"]
 
 [params]
 

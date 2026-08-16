@@ -2,7 +2,7 @@
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-public sealed class Collection() : JanusReversibleCardModel(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+public sealed class Collection() : JanusCardModel(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
     
 }

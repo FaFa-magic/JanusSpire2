@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://8vu5lgo2dp26"
-path="res://.godot/imported/Awkwardness.png-efe361d385b73e95aeb3718e2012aaba.ctex"
+uid="uid://bvkydaogh1ie6"
+path="res://.godot/imported/BlackDress.png-d48e6918dbc0a6cf667b40f0ce9f1453.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://JanusSpire2/images/cards/Awkwardness.png"
-dest_files=["res://.godot/imported/Awkwardness.png-efe361d385b73e95aeb3718e2012aaba.ctex"]
+source_file="res://JanusSpire2/images/cards/BlackDress.png"
+dest_files=["res://.godot/imported/BlackDress.png-d48e6918dbc0a6cf667b40f0ce9f1453.ctex"]
 
 [params]
 

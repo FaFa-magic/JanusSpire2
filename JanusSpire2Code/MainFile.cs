@@ -64,6 +64,8 @@ public static class MainFile
 		patcher.RegisterPatch<DiarySpendResourcesPatch>();
 		patcher.RegisterPatch<PlayerPopulateCombatStatePatch>();
 		patcher.RegisterPatch<DiaryOnPlayWrapperPatch>();
+		patcher.RegisterPatch<PreventSingleCardGenerationPatch>();
+		patcher.RegisterPatch<PreventMultipleCardGenerationPatch>();
 
 		if (!patcher.PatchAll())
 			throw new InvalidOperationException("Critical patches failed.");

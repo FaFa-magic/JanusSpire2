@@ -10,7 +10,7 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-public sealed class CollectibleCard() : JanusCardModel(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+public sealed class CommemorativeAlbum() : JanusCardModel(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new CardsVar(2),
