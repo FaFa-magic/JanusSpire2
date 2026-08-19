@@ -30,7 +30,7 @@ public sealed class Flip() : JanusCardModel(1, CardType.Power, CardRarity.Uncomm
         if ((pile != null && pile.Type == MainFile.Diary) || oldPileType == MainFile.Diary)
         {
             await CreatureCmd.TriggerAnim(base.Owner.Creature, "BlockStart", 0.3f);
-            await CreatureCmd.GainBlock(base.Owner.Creature, DynamicVars["Flip"].BaseValue, ValueProp.Unpowered, null);
+            await CreatureCmd.GainBlock(base.Owner.Creature, DynamicVars["Flip"].BaseValue, ValueProp.Unpowered | ValueProp.Move, null);
         }
     }
     

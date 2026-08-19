@@ -13,8 +13,6 @@ public sealed class EscapeIntoSmoke() : JanusCardModel(2, CardType.Skill, CardRa
 {
     public override bool GainsBlock => true;
     
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Counterattack];
-    
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new BlockVar(11M, ValueProp.Move),
         ModCardVars.Int("Smoke", 1),

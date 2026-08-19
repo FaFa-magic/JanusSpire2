@@ -2,7 +2,7 @@
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Common;
 
-public sealed class EightBall() : JanusCardModel(2, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+public sealed class EightBall() : JanusCardModel(8, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
     
 }

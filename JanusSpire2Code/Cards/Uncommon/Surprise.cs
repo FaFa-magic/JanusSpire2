@@ -6,7 +6,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-public sealed class Surprise() : JanusCardModel(-1, CardType.Skill, CardRarity.Uncommon, TargetType.None)
+public sealed class Surprise() : JanusCardModel(-1, CardType.Attack, CardRarity.Uncommon, TargetType.None)
 {
     public override bool GainsBlock => true;
     

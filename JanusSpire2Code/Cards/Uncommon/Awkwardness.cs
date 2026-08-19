@@ -10,7 +10,7 @@ public sealed class Awkwardness() : JanusCardModel(0, CardType.Skill, CardRarity
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new CardsVar(2),
-        new DamageVar(3M, ValueProp.Unpowered)
+        new DamageVar(3M, ValueProp.Unpowered | ValueProp.Move)
     ];
     
 

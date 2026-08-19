@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dovjqua5otwco"
-path="res://.godot/imported/Runaway.png-671c972b3e926d93c05dd36743e4be31.ctex"
+uid="uid://d2eg73ykadsk7"
+path="res://.godot/imported/KeepADiary.png-00c21265eb7af86dee4a85842da5bec4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://JanusSpire2/images/cards/Runaway.png"
-dest_files=["res://.godot/imported/Runaway.png-671c972b3e926d93c05dd36743e4be31.ctex"]
+source_file="res://JanusSpire2/images/cards/KeepADiary.png"
+dest_files=["res://.godot/imported/KeepADiary.png-00c21265eb7af86dee4a85842da5bec4.ctex"]
 
 [params]
 

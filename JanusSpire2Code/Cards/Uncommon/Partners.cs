@@ -11,21 +11,17 @@ public sealed class Partners() : JanusCardModel(8, CardType.Attack, CardRarity.U
 {
     public override bool GainsBlock => true;
     
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Counterattack, CardKeyword.Retain];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Counterattack, CardKeyword.Exhaust];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new BlockVar(6M, ValueProp.Move),
-        new DamageVar(6M, ValueProp.Move),
-        new RepeatVar(8)
+        new DamageVar(6M, ValueProp.Move)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
-        for (int i = 0; i < base.DynamicVars.Repeat.IntValue; i++)
-        {
-            await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars.Block, cardPlay);
-        }
+        await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars.Block, cardPlay);
         await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)
             .WithHitCount(base.DynamicVars.Repeat.IntValue)

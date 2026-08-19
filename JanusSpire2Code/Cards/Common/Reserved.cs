@@ -9,7 +9,7 @@ using MegaCrit.Sts2.Core.Models.Enchantments;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Common;
 
-public sealed class Runaway() : JanusCardModel(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+public sealed class Reserved() : JanusCardModel(1, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new CardsVar(2),

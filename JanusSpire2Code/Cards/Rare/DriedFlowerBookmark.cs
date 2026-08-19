@@ -37,5 +37,5 @@ public sealed class DriedFlowerBookmark() : JanusCardModel(0, CardType.Skill, Ca
         }
     }
     
-    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(2M);
+    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(2M);
 }

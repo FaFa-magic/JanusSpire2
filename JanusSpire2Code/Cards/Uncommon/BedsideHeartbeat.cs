@@ -1,4 +1,5 @@
-﻿using MegaCrit.Sts2.Core.Combat;
+﻿using JanusSpire2.JanusSpire2Code.Keywords;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -11,6 +12,8 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 public sealed class BedsideHeartbeat() : JanusRecordCardModel(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
     public override bool GainsBlock => true;
+    
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Collection, JanusKeywords.Record];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [new BlockVar(6M, ValueProp.Move)];
 
