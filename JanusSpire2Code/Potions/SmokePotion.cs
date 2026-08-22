@@ -5,6 +5,10 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Cards;
+using JanusSpire2.JanusSpire2Code.Powers;
+using MegaCrit.Sts2.Core.Commands;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace JanusSpire2.JanusSpire2Code.Potions;
 
@@ -16,12 +20,20 @@ public sealed class SmokePotion : JanusPotionModel
 
     public override TargetType TargetType => TargetType.AnyPlayer;
 
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new CardsVar(3)];
+    protected override IEnumerable<DynamicVar> CanonicalVars =>
+        [new PowerVar<SmokePower>(3M)];
 
-    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<Soul>()];
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
+        [HoverTipFactory.FromPower<SmokePower>()];
 
     protected override async Task OnUse(PlayerChoiceContext choiceContext, Creature? target)
     {
-        await Soul.CreateInHand(Owner, DynamicVars.Cards.IntValue, Owner.Creature.CombatState!);
+        AssertValidForTargetedPotion(target);
+        await PowerCmd.Apply<SmokePower>(
+            choiceContext,
+            target,
+            DynamicVars["SmokePower"].BaseValue,
+            Owner.Creature,
+            null);
     }
 }

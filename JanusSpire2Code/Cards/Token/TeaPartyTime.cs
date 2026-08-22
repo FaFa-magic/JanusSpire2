@@ -8,12 +8,16 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.CardPools;
 using STS2RitsuLib.Interop.AutoRegistration;
+using JanusSpire2.JanusSpire2Code.Keywords;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 
 [RegisterCard(typeof(TokenCardPool))]
 public sealed class TeaPartyTime() : JanusRecordCardModel(0, CardType.Skill, CardRarity.Token, TargetType.Self)
 {
+    public override IEnumerable<CardKeyword> CanonicalKeywords =>
+        [JanusKeywords.Recollection, JanusKeywords.Record];
+
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new CardsVar(3)
     ];
@@ -51,7 +55,7 @@ public sealed class TeaPartyTime() : JanusRecordCardModel(0, CardType.Skill, Car
         }
         if (Pile?.Type == MainFile.Diary)
         {
-            canTake = true;
+            EnableTake();
         }
         
         return Task.CompletedTask;

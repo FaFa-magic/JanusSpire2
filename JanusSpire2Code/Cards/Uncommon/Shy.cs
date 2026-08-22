@@ -1,7 +1,7 @@
 ﻿using JanusSpire2.JanusSpire2Code.Keywords;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -25,14 +25,15 @@ public sealed class Shy() : JanusCardModel(1, CardType.Power, CardRarity.Uncommo
         CardCmd.PreviewCardPileAdd(await CardPileCmd.AddGeneratedCardToCombat(card, MainFile.Diary, base.Owner), 0.2f);
     }
     
-    public override async Task AfterAttack(PlayerChoiceContext choiceContext, AttackCommand command)
+    public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult result, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
-        if (base.Owner.Creature.IsDead || this.Pile?.Type != MainFile.Diary)
+        if (target != Owner.Creature || Owner.Creature.IsDead || Pile?.Type != MainFile.Diary)
         {
             return;
         }
-        await CreatureCmd.TriggerAnim(base.Owner.Creature, "BlockStart", 0.3f);
-        await CreatureCmd.GainBlock(base.Owner.Creature, DynamicVars["Shy"].BaseValue, ValueProp.Unpowered, null);
+
+        await CreatureCmd.TriggerAnim(Owner.Creature, "BlockStart", 0.3f);
+        await CreatureCmd.GainBlock(Owner.Creature, DynamicVars["Shy"].BaseValue, ValueProp.Unpowered, null);
     }
     
     protected override void OnUpgrade() => DynamicVars["Shy"].UpgradeValueBy(1M);

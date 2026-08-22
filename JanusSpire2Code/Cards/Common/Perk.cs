@@ -12,7 +12,7 @@ public sealed class Perk() : JanusCardModel(1, CardType.Attack, CardRarity.Commo
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Perk, JanusKeywords.Record];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(7M, ValueProp.Move),
+        new DamageVar(10M, ValueProp.Move),
         new CardsVar(1)
     ];
     
@@ -26,16 +26,6 @@ public sealed class Perk() : JanusCardModel(1, CardType.Attack, CardRarity.Commo
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
         await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.IntValue, base.Owner);
-    }
-    
-    protected override CardLocation GetResultLocationForCardPlay()
-    {
-        CardLocation resultLocationForCardPlay = base.GetResultLocationForCardPlay();
-        if (resultLocationForCardPlay.pileType == PileType.Discard)
-        {
-            resultLocationForCardPlay.pileType = MainFile.Diary;
-        }
-        return resultLocationForCardPlay;
     }
     
     protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(3M);

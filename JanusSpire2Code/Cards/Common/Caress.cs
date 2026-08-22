@@ -14,7 +14,7 @@ public sealed class Caress() : JanusCardModel(1, CardType.Skill, CardRarity.Comm
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Perk, JanusKeywords.Record];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new BlockVar(6M, ValueProp.Move),
+        new BlockVar(8M, ValueProp.Move),
         new CardsVar(1)
     ];
     
@@ -24,15 +24,5 @@ public sealed class Caress() : JanusCardModel(1, CardType.Skill, CardRarity.Comm
         await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.IntValue, base.Owner);
     }
     
-    protected override CardLocation GetResultLocationForCardPlay()
-    {
-        CardLocation resultLocationForCardPlay = base.GetResultLocationForCardPlay();
-        if (resultLocationForCardPlay.pileType == PileType.Discard)
-        {
-            resultLocationForCardPlay.pileType = MainFile.Diary;
-        }
-        return resultLocationForCardPlay;
-    }
-    
-    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(2M);
+    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(3M);
 }

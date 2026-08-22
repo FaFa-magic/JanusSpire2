@@ -11,11 +11,9 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
 public sealed class DriedFlowerBookmark() : JanusCardModel(0, CardType.Skill, CardRarity.Rare, TargetType.Self)
 {
-    public override int MaxUpgradeLevel => 999;
-    
     public override bool GainsBlock => true;
     
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Ethereal, JanusKeywords.Sticker];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Ethereal];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new BlockVar(6M, ValueProp.Move),

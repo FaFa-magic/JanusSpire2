@@ -22,3 +22,7 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+
+# 本地开发知识与代理约定（不提交）
+/AGENTS.md
+/docs/

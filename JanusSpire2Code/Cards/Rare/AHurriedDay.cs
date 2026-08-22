@@ -5,7 +5,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
-public sealed class AHurriedDay() : JanusCardModel(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
+public sealed class AHurriedDay() : JanusCardModel(0, CardType.Skill, CardRarity.Rare, TargetType.Self)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
     
@@ -21,6 +21,6 @@ public sealed class AHurriedDay() : JanusCardModel(1, CardType.Skill, CardRarity
     
     protected override void OnUpgrade()
     {
-        base.EnergyCost.UpgradeBy(-1);
+        RemoveKeyword(CardKeyword.Exhaust);
     }
 }

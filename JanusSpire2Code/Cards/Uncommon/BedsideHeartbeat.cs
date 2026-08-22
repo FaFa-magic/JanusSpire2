@@ -1,8 +1,6 @@
 ﻿using JanusSpire2.JanusSpire2Code.Keywords;
-using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -15,24 +13,20 @@ public sealed class BedsideHeartbeat() : JanusRecordCardModel(0, CardType.Skill,
     
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Collection, JanusKeywords.Record];
     
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new BlockVar(6M, ValueProp.Move)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new BlockVar(7M, ValueProp.Move)];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
     }
     
-    public override Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
+    public override Task BeforeCombatStart()
     {
-        if (!participants.Contains(base.Owner.Creature))
+        if (Pile?.Type == MainFile.Diary)
         {
-            return Task.CompletedTask;
+            EnableTake();
         }
-        if (base.Owner.PlayerCombatState != null && base.Owner.PlayerCombatState.TurnNumber == 1 && Pile?.Type == MainFile.Diary)
-        {
-            canTake = true;
-        }
-        
+
         return Task.CompletedTask;
     }
     

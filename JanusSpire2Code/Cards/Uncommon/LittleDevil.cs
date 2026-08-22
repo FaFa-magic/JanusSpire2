@@ -1,8 +1,39 @@
 ﻿using MegaCrit.Sts2.Core.Entities.Cards;
+using JanusSpire2.JanusSpire2Code.Powers;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
 public sealed class LittleDevil() : JanusCardModel(1, CardType.Skill, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
-    
+    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    [
+        new CalculationBaseVar(0M),
+        new CalculationExtraVar(1M),
+        new CalculatedVar("Damage").WithMultiplier(CountDiaryCards)
+    ];
+
+    protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+    {
+        ArgumentNullException.ThrowIfNull(cardPlay.Target, nameof(cardPlay.Target));
+
+        decimal amount = ((CalculatedVar)DynamicVars["Damage"]).Calculate(cardPlay.Target);
+        await PowerCmd.Apply<BlackCatSealPower>(
+            choiceContext,
+            cardPlay.Target,
+            amount,
+            Owner.Creature,
+            this);
+    }
+
+    private static decimal CountDiaryCards(CardModel card, Creature? _)
+    {
+        return MainFile.Diary.GetPile(card.Owner).Cards.Count;
+    }
+
+    protected override void OnUpgrade() => EnergyCost.UpgradeBy(-1);
 }

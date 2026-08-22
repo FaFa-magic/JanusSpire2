@@ -2,33 +2,41 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.ValueProps;
+using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Common;
 
-public sealed class Prayer() : JanusCardModel(0, CardType.Skill, CardRarity.Common, TargetType.Self)
+public sealed class Prayer() : JanusRecordCardModel(0, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
-    public override bool GainsBlock => true;
-
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Record];
+    public override IEnumerable<CardKeyword> CanonicalKeywords =>
+        [JanusKeywords.Record, JanusKeywords.Recollection];
     
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new BlockVar(4M, ValueProp.Move)];
-
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-    }
-    
-    protected override CardLocation GetResultLocationForCardPlay()
-    {
-        CardLocation resultLocationForCardPlay = base.GetResultLocationForCardPlay();
-        if (resultLocationForCardPlay.pileType == PileType.Discard)
+        if (IsUpgraded)
         {
-            resultLocationForCardPlay.pileType = MainFile.Diary;
+            foreach (CardModel card in PileType.Hand.GetPile(Owner).Cards.Where(card => card.IsUpgradable))
+            {
+                CardCmd.Upgrade(card);
+            }
+            return;
         }
-        return resultLocationForCardPlay;
+
+        CardModel? selectedCard = await CardSelectCmd.FromHandForUpgrade(choiceContext, Owner, this);
+        if (selectedCard is not null)
+        {
+            CardCmd.Upgrade(selectedCard);
+        }
     }
-    
-    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(2M);
+
+    public override Task AfterShuffle(PlayerChoiceContext choiceContext, Player shuffler)
+    {
+        if (shuffler == Owner && Pile?.Type == MainFile.Diary)
+        {
+            EnableTake();
+        }
+
+        return Task.CompletedTask;
+    }
 }

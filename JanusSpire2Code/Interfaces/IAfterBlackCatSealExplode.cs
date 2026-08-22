@@ -14,5 +14,7 @@ public sealed class BlackCatSealExplodeContext
 {
     public required Creature Owner { get; init; }
 
+    public Creature? Applier { get; init; }
+
     public required PlayerChoiceContext ChoiceContext { get; init; }
 }

@@ -10,12 +10,26 @@ public sealed class SecretarialWork() : JanusCardModel(0, CardType.Skill, CardRa
 {
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        CardModel? cardModel = (await CardSelectCmd.FromCombatPile(prefs: new CardSelectorPrefs(base.SelectionScreenPrompt, 1), context: choiceContext, pile: PileType.Draw.GetPile(base.Owner), player: base.Owner, filter: (CardModel c) => c.Type == CardType.Skill || c.Type == CardType.Attack)).FirstOrDefault();
+        if (Pile?.Type != PileType.Play)
+        {
+            return;
+        }
+
+        CardModel? cardModel = (await CardSelectCmd.FromCombatPile(
+            prefs: new CardSelectorPrefs(SelectionScreenPrompt, 1),
+            context: choiceContext,
+            pile: PileType.Draw.GetPile(Owner),
+            player: Owner,
+            filter: card => card.Type is CardType.Skill or CardType.Attack)).FirstOrDefault();
         if (cardModel != null)
         {
             CardModel cardClone = cardModel.CreateClone();
             cardClone.SetToFreeThisCombat();
-            await CardCmd.Transform(this, cardClone);
+            CardPileAddResult? transformResult = await CardCmd.Transform(this, cardClone);
+            if (transformResult is { } result && result.cardAdded != null)
+            {
+                await CardPileCmd.Add(result.cardAdded, PileType.Hand);
+            }
         }
     }
     

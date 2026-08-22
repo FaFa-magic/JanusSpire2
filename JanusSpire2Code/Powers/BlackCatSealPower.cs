@@ -63,14 +63,22 @@ public sealed class BlackCatSealPower : JanusPowerModel, IModRightClickablePower
     
     public async Task OnRightClick(ModRightClickExecutionContext context)
     {
+        ArgumentNullException.ThrowIfNull(context.PlayerChoiceContext);
+
+        BreakAndRunPower? breakAndRun = Owner.GetPower<BreakAndRunPower>();
+        if (breakAndRun != null)
+        {
+            await breakAndRun.BeforeBlackCatSealDamage(context.PlayerChoiceContext);
+        }
+
         var dmg = new DamageVar(Amount * 2, ValueProp.Unpowered);
         await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), Owner, dmg, Owner);
         
-        ArgumentNullException.ThrowIfNull(context.PlayerChoiceContext);
         await TriggerAfterBlackCatSealExplode(context.PlayerChoiceContext, new BlackCatSealExplodeContext
         {
             ChoiceContext = context.PlayerChoiceContext,
-            Owner = Owner!
+            Owner = Owner,
+            Applier = Applier
         });
         
         await PowerCmd.Remove(this);
@@ -80,30 +88,37 @@ public sealed class BlackCatSealPower : JanusPowerModel, IModRightClickablePower
         PlayerChoiceContext choiceContext,
         BlackCatSealExplodeContext context)
     {
-        foreach (var hook in GetHooks<IAfterBlackCatSealExplode>(context.Owner))
+        foreach (var hook in GetHooks<IAfterBlackCatSealExplode>(context.Owner, context.Applier))
         {
             await hook.AfterBlackCatSealExplode(choiceContext, context);
         }
     }
 
-    private static IEnumerable<T> GetHooks<T>(Creature owner)
+    private static IReadOnlyList<T> GetHooks<T>(Creature owner, Creature? applier)
     {
-        foreach (var card in owner.Player!.Piles.SelectMany(p => p.Cards))
+        List<T> hooks = [];
+        var player = applier?.Player;
+        if (player?.PlayerCombatState != null)
         {
-            if (card is T t)
-                yield return t;
+            foreach (var card in player.PlayerCombatState.AllCards)
+            {
+                if (card is T cardHook)
+                    hooks.Add(cardHook);
+            }
+
+            foreach (var relic in player.Relics)
+            {
+                if (relic is T relicHook)
+                    hooks.Add(relicHook);
+            }
         }
 
         foreach (var power in owner.Powers)
         {
-            if (power is T t)
-                yield return t;
+            if (power is T powerHook)
+                hooks.Add(powerHook);
         }
 
-        foreach (var relic in owner.Player.Relics)
-        {
-            if (relic is T t)
-                yield return t;
-        }
+        return hooks;
     }
 }

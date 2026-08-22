@@ -1,18 +1,17 @@
 ﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Extensions;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Common;
 
-public sealed class TheLittlestRebel() : JanusCardModel(2, CardType.Attack, CardRarity.Common, TargetType.Self)
+public sealed class TheLittlestRebel() : JanusCardModel(2, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(12M, ValueProp.Move),
-        new CardsVar(1)
-    ];
+    protected override IEnumerable<DynamicVar> CanonicalVars =>
+        [new DamageVar(12M, ValueProp.Move)];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -23,18 +22,20 @@ public sealed class TheLittlestRebel() : JanusCardModel(2, CardType.Attack, Card
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
-        
-        var drawPile = PileType.Draw.GetPile(base.Owner).Cards;
 
-        var cardModel = drawPile
-            .ToList()
-            .StableShuffle(base.Owner.RunState.Rng.Shuffle)
-            .Take(base.DynamicVars.Cards.IntValue)
-            .FirstOrDefault();
-        
-        if (cardModel != null)
+        if (CombatManager.Instance.IsOverOrEnding)
         {
-            await CardCmd.AutoPlay(choiceContext, cardModel, null);
+            return;
+        }
+
+        CardModel? cardToCopy = Owner.RunState.Rng.CombatCardSelection
+            .NextItem(PileType.Draw.GetPile(Owner).Cards);
+        if (cardToCopy != null)
+        {
+            CardModel copy = cardToCopy.CreateClone();
+            copy.ExhaustOnNextPlay = true;
+            await CardPileCmd.AddGeneratedCardToCombat(copy, PileType.Play, Owner);
+            await CardCmd.AutoPlay(choiceContext, copy, null);
         }
     }
     

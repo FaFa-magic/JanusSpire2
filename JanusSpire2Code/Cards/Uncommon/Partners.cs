@@ -4,6 +4,8 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
@@ -24,12 +26,27 @@ public sealed class Partners() : JanusCardModel(8, CardType.Attack, CardRarity.U
         await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars.Block, cardPlay);
         await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)
-            .WithHitCount(base.DynamicVars.Repeat.IntValue)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_flying_slash")
             .Execute(choiceContext);
     }
-    
+
+    public override Task AfterDamageReceived(
+        PlayerChoiceContext choiceContext,
+        Creature target,
+        DamageResult result,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+    {
+        if (target == Owner.Creature && Pile?.IsCombatPile == true)
+        {
+            EnergyCost.AddThisCombat(-1);
+        }
+
+        return Task.CompletedTask;
+    }
+
     protected override void OnUpgrade()
     {
         base.DynamicVars.Damage.UpgradeValueBy(2m);

@@ -24,6 +24,13 @@ public sealed class Opportunity() : JanusCardModel(0, CardType.Attack, CardRarit
 
     public async Task AfterBlackCatSealExplode(PlayerChoiceContext choiceContext, BlackCatSealExplodeContext context)
     {
+        if (context.Applier?.Player != Owner ||
+            Pile?.IsCombatPile != true ||
+            Pile.Type == PileType.Hand)
+        {
+            return;
+        }
+
         await CardPileCmd.Add(this, PileType.Hand);
     }
     

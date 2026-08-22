@@ -1,5 +1,9 @@
 ﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using JanusSpire2.JanusSpire2Code.Cards.Token;
+using JanusSpire2.JanusSpire2Code.Keywords;
+using JanusSpire2.JanusSpire2Code.Powers;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
@@ -15,7 +19,8 @@ public sealed class ConcealGatherings() : JanusCardModel(1, CardType.Attack, Car
         ModCardVars.Int("BlackCatSeal", 3)
     ];
 
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
+    public override IEnumerable<CardKeyword> CanonicalKeywords =>
+        [CardKeyword.Exhaust, JanusKeywords.Transcribe];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -28,6 +33,24 @@ public sealed class ConcealGatherings() : JanusCardModel(1, CardType.Attack, Car
         
         CardModel card = CreateClone();
         CardCmd.PreviewCardPileAdd(await CardPileCmd.AddGeneratedCardToCombat(card, MainFile.Diary, base.Owner), 0.2f);
+    }
+
+    public override decimal ModifyPowerAmountGivenAdditive(
+        PowerModel power,
+        Creature giver,
+        decimal amount,
+        Creature? target,
+        CardModel? cardSource)
+    {
+        if (Pile?.Type != MainFile.Diary ||
+            giver != Owner.Creature ||
+            power is not BlackCatSealPower ||
+            cardSource is not CatSticker)
+        {
+            return 0M;
+        }
+
+        return DynamicVars["BlackCatSeal"].BaseValue;
     }
 
     protected override void OnUpgrade()

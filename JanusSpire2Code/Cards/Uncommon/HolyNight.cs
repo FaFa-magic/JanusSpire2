@@ -29,7 +29,45 @@ public sealed class HolyNight() : JanusCardModel(0, CardType.Attack, CardRarity.
             .Execute(choiceContext);
         await PowerCmd.Apply<HolyNightPower>(choiceContext, cardPlay.Target, base.DynamicVars["StrengthLoss"].BaseValue, base.Owner.Creature, this);
     }
-    
+
+    public bool CanHandleRightClickLocal(ModRightClickContext context)
+    {
+        return context.Trigger.Source == ModRightClickSource.CombatPileCard &&
+               context.Trigger.ExpectedCardPile is { } expectedPile &&
+               IsSupportedRightClickPile(expectedPile);
+    }
+
+    public bool CanExecuteRightClick(ModRightClickExecutionContext context)
+    {
+        if (context.Model != this ||
+            context.Player != Owner ||
+            context.Trigger.Source != ModRightClickSource.CombatPileCard)
+        {
+            return false;
+        }
+
+        if (Pile?.Type != MainFile.Diary &&
+            (context.Trigger.ExpectedCardPile is not { } expectedPile ||
+             !IsSupportedRightClickPile(expectedPile) ||
+             Pile?.Type != expectedPile))
+        {
+            return false;
+        }
+
+        CardPile hand = PileType.Hand.GetPile(Owner);
+        CardPile? diaryPile = Owner.PlayerCombatState?.AllPiles.FirstOrDefault(p => p.Type == MainFile.Diary);
+
+        return context.PlayerChoiceContext != null &&
+               hand.Cards.Count < CardPile.MaxCardsInHand &&
+               diaryPile != null &&
+               diaryPile.Cards.Count >= DynamicVars.Cards.IntValue;
+    }
+
+    private static bool IsSupportedRightClickPile(PileType pileType)
+    {
+        return pileType is PileType.Draw or PileType.Discard or PileType.Exhaust || pileType == MainFile.Diary;
+    }
+
     public async Task OnRightClick(ModRightClickExecutionContext context)
     {
         if (Pile?.Type == PileType.Hand)
@@ -40,7 +78,9 @@ public sealed class HolyNight() : JanusCardModel(0, CardType.Attack, CardRarity.
         CardPile hand = PileType.Hand.GetPile(base.Owner);
         CardPile? diaryPile = base.Owner.PlayerCombatState?.AllPiles.FirstOrDefault(p => p.Type == MainFile.Diary);
 
-        if (hand.Cards.Count >= CardPile.MaxCardsInHand || diaryPile == null || diaryPile.Cards.Count < DynamicVars.Cards.IntValue)
+        if (hand.Cards.Count >= CardPile.MaxCardsInHand ||
+            diaryPile == null ||
+            diaryPile.Cards.Count < DynamicVars.Cards.IntValue)
         {
             return;
         }

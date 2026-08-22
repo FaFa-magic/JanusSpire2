@@ -1,6 +1,6 @@
 ﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Factories;
+using MegaCrit.Sts2.Core.Extensions;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
@@ -20,31 +20,50 @@ public sealed class RandomStrike() : JanusCardModel(2, CardType.Attack, CardRari
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        List<CardPoolModel> list = base.Owner.UnlockState.CharacterCardPools.ToList();
+        ArgumentNullException.ThrowIfNull(cardPlay.Target, nameof(cardPlay.Target));
 
-        IEnumerable<CardModel> cards = from c in list.SelectMany((CardPoolModel c) => c.GetUnlockedCards(base.Owner.UnlockState, base.Owner.RunState.CardMultiplayerConstraint))
-            where c.Type == CardType.Attack
-            select c;
-        List<CardModel> cardsToPlay = CardFactory.GetDistinctForCombat(base.Owner, cards, DynamicVars.Cards.IntValue, base.Owner.RunState.Rng.CombatCardGeneration).ToList();
-        
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+            .FromCard(this, cardPlay)
+            .Targeting(cardPlay.Target)
+            .WithHitFx("vfx/vfx_attack_slash")
+            .Execute(choiceContext);
+
+        var combatState = CombatState
+            ?? throw new InvalidOperationException("RandomStrike must be played during combat.");
+        CardMultiplayerConstraint runConstraint = Owner.RunState.CardMultiplayerConstraint;
+        IEnumerable<CardModel> strikeCards = ModelDb.AllCards.Where(card =>
+            card.Tags.Contains(CardTag.Strike)
+            && (card.MultiplayerConstraint == CardMultiplayerConstraint.None
+                || card.MultiplayerConstraint == runConstraint)
+            && (card.Rarity == CardRarity.Basic
+                || (card.CanBeGeneratedInCombat
+                    && card.Rarity != CardRarity.Ancient
+                    && card.Rarity != CardRarity.Event)));
+
+        List<CardModel> cardsToPlay = strikeCards
+            .Distinct()
+            .TakeRandom(DynamicVars.Cards.IntValue, Owner.RunState.Rng.CombatCardGeneration)
+            .Select(card => combatState.CreateCard(card, Owner))
+            .ToList();
+
         if (cardsToPlay.Count > 0)
         {
-            if (base.IsUpgraded)
+            if (IsUpgraded)
             {
-                foreach (CardModel item in cardsToPlay)
+                foreach (CardModel card in cardsToPlay)
                 {
-                    CardCmd.Upgrade(item);
+                    CardCmd.Upgrade(card);
                 }
             }
-            await CardPileCmd.AddGeneratedCardsToCombat(cardsToPlay, PileType.Play, base.Owner);
+            await CardPileCmd.AddGeneratedCardsToCombat(cardsToPlay, PileType.Play, Owner);
         }
 
-        foreach (CardModel item in cardsToPlay)
+        foreach (CardModel card in cardsToPlay)
         {
-            if (!base.Owner.Creature.IsDead)
+            if (!Owner.Creature.IsDead)
             {
-                item.ExhaustOnNextPlay = true; 
-                await CardCmd.AutoPlay(choiceContext, item, null);
+                card.ExhaustOnNextPlay = true;
+                await CardCmd.AutoPlay(choiceContext, card, null);
             }
             else
             {

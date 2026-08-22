@@ -1,5 +1,4 @@
 ﻿using JanusSpire2.JanusSpire2Code.Cards.Status;
-using JanusSpire2.JanusSpire2Code.Cards.Token;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;

@@ -1,5 +1,4 @@
 using System.Reflection;
-using Godot;
 using JanusSpire2.JanusSpire2Code.Cards.Ancient;
 using JanusSpire2.JanusSpire2Code.Cards.Basic;
 using JanusSpire2.JanusSpire2Code.Configs;
@@ -64,8 +63,10 @@ public static class MainFile
 		patcher.RegisterPatch<DiarySpendResourcesPatch>();
 		patcher.RegisterPatch<PlayerPopulateCombatStatePatch>();
 		patcher.RegisterPatch<DiaryOnPlayWrapperPatch>();
+		patcher.RegisterPatch<HolyNightDiaryLocationRecoveryPatch>();
 		patcher.RegisterPatch<PreventSingleCardGenerationPatch>();
 		patcher.RegisterPatch<PreventMultipleCardGenerationPatch>();
+		patcher.RegisterPatch<SwiftStatusAndCurseEnchantPatch>();
 
 		if (!patcher.PatchAll())
 			throw new InvalidOperationException("Critical patches failed.");

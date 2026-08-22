@@ -5,6 +5,8 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models.CardPools;
 using MegaCrit.Sts2.Core.Models.Potions;
 using STS2RitsuLib.Interop.AutoRegistration;
+using JanusSpire2.JanusSpire2Code.Powers;
+using MegaCrit.Sts2.Core.HoverTips;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Ancient;
 
@@ -12,6 +14,9 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Ancient;
 public sealed class WeirdTeaParty() : JanusCardModel(2, CardType.Skill, CardRarity.Ancient, TargetType.Self)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Collection];
+
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
+        [HoverTipFactory.FromPower<WeirdTeaPartyPower>()];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -22,6 +27,13 @@ public sealed class WeirdTeaParty() : JanusCardModel(2, CardType.Skill, CardRari
                 break;
             }
         }
+
+        await PowerCmd.Apply<WeirdTeaPartyPower>(
+            choiceContext,
+            Owner.Creature,
+            1M,
+            Owner.Creature,
+            this);
     }
     
     protected override void OnUpgrade() => base.EnergyCost.UpgradeBy(-1);

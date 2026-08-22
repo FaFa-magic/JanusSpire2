@@ -8,7 +8,7 @@ using STS2RitsuLib.Cards.DynamicVars;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
-public sealed class BreakAndRun() : JanusCardModel(2, CardType.Skill, CardRarity.Rare, TargetType.AnyEnemy)
+public sealed class BreakAndRun() : JanusCardModel(2, CardType.Skill, CardRarity.Rare, TargetType.AllEnemies)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         ModCardVars.Int("BlackCatSeal", 4),
@@ -23,9 +23,24 @@ public sealed class BreakAndRun() : JanusCardModel(2, CardType.Skill, CardRarity
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
-        await PowerCmd.Apply<BlackCatSealPower>(choiceContext, cardPlay.Target, DynamicVars["BlackCatSeal"].BaseValue, base.Owner.Creature, this);
-        await PowerCmd.Apply<BreakAndRunPower>(choiceContext, cardPlay.Target, DynamicVars["BreakAndRunPower"].BaseValue, base.Owner.Creature, this);
+        var combatState = CombatState;
+        ArgumentNullException.ThrowIfNull(combatState);
+
+        foreach (var enemy in combatState.HittableEnemies)
+        {
+            await PowerCmd.Apply<BlackCatSealPower>(
+                choiceContext,
+                enemy,
+                DynamicVars["BlackCatSeal"].BaseValue,
+                Owner.Creature,
+                this);
+            await PowerCmd.Apply<BreakAndRunPower>(
+                choiceContext,
+                enemy,
+                DynamicVars["BreakAndRun"].BaseValue,
+                Owner.Creature,
+                this);
+        }
     }
     
     protected override void OnUpgrade()

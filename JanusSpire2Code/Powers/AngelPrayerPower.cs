@@ -2,38 +2,73 @@
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 
+using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Saves.Runs;
+using STS2RitsuLib.Scaffolding.Content;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 namespace JanusSpire2.JanusSpire2Code.Powers;
 
 public sealed class AngelPrayerPower : JanusPowerModel
 {
+    private bool _isTakingGrantedExtraTurn;
+
     public override PowerType Type => PowerType.Buff;
+
     public override PowerStackType StackType => PowerStackType.Counter;
+
+    public override PowerAssetProfile AssetProfile =>
+        ContentAssetProfiles.Power("DevaFormPower");
+
+    [SavedProperty]
+    public bool IsTakingGrantedExtraTurn
+    {
+        get => _isTakingGrantedExtraTurn;
+        private set
+        {
+            AssertMutable();
+            _isTakingGrantedExtraTurn = value;
+        }
+    }
 
     public override bool ShouldPlayerResetEnergy(Player player)
     {
-        if (player != base.Owner.Player && this.Amount > 0)
-        {
-            return true;
-        }
-        return false;
+        return player != Owner.Player || !IsTakingGrantedExtraTurn || Amount <= 0;
     }
     
     public override bool ShouldTakeExtraTurn(Player player)
     {
-        if (player == base.Owner.Player && this.Amount > 0)
-        {
-            return true;
-        }
-        return false;
+        return player == Owner.Player && Amount > 0;
     }
 
-    public override async Task AfterTakingExtraTurn(Player player)
+    public override Task AfterTakingExtraTurn(Player player)
     {
-        if (player == base.Owner.Player && this.Amount > 0)
+        if (player == Owner.Player && Amount > 0)
         {
-            this.Flash();
-            await PowerCmd.Decrement(this);
+            Flash();
+            IsTakingGrantedExtraTurn = true;
         }
-        await base.AfterTakingExtraTurn(player);
+
+        return Task.CompletedTask;
+    }
+
+    public override async Task AfterSideTurnEndLate(
+        PlayerChoiceContext choiceContext,
+        CombatSide side,
+        IEnumerable<Creature> participants)
+    {
+        if (side != CombatSide.Player ||
+            !IsTakingGrantedExtraTurn ||
+            !participants.Contains(Owner))
+        {
+            return;
+        }
+
+        IsTakingGrantedExtraTurn = false;
+        await PowerCmd.Decrement(this);
     }
 }
