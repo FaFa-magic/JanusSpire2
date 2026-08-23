@@ -7,11 +7,15 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Saves.Runs;
+using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Common;
 
 public sealed class EightBall() : JanusCardModel(8, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
+    private const int AttackThreshold = 8;
+    private const string AttacksPlayedKey = "AttacksPlayed";
+
     private int _attacksPlayed;
 
     [SavedProperty]
@@ -21,15 +25,18 @@ public sealed class EightBall() : JanusCardModel(8, CardType.Attack, CardRarity.
         private set
         {
             AssertMutable();
-            _attacksPlayed = value;
+            _attacksPlayed = Math.Clamp(value, 0, AttackThreshold - 1);
+            DynamicVars[AttacksPlayedKey].BaseValue = _attacksPlayed;
+            this.RequestVisualReload();
         }
     }
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Record];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(16M, ValueProp.Move),
-        new CardsVar(8)
+        new DamageVar(12M, ValueProp.Move),
+        new CardsVar(AttackThreshold),
+        new DynamicVar(AttacksPlayedKey, AttacksPlayed)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -50,13 +57,15 @@ public sealed class EightBall() : JanusCardModel(8, CardType.Attack, CardRarity.
             return;
         }
 
-        AttacksPlayed++;
-        if (AttacksPlayed < DynamicVars.Cards.IntValue)
+        int attackThreshold = Math.Max(1, DynamicVars.Cards.IntValue);
+        int nextCount = AttacksPlayed + 1;
+        bool shouldAutoPlay = nextCount >= attackThreshold;
+        AttacksPlayed = shouldAutoPlay ? 0 : nextCount;
+        if (!shouldAutoPlay)
         {
             return;
         }
 
-        AttacksPlayed = 0;
         if (CombatManager.Instance.IsOverOrEnding || Owner.Creature.IsDead)
         {
             return;

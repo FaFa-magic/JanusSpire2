@@ -9,6 +9,8 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 
 public sealed class StickyNotes() : JanusTokenCardModel(0, CardType.Skill, CardRarity.Token, TargetType.Self)
 {
+    public override int MaxUpgradeLevel => 999;
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
         HoverTipFactory.ForEnergy(this)
     ];

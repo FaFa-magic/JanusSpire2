@@ -33,11 +33,13 @@ public sealed class MoonAndFlowers() : JanusCardModel(0, CardType.Attack, CardRa
 
         await Cmd.Wait(0.25f);
         
-        CardModel copiedCard = this.CreateClone();
-        for (int i = 0; i < DynamicVars.Cards.BaseValue; i++)
+        List<CardModel> copiedCards = [];
+        for (int i = 0; i < DynamicVars.Cards.IntValue; i++)
         {
-            await CardPileCmd.AddGeneratedCardToCombat(copiedCard, PileType.Hand, base.Owner);
+            copiedCards.Add(CreateClone());
         }
+
+        await CardPileCmd.AddGeneratedCardsToCombat(copiedCards, PileType.Hand, base.Owner);
     }
     
     protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(1M);

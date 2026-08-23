@@ -49,15 +49,11 @@ public sealed class TeaPartyTime() : JanusRecordCardModel(0, CardType.Skill, Car
     
     public override Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
     {
-        if (!participants.Contains(base.Owner.Creature))
-        {
-            return Task.CompletedTask;
-        }
-        if (Pile?.Type == MainFile.Diary)
+        if (participants.Contains(Owner.Creature) && Pile?.Type == MainFile.Diary)
         {
             EnableTake();
         }
-        
+
         return Task.CompletedTask;
     }
 

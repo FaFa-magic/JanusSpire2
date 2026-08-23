@@ -16,7 +16,7 @@ public sealed class CatCatGathering() : JanusCardModel(1, CardType.Skill, CardRa
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await CatSticker.CreateInDiary(base.Owner, base.DynamicVars.Cards.IntValue, base.Owner.Creature.CombatState, false);
+        await CatSticker.CreateInHand(base.Owner, base.DynamicVars.Cards.IntValue, base.Owner.Creature.CombatState, false);
     }
     
     protected override void OnUpgrade() => DynamicVars.Cards.UpgradeValueBy(1M);

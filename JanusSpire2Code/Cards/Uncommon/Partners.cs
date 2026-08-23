@@ -39,7 +39,7 @@ public sealed class Partners() : JanusCardModel(8, CardType.Attack, CardRarity.U
         Creature? dealer,
         CardModel? cardSource)
     {
-        if (target == Owner.Creature && Pile?.IsCombatPile == true)
+        if (target == Owner.Creature && Pile?.Type == PileType.Hand)
         {
             EnergyCost.AddThisCombat(-1);
         }

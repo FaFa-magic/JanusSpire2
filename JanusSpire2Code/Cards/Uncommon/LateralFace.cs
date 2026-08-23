@@ -11,7 +11,7 @@ public sealed class LateralFace() : JanusCardModel(3, CardType.Attack, CardRarit
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Perk];
     
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(16M, ValueProp.Move)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(10M, ValueProp.Move)];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

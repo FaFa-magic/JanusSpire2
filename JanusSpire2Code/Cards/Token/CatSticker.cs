@@ -1,20 +1,36 @@
 using JanusSpire2.JanusSpire2Code.Keywords;
 using JanusSpire2.JanusSpire2Code.Powers;
 using JanusSpire2.JanusSpire2Code.Tags;
+using JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.CardPools;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
+using STS2RitsuLib.Interop.AutoRegistration;
+using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 
-public sealed class CatSticker() : JanusTokenCardModel(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
+[RegisterCard(typeof(TokenCardPool))]
+public sealed class CatSticker() : JanusRecordCardModel(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
 {
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, JanusKeywords.Sticker];
+    private const string BlackCatSealVar = "BlackCatSeal";
+    private const decimal MaxDynamicVarValue = 999999999M;
+
+    public override int MaxUpgradeLevel => 999;
+
+    public override CardAssetProfile AssetProfile => new(
+        PortraitPath: $"res://JanusSpire2/images/cards/{GetType().Name}.png");
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords =>
+        [CardKeyword.Exhaust, JanusKeywords.Sticker, JanusKeywords.Recollection];
     
     protected override HashSet<CardTag> CanonicalTags => [
         JanusTags.Scratch
@@ -22,7 +38,9 @@ public sealed class CatSticker() : JanusTokenCardModel(0, CardType.Attack, CardR
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DamageVar(1M, ValueProp.Move),
-        ModCardVars.Int("BlackCatSeal", 1)
+        new CalculationBaseVar(1M),
+        new CalculationExtraVar(1M),
+        new CalculatedVar(BlackCatSealVar).WithMultiplier(CalculateConcealGatheringsBonus)
     ];
     
     public static async Task<IEnumerable<CatSticker>> CreateInDiary(Player owner, int amount, ICombatState? combatState, bool isUpgraded)
@@ -58,6 +76,31 @@ public sealed class CatSticker() : JanusTokenCardModel(0, CardType.Attack, CardR
         }
         return list;
     }
+
+    public override Task AfterCardGeneratedForCombat(CardModel card, Player? creator)
+    {
+        if (card == this && Pile?.Type == MainFile.Diary)
+        {
+            EnableTake();
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public override Task AfterCardChangedPiles(
+        CardModel card,
+        PileType oldPileType,
+        AbstractModel? clonedBy)
+    {
+        if (card.Owner == Owner &&
+            card is ConcealGatherings &&
+            (oldPileType == MainFile.Diary || card.Pile?.Type == MainFile.Diary))
+        {
+            this.RequestVisualReload();
+        }
+
+        return Task.CompletedTask;
+    }
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -69,8 +112,40 @@ public sealed class CatSticker() : JanusTokenCardModel(0, CardType.Attack, CardR
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
         
-        await PowerCmd.Apply<BlackCatSealPower>(choiceContext, cardPlay.Target, DynamicVars["BlackCatSeal"].BaseValue, base.Owner.Creature, this);
+        decimal blackCatSeal = ((CalculatedVar)DynamicVars[BlackCatSealVar]).Calculate(cardPlay.Target);
+        await PowerCmd.Apply<BlackCatSealPower>(choiceContext, cardPlay.Target, blackCatSeal, base.Owner.Creature, this);
     }
     
-    protected override void OnUpgrade() => DynamicVars["BlackCatSeal"].UpgradeValueBy(1M);
+    protected override void OnUpgrade()
+    {
+        DynamicVar blackCatSeal = DynamicVars.CalculationBase;
+        decimal targetValue = GetBlackCatSealForUpgradeLevel(CurrentUpgradeLevel);
+        blackCatSeal.UpgradeValueBy(targetValue - blackCatSeal.BaseValue);
+    }
+
+    private static decimal CalculateConcealGatheringsBonus(CardModel card, Creature? target)
+    {
+        return MainFile.Diary.GetPile(card.Owner).Cards
+            .OfType<ConcealGatherings>()
+            .Sum(concealGatherings => concealGatherings.DynamicVars[BlackCatSealVar].BaseValue);
+    }
+
+    private static decimal GetBlackCatSealForUpgradeLevel(int upgradeLevel)
+    {
+        if (upgradeLevel <= 0)
+        {
+            return 1M;
+        }
+
+        decimal previous = 1M;
+        decimal current = 2M;
+        for (int level = 1; level < upgradeLevel; level++)
+        {
+            decimal next = Math.Min(previous + current, MaxDynamicVarValue);
+            previous = current;
+            current = next;
+        }
+
+        return current;
+    }
 }

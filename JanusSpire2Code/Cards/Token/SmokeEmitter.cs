@@ -11,6 +11,8 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 
 public sealed class SmokeEmitter() : JanusTokenCardModel(0, CardType.Skill, CardRarity.Token, CustomTargetType.Anyone)
 {
+    public override int MaxUpgradeLevel => 999;
+
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Retain, CardKeyword.Exhaust, JanusKeywords.Sticker];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [

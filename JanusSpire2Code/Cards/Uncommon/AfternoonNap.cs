@@ -12,8 +12,6 @@ public sealed class AfternoonNap() : JanusCardModel(3, CardType.Skill, CardRarit
 {
     public override bool GainsBlock => true;
     
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Counterattack];
-    
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new BlockVar(16M, ValueProp.Move)
     ];

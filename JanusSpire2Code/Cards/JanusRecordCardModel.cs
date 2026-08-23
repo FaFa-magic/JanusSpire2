@@ -9,10 +9,7 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards;
 
-public abstract class JanusRecordCardModel :
-    JanusCardModel,
-    IModRightClickableCard,
-    ICardOverlayContributor
+public abstract class JanusRecordCardModel : JanusCardModel, IModRightClickableCard, ICardOverlayContributor
 {
     private const string CanTakeIconPath =
         "res://JanusSpire2/images/combatui/collection.png";
@@ -129,8 +126,7 @@ public abstract class JanusRecordCardModel :
             ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
             StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
             MouseFilter = Control.MouseFilterEnum.Ignore,
-            Texture = LoadCanTakeTexture(),
-            ZIndex = 100
+            Texture = LoadCanTakeTexture()
         };
     }
 

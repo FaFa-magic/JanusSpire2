@@ -23,6 +23,7 @@ public sealed class Hesitate() : JanusCardModel(1, CardType.Skill, CardRarity.Co
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
         CardModel? card = (await CardSelectCmd.FromHand(choiceContext, base.Owner, new CardSelectorPrefs(CardSelectorPrefs.EnchantSelectionPrompt, 1), null, this)).FirstOrDefault();
         if (card == null) return;
 

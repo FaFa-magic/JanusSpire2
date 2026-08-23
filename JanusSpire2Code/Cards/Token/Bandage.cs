@@ -8,6 +8,8 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 
 public sealed class Bandage() : JanusTokenCardModel(0, CardType.Skill, CardRarity.Token, TargetType.Self)
 {
+    public override int MaxUpgradeLevel => 999;
+
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, JanusKeywords.Sticker];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [

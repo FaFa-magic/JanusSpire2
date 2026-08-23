@@ -43,7 +43,7 @@ public sealed class AngelPrayer() : JanusRecordCardModel(0, CardType.Skill, Card
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DynamicVar(HpLossThresholdKey, 18M),
+        new DynamicVar(HpLossThresholdKey, 16M),
         new DynamicVar(HpLostKey, HpLostThisCombat)
     ];
 

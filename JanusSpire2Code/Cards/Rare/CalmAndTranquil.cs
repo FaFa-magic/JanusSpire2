@@ -9,7 +9,7 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
-public sealed class CalmAndTranquil() : JanusCardModel(0, CardType.Skill, CardRarity.Rare, TargetType.Self)
+public sealed class CalmAndTranquil() : JanusCardModel(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new CardsVar(2)

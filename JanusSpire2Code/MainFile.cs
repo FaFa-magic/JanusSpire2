@@ -1,11 +1,15 @@
 using System.Reflection;
+using MegaCrit.Sts2.addons.mega_text;
 using JanusSpire2.JanusSpire2Code.Cards.Ancient;
 using JanusSpire2.JanusSpire2Code.Cards.Basic;
 using JanusSpire2.JanusSpire2Code.Configs;
 using JanusSpire2.JanusSpire2Code.Patches;
 using JanusSpire2.JanusSpire2Code.Relics;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Modding;
+using MegaCrit.Sts2.Core.Nodes.Screens;
+using MegaCrit.Sts2.Core.Nodes.Screens.Capstones;
 using STS2RitsuLib;
 using STS2RitsuLib.CardPiles;
 using STS2RitsuLib.Interop;
@@ -51,7 +55,7 @@ public static class MainFile
 			Anchor = ModCardPileAnchor.Default,
 			IconPath = "res://JanusSpire2/images/piles/Diary.png",
 			// 点击打开
-			OnOpen = ctx => ctx.ShowDefaultPileScreen(),
+			OnOpen = OpenDiaryPile,
 			VisibleWhen = ctx => ctx.Player != null,
 		}).PileType;
 		
@@ -63,12 +67,33 @@ public static class MainFile
 		patcher.RegisterPatch<DiarySpendResourcesPatch>();
 		patcher.RegisterPatch<PlayerPopulateCombatStatePatch>();
 		patcher.RegisterPatch<DiaryOnPlayWrapperPatch>();
+		patcher.RegisterPatch<PerkDiarySelectionRightClickPatch>();
 		patcher.RegisterPatch<HolyNightDiaryLocationRecoveryPatch>();
 		patcher.RegisterPatch<PreventSingleCardGenerationPatch>();
 		patcher.RegisterPatch<PreventMultipleCardGenerationPatch>();
 		patcher.RegisterPatch<SwiftStatusAndCurseEnchantPatch>();
+		patcher.RegisterPatch<SwiftCombatStackVisualRefreshPatch>();
+		patcher.RegisterPatch<RemovedRelicRewardAnimationPatch>();
+		patcher.RegisterPatch<UnceasingTopEmptyHandPatch>();
+		patcher.RegisterPatch<UnceasingTopCombatStartPatch>();
+		patcher.RegisterPatch<ForcedPotionTargetingPatch>();
 
 		if (!patcher.PatchAll())
 			throw new InvalidOperationException("Critical patches failed.");
+	}
+
+	private static void OpenDiaryPile(ModCardPileOpenContext context)
+	{
+		context.ShowDefaultPileScreen();
+		if (NCapstoneContainer.Instance?.CurrentCapstoneScreen is not NCardPileScreen screen)
+		{
+			return;
+		}
+
+		MegaRichTextLabel bottomLabel = screen.GetNode<MegaRichTextLabel>("%BottomLabel");
+		bottomLabel.Text = "[center]" + new LocString(
+			ModCardPileSpec.HoverTipLocTable,
+			$"{context.Definition.Id}.info").GetFormattedText();
+		bottomLabel.Visible = true;
 	}
 }

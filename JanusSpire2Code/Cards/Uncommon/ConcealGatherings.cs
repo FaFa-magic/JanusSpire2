@@ -2,21 +2,20 @@
 using MegaCrit.Sts2.Core.Entities.Cards;
 using JanusSpire2.JanusSpire2Code.Cards.Token;
 using JanusSpire2.JanusSpire2Code.Keywords;
-using JanusSpire2.JanusSpire2Code.Powers;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
+using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
 public sealed class ConcealGatherings() : JanusCardModel(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(8M, ValueProp.Move),
-        ModCardVars.Int("BlackCatSeal", 3)
+        new DamageVar(7M, ValueProp.Move),
+        ModCardVars.Int("BlackCatSeal", 2)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
@@ -35,27 +34,17 @@ public sealed class ConcealGatherings() : JanusCardModel(1, CardType.Attack, Car
         CardCmd.PreviewCardPileAdd(await CardPileCmd.AddGeneratedCardToCombat(card, MainFile.Diary, base.Owner), 0.2f);
     }
 
-    public override decimal ModifyPowerAmountGivenAdditive(
-        PowerModel power,
-        Creature giver,
-        decimal amount,
-        Creature? target,
-        CardModel? cardSource)
-    {
-        if (Pile?.Type != MainFile.Diary ||
-            giver != Owner.Creature ||
-            power is not BlackCatSealPower ||
-            cardSource is not CatSticker)
-        {
-            return 0M;
-        }
-
-        return DynamicVars["BlackCatSeal"].BaseValue;
-    }
-
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.UpgradeValueBy(2M);
         DynamicVars["BlackCatSeal"].UpgradeValueBy(1M);
+
+        if (Pile?.Type == MainFile.Diary && Owner.PlayerCombatState != null)
+        {
+            foreach (CatSticker catSticker in Owner.PlayerCombatState.AllCards.OfType<CatSticker>())
+            {
+                catSticker.RequestVisualReload();
+            }
+        }
     }
 }

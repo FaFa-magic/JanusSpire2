@@ -13,7 +13,7 @@ public sealed class Christmas() : JanusCardModel(0, CardType.Skill, CardRarity.C
     public override bool GainsBlock => true;
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new BlockVar(6M, ValueProp.Move),
+        new BlockVar(5M, ValueProp.Move),
         new CardsVar(1)
     ];
 

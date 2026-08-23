@@ -2,6 +2,7 @@
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using JanusSpire2.JanusSpire2Code.Cards.Token;
+using JanusSpire2.JanusSpire2Code.Keywords;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -14,6 +15,8 @@ public sealed class Temperance() : JanusCardModel(1, CardType.Skill, CardRarity.
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new CardsVar(2)
     ];
+    
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Perk];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
         [HoverTipFactory.FromCard<CatSticker>(IsUpgraded)];

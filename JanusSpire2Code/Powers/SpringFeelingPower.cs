@@ -1,4 +1,4 @@
-﻿using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -9,19 +9,19 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Powers;
 
-public sealed class DriedFlowerBookmarkPower : JanusPowerModel
+public sealed class SpringFeelingPower : JanusPowerModel
 {
-    private class Data
+    private sealed class Data
     {
-        public CardModel? selectedCard;
+        public CardModel? SelectedCard;
     }
 
-    private const string _cardKey = "Card";
-    
+    private const string CardKey = "Card";
+
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
-    
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new StringVar("Card")];
+
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new StringVar(CardKey)];
 
     protected override object InitInternalData()
     {
@@ -30,24 +30,31 @@ public sealed class DriedFlowerBookmarkPower : JanusPowerModel
 
     public override async Task BeforeHandDraw(Player player, PlayerChoiceContext choiceContext, ICombatState combatState)
     {
-        if (player == base.Owner.Player)
+        if (player != Owner.Player)
         {
-            CardModel? card = GetInternalData<Data>().selectedCard;
-            if(card == null) return;
-            for (int i = 0; i < base.Amount; i++)
-            {
-                CardModel card2 = card.CreateClone();
-                await CardPileCmd.AddGeneratedCardToCombat(card2, PileType.Hand, base.Owner.Player);
-            }
-            await PowerCmd.Remove(this);
+            return;
         }
+
+        CardModel? card = GetInternalData<Data>().SelectedCard;
+        if (card == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < Amount; i++)
+        {
+            CardModel copy = card.CreateClone();
+            await CardPileCmd.AddGeneratedCardToCombat(copy, PileType.Hand, Owner.Player);
+        }
+
+        await PowerCmd.Remove(this);
     }
-    
+
     public void SetSelectedCard(CardModel card)
     {
         CardModel cardModel = card.CreateClone();
         CardCmd.ClearAffliction(cardModel);
-        GetInternalData<Data>().selectedCard = cardModel;
-        ((StringVar)base.DynamicVars["Card"]).StringValue = cardModel.Title;
+        GetInternalData<Data>().SelectedCard = cardModel;
+        ((StringVar)DynamicVars[CardKey]).StringValue = cardModel.Title;
     }
 }

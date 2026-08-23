@@ -38,6 +38,6 @@ public sealed class AdvanceHandInHand() : JanusCardModel(1, CardType.Attack, Car
     
     protected override void OnUpgrade()
     {
-        AddKeyword(CardKeyword.Retain);
+        AddKeyword(CardKeyword.Innate);
     }
 }

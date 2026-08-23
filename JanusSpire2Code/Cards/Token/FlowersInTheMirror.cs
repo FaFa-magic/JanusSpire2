@@ -7,29 +7,31 @@ using MegaCrit.Sts2.Core.Models.CardPools;
 using STS2RitsuLib.Interop.AutoRegistration;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using STS2RitsuLib.Cards.DynamicVars;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 
 [RegisterCard(typeof(TokenCardPool))]
 public sealed class FlowersInTheMirror() : JanusRecordCardModel(0, CardType.Skill, CardRarity.Token, TargetType.Self)
 {
-    public override IEnumerable<CardKeyword> CanonicalKeywords =>
-        [JanusKeywords.Recollection, JanusKeywords.Record];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Recollection, JanusKeywords.Record];
 
+    protected override IEnumerable<DynamicVar> CanonicalVars => [
+        ModCardVars.Int("FlowersInTheMirror", 1M)
+    ];
+    
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await PowerCmd.Apply<FlowersInTheMirrorPower>(
             choiceContext,
             Owner.Creature,
-            1M,
+            DynamicVars["FlowersInTheMirror"].BaseValue,
             Owner.Creature,
             this);
     }
 
-    public override Task AfterSideTurnStart(
-        CombatSide side,
-        IReadOnlyList<Creature> participants,
-        ICombatState combatState)
+    public override Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
     {
         if (participants.Contains(Owner.Creature) && Pile?.Type == MainFile.Diary)
         {
@@ -37,5 +39,10 @@ public sealed class FlowersInTheMirror() : JanusRecordCardModel(0, CardType.Skil
         }
 
         return Task.CompletedTask;
+    }
+    
+    protected override void OnUpgrade()
+    {
+        DynamicVars["FlowersInTheMirror"].UpgradeValueBy(1M);
     }
 }

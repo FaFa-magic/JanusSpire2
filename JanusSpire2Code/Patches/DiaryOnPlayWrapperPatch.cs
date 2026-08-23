@@ -20,11 +20,21 @@ public sealed class DiaryOnPlayWrapperPatch : IPatchMethod
     public static ModPatchTarget[] GetTargets() => [new(typeof(CardModel), nameof(CardModel.OnPlayWrapper))];
 
     private static readonly HashSet<CardModel> _processingCards = new();
+    private static readonly Dictionary<CardPile, int> _perkDiarySelectionDepths = new();
+
+    internal static bool IsSelectingPerkCostFromDiary(CardModel card)
+    {
+        return card.Pile is { } pile &&
+               pile.Type == MainFile.Diary &&
+               _perkDiarySelectionDepths.ContainsKey(pile);
+    }
 
     [HarmonyPrefix]
     public static bool Prefix(CardModel __instance, PlayerChoiceContext choiceContext, Creature? target, bool isAutoPlay, ResourceInfo resources, bool skipCardPileVisuals, ref Task __result)
     {
-        if (_processingCards.Contains(__instance) || !__instance.Keywords.Contains(JanusKeywords.Perk))
+        if (isAutoPlay ||
+            _processingCards.Contains(__instance) ||
+            !__instance.Keywords.Contains(JanusKeywords.Perk))
         {
             return true; 
         }
@@ -50,11 +60,20 @@ public sealed class DiaryOnPlayWrapperPatch : IPatchMethod
 
                 if (need > 0 && diaryPile != null && diaryPile.Cards.Count >= need)
                 {
-                    var selected = (await CardSelectCmd.FromCombatPile(
-                        choiceContext, 
-                        diaryPile, 
-                        card.Owner!, 
-                        new CardSelectorPrefs(CardSelectorPrefs.ExhaustSelectionPrompt, need))).ToList();
+                    List<CardModel> selected;
+                    BeginPerkDiarySelection(diaryPile);
+                    try
+                    {
+                        selected = (await CardSelectCmd.FromCombatPile(
+                            choiceContext,
+                            diaryPile,
+                            card.Owner!,
+                            new CardSelectorPrefs(CardSelectorPrefs.ExhaustSelectionPrompt, need))).ToList();
+                    }
+                    finally
+                    {
+                        EndPerkDiarySelection(diaryPile);
+                    }
                     
                     foreach (var item in selected)
                     {
@@ -69,5 +88,22 @@ public sealed class DiaryOnPlayWrapperPatch : IPatchMethod
         {
             _processingCards.Remove(card);
         }
+    }
+
+    private static void BeginPerkDiarySelection(CardPile diaryPile)
+    {
+        _perkDiarySelectionDepths.TryGetValue(diaryPile, out int depth);
+        _perkDiarySelectionDepths[diaryPile] = depth + 1;
+    }
+
+    private static void EndPerkDiarySelection(CardPile diaryPile)
+    {
+        if (!_perkDiarySelectionDepths.TryGetValue(diaryPile, out int depth) || depth <= 1)
+        {
+            _perkDiarySelectionDepths.Remove(diaryPile);
+            return;
+        }
+
+        _perkDiarySelectionDepths[diaryPile] = depth - 1;
     }
 }

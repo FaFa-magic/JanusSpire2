@@ -1,31 +1,68 @@
-using JanusSpire2.JanusSpire2Code.Cards.Token;
-using JanusSpire2.JanusSpire2Code.Tags;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Factories;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes.CommonUi;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
-public sealed class NotAfraid() : JanusCardModel(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
+public sealed class NotAfraid() : JanusCardModel(3, CardType.Skill, CardRarity.Rare, TargetType.Self)
 {
-    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<CatSticker>(base.IsUpgraded)];
-    
+    private static readonly HashSet<CardModel> CardsReturningToDiary = [];
+
+    internal static bool ShouldReturnToDiary(CardModel card) =>
+        CardsReturningToDiary.Contains(card);
+
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new CardsVar(4)];
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
-        IEnumerable<CardModel> enumerable = PileType.Exhaust.GetPile(base.Owner).Cards.Where((CardModel c) => c.Tags.Any(t => t == JanusTags.Scratch)).ToList();
-        bool flag = true;
-        foreach (CardModel item in enumerable)
+        IEnumerable<CardModel> candidates = Owner.UnlockState.CharacterCardPools
+            .SelectMany(pool => pool.GetUnlockedCards(
+                Owner.UnlockState,
+                Owner.RunState.CardMultiplayerConstraint));
+        List<CardModel> cardsToPlay = CardFactory.GetForCombat(
+            Owner,
+            candidates,
+            DynamicVars.Cards.IntValue,
+            Owner.RunState.Rng.CombatCardGeneration).ToList();
+        if (cardsToPlay.Count == 0)
         {
-            if (base.IsUpgraded)
+            return;
+        }
+        
+        await CardPileCmd.AddGeneratedCardsToCombat(cardsToPlay, PileType.Play, Owner);
+
+        foreach (CardModel card in cardsToPlay)
+        {
+            if (CombatManager.Instance.IsOverOrEnding || Owner.Creature.IsDead)
             {
-                CardCmd.Upgrade(item, CardPreviewStyle.None);
+                break;
             }
-            await CardCmd.AutoPlay(choiceContext, item, cardPlay.Target, AutoPlayType.Default, skipXCapture: false, !flag);
-            flag = false;
+
+            CardsReturningToDiary.Add(card);
+            try
+            {
+                await CardCmd.AutoPlay(choiceContext, card, null);
+
+                // Unplayable or hook-blocked cards bypass the normal result-location hook.
+                if (!card.HasBeenRemovedFromState &&
+                    card.Pile?.IsCombatPile == true &&
+                    card.Pile.Type != MainFile.Diary &&
+                    !CombatManager.Instance.IsOverOrEnding &&
+                    !Owner.Creature.IsDead)
+                {
+                    await CardPileCmd.Add(card, MainFile.Diary);
+                }
+            }
+            finally
+            {
+                CardsReturningToDiary.Remove(card);
+            }
         }
     }
+
+    protected override void OnUpgrade() => DynamicVars.Cards.UpgradeValueBy(1M);
 }

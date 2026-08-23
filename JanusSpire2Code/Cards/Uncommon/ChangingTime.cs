@@ -1,4 +1,5 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+﻿using JanusSpire2.JanusSpire2Code.Keywords;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -17,6 +18,8 @@ public sealed class ChangingTime() : JanusCardModel(2, CardType.Skill, CardRarit
         new BlockVar(8M, ValueProp.Move | ValueProp.Unpowered)
     ];
 
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Record];
+    
     public override async Task AfterCardChangedPiles(
         CardModel card,
         PileType oldPileType,

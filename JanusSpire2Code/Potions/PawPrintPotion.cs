@@ -20,7 +20,7 @@ public sealed class PawPrintPotion : JanusPotionModel
     public override TargetType TargetType => TargetType.AnyEnemy;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
-        [new PowerVar<BlackCatSealPower>(6M)];
+        [new PowerVar<BlackCatSealPower>(8M)];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
         [HoverTipFactory.FromPower<BlackCatSealPower>()];

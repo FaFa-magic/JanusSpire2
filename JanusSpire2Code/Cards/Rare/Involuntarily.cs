@@ -22,7 +22,7 @@ public sealed class Involuntarily() : JanusCardModel(1, CardType.Power, CardRari
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Involuntarily", 50)
+        ModCardVars.Int("Involuntarily", 30)
     ];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
@@ -44,7 +44,8 @@ public sealed class Involuntarily() : JanusCardModel(1, CardType.Power, CardRari
         CardModel? cardSource)
     {
         if (Pile?.Type != MainFile.Diary ||
-            dealer != Owner.Creature ||
+            cardSource?.Owner != Owner ||
+            cardSource.Pile?.Type != PileType.Play ||
             target.Side != CombatSide.Enemy ||
             amount <= 0M)
         {
@@ -91,5 +92,5 @@ public sealed class Involuntarily() : JanusCardModel(1, CardType.Power, CardRari
     }
 
     protected override void OnUpgrade() =>
-        DynamicVars["Involuntarily"].UpgradeValueBy(25M);
+        DynamicVars["Involuntarily"].UpgradeValueBy(10M);
 }

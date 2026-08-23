@@ -1,5 +1,6 @@
 {
   "JANUS_SPIRE2_CARDPILE_DIARY_PILE.title": "日记本",
-  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.description": "记录的卡牌不进入[gold]消耗[/gold]牌堆而是进入[gold]日记本[/gold]。",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.description": "记录的卡牌不进入[gold]弃牌堆[/gold]而是进入[gold]日记本[/gold]。",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.info": "这里存放着所有进入日记本的卡牌。",
   "JANUS_SPIRE2_CARDPILE_DIARY_PILE.empty": "日记本是空的。"
 }

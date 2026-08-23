@@ -1,5 +1,4 @@
 ﻿namespace JanusSpire2.JanusSpire2Code.Potions;
-
 using System.Linq;
 using System.Threading.Tasks;
 using System;
@@ -14,7 +13,7 @@ using MegaCrit.Sts2.Core.Models;
 
 public sealed class MirrorPotion : JanusPotionModel
 {
-    public override PotionRarity Rarity => PotionRarity.Uncommon;
+    public override PotionRarity Rarity => PotionRarity.Rare;
 
     public override PotionUsage Usage => PotionUsage.CombatOnly;
 
