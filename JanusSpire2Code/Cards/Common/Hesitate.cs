@@ -9,6 +9,7 @@ using MegaCrit.Sts2.Core.Models.Enchantments;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
 using MegaCrit.Sts2.Core.ValueProps;
+using JanusSpire2.JanusSpire2Code.Scripts;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Common;
 
@@ -24,7 +25,15 @@ public sealed class Hesitate() : JanusCardModel(1, CardType.Skill, CardRarity.Co
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-        CardModel? card = (await CardSelectCmd.FromHand(choiceContext, base.Owner, new CardSelectorPrefs(CardSelectorPrefs.EnchantSelectionPrompt, 1), null, this)).FirstOrDefault();
+        Swift swift = ModelDb.Enchantment<Swift>();
+        CardModel? card = (await HandEnchantmentSelectCmd.FromHand(
+            choiceContext,
+            Owner,
+            swift,
+            DynamicVars["SwiftAmount"].IntValue,
+            new CardSelectorPrefs(CardSelectorPrefs.EnchantSelectionPrompt, 1),
+            null,
+            this)).FirstOrDefault();
         if (card == null) return;
 
         CardCmd.Enchant<Swift>(card, DynamicVars["SwiftAmount"].BaseValue);

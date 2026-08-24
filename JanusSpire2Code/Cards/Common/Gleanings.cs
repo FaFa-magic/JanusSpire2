@@ -44,9 +44,7 @@ public sealed class Gleanings() : JanusCardModel(0, CardType.Skill, CardRarity.C
         {
             CardsReturningToDiary.Remove(selected);
         }
-
-        // Unplayable or hook-blocked cards bypass ModifyCardPlayResultLocation.
-        // They still need to be collected after the attempted autoplay.
+        
         if (!selected.HasBeenRemovedFromState &&
             selected.Pile?.Type != MainFile.Diary &&
             !Owner.Creature.IsDead)

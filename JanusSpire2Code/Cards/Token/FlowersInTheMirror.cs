@@ -18,7 +18,7 @@ public sealed class FlowersInTheMirror() : JanusRecordCardModel(0, CardType.Skil
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Recollection, JanusKeywords.Record];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        ModCardVars.Int("FlowersInTheMirror", 1M)
+        ModCardVars.Int("FlowersInTheMirror", 2M)
     ];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

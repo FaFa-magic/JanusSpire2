@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Multiplay;
 
@@ -14,6 +15,8 @@ public sealed class HelpEachOther() : JanusCardModel(3, CardType.Power, CardRari
     public override CardMultiplayerConstraint MultiplayerConstraint => CardMultiplayerConstraint.MultiplayerOnly;
     
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Perk];
+
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new CardsVar(1)];
     
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<Assist>()];
     

@@ -4,6 +4,7 @@ using JanusSpire2.JanusSpire2Code.Cards.Rare;
 using JanusSpire2.JanusSpire2Code.Keywords;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -22,6 +23,7 @@ public class JanusSingleton : HookedSingletonModel
     private const int StickerMergeCount = 4;
 
     private readonly Dictionary<CardModel, (int TurnNumber, int TriggerCount)> _counterattackTriggerCounts = new();
+    private readonly List<AttackCommand> _activeAttackCommands = [];
 
     public static JanusSingleton? Instance { get; private set; }
 
@@ -32,7 +34,36 @@ public class JanusSingleton : HookedSingletonModel
     public override Task BeforeCombatStart()
     {
         _counterattackTriggerCounts.Clear();
+        _activeAttackCommands.Clear();
         return Task.CompletedTask;
+    }
+
+    public override Task BeforeAttack(AttackCommand command)
+    {
+        _activeAttackCommands.Add(command);
+        return Task.CompletedTask;
+    }
+
+    public override async Task AfterAttack(
+        PlayerChoiceContext choiceContext,
+        AttackCommand command)
+    {
+        _activeAttackCommands.Remove(command);
+        if (CombatManager.Instance.IsOverOrEnding)
+        {
+            return;
+        }
+
+        List<Player> damagedPlayers = command.Results
+            .SelectMany(hit => hit)
+            .Select(result => result.Receiver.Player)
+            .OfType<Player>()
+            .Distinct()
+            .ToList();
+        foreach (Player player in damagedPlayers)
+        {
+            await TriggerCounterattacks(choiceContext, player);
+        }
     }
 
     public override async Task AfterDamageReceived(
@@ -43,10 +74,39 @@ public class JanusSingleton : HookedSingletonModel
         Creature? dealer,
         CardModel? cardSource)
     {
+        if (IsDamageFromActiveAttack(dealer, props, cardSource))
+        {
+            return;
+        }
+
         Player? player = target.Player;
-        PlayerCombatState? playerCombatState = player?.PlayerCombatState;
-        if (player == null || playerCombatState == null ||
-            target != player.Creature || CombatManager.Instance.IsOverOrEnding)
+        if (player == null || target != player.Creature)
+        {
+            return;
+        }
+
+        await TriggerCounterattacks(choiceContext, player);
+    }
+
+    private bool IsDamageFromActiveAttack(
+        Creature? dealer,
+        ValueProp props,
+        CardModel? cardSource)
+    {
+        return _activeAttackCommands.Any(command =>
+            command.Attacker == dealer &&
+            command.DamageProps == props &&
+            command.ModelSource as CardModel == cardSource);
+    }
+
+    private async Task TriggerCounterattacks(
+        PlayerChoiceContext choiceContext,
+        Player player)
+    {
+        PlayerCombatState? playerCombatState = player.PlayerCombatState;
+        if (playerCombatState == null ||
+            CombatManager.Instance.IsOverOrEnding ||
+            player.Creature.IsDead)
         {
             return;
         }

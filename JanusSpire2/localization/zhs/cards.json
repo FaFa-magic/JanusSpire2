@@ -138,7 +138,7 @@
   "JANUS_SPIRE2_CARD_BREAK_AND_RUN.description": "给予所有敌人{BlackCatSeal:diff()}层[gold]黑猫之印[/gold]。\n所有敌人每回合首次[gold]黑猫之印[/gold]绽放前，将所有负面状态的[blue]50[/blue]%层数给予其他敌人。",
   "JANUS_SPIRE2_CARD_CALM_AND_TRANQUIL.title": "风平浪静",
   "JANUS_SPIRE2_CARD_CALM_AND_TRANQUIL.description": "将{Cards:diff()}张[b][color=#3EE6B3]浪花[/color][/b]加入[b][gold]日记本[/gold][/b]。\n本回合所有手牌获得[gold]振作[/gold]。",
-  "JANUS_SPIRE2_CARD_COLORFUL.title": "多姿多彩",
+  "JANUS_SPIRE2_CARD_COLORFUL.title": "缤纷多彩",
   "JANUS_SPIRE2_CARD_COLORFUL.description": "[gold]誊抄[/gold]:{IfUpgraded:show:回合开始时，将一张其他角色的随机牌加入你的手牌，此牌获得[gold]虚无[/gold]和[gold]记录[/gold];\n|}不属于雅努斯卡池的牌会被额外打出一次。",
   "JANUS_SPIRE2_CARD_CONFIDENCE.title": "信心",
   "JANUS_SPIRE2_CARD_CONFIDENCE.description": "造成{Damage:diff()}点伤害。\n增加{Confidence:diff()}层[gold]手牌下限[/gold]。这张牌的耗能加1。",

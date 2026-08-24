@@ -56,7 +56,7 @@ public sealed class AngelPrayerPower : JanusPowerModel
         return Task.CompletedTask;
     }
 
-    public override async Task AfterSideTurnEndLate(
+    public override async Task AfterSideTurnEnd(
         PlayerChoiceContext choiceContext,
         CombatSide side,
         IEnumerable<Creature> participants)

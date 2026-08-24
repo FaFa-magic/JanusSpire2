@@ -5,6 +5,7 @@ using JanusSpire2.JanusSpire2Code.Cards.Basic;
 using JanusSpire2.JanusSpire2Code.Configs;
 using JanusSpire2.JanusSpire2Code.Patches;
 using JanusSpire2.JanusSpire2Code.Relics;
+using JanusSpire2.Scripts.Telemetry;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Modding;
@@ -36,6 +37,7 @@ public static class MainFile
 		RitsuLibFramework.EnsureGodotScriptsRegistered(assembly, Logger);
 
 		JanusConfigPage.Register();
+		JanusTelemetry.Register();
 		
 		RitsuLibFramework.RegisterArchaicToothTranscendenceMapping<BlackCatAssault, BlackCatUnleash>();
 		RitsuLibFramework.RegisterTouchOfOrobasRefinementMapping<Coronet, ShiningCrown>();

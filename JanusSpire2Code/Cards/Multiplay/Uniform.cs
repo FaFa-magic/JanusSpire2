@@ -14,6 +14,7 @@ using MegaCrit.Sts2.Core.Models.Enchantments;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
 using MegaCrit.Sts2.Core.ValueProps;
+using JanusSpire2.JanusSpire2Code.Scripts;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Multiplay;
 
@@ -70,11 +71,13 @@ public sealed class Uniform() : JanusCardModel(1, CardType.Attack, CardRarity.Un
         Player player,
         Swift swift)
     {
-        CardModel? selected = (await CardSelectCmd.FromHand(
+        CardModel? selected = (await HandEnchantmentSelectCmd.FromHand(
             choiceContext,
             player,
+            swift,
+            DynamicVars["SwiftAmount"].IntValue,
             new CardSelectorPrefs(CardSelectorPrefs.EnchantSelectionPrompt, 1),
-            swift.CanEnchant,
+            null,
             this)).FirstOrDefault();
         if (selected == null ||
             CombatManager.Instance.IsOverOrEnding ||

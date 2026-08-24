@@ -28,7 +28,7 @@ public sealed class BlackCatUnleash() : JanusCardModel(3, CardType.Attack, CardR
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
         
-        await PowerCmd.Apply<BlackCatSealPower>(choiceContext, base.Owner.Creature, DynamicVars["BlackCatSeal"].BaseValue, base.Owner.Creature, this);
+        await PowerCmd.Apply<BlackCatSealPower>(choiceContext, cardPlay.Target, DynamicVars["BlackCatSeal"].BaseValue, base.Owner.Creature, this);
     }
     
     protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(4M);

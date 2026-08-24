@@ -60,5 +60,5 @@ public sealed class GuardianAngel() : JanusCardModel(2, CardType.Power, CardRari
             null);
     }
 
-    protected override void OnUpgrade() => EnergyCost.UpgradeBy(-1);
+    protected override void OnUpgrade() => AddKeyword(JanusKeywords.Counterattack);
 }

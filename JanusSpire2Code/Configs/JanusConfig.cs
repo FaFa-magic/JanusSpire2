@@ -21,6 +21,7 @@ public sealed class JanusConfig
 {
     public FjordMosaicMode 多人模式使用哪种模型 { get; set; } = FjordMosaicMode.手部模型;
     public JanusCardFrameMode 选用哪种卡框 { get; set; } = JanusCardFrameMode.卡框一;
+    public bool 会出现先古之民伊丽莎白女王 { get; set; } = true;
 }
 
 public static class JanusConfigPage
@@ -35,6 +36,10 @@ public static class JanusConfigPage
         MainFile.ModId, DataKey, SaveScope.Profile,
         static s => s.选用哪种卡框,
         static (s, v) => s.选用哪种卡框 = v);
+    public static readonly ModSettingsValueBinding<JanusConfig, bool> QueenElizabethEnabledBinding = new(
+        MainFile.ModId, DataKey, SaveScope.Profile,
+        static s => s.会出现先古之民伊丽莎白女王,
+        static (s, v) => s.会出现先古之民伊丽莎白女王 = v);
 
     public static void Register()
     {
@@ -65,6 +70,10 @@ public static class JanusConfigPage
                         new(JanusCardFrameMode.卡框一, ModSettingsText.Literal("卡框一")),
                         new(JanusCardFrameMode.卡框二, ModSettingsText.Literal("卡框二"))
                     ],
-                    presentation: ModSettingsChoicePresentation.Dropdown)));
+                    presentation: ModSettingsChoicePresentation.Dropdown)
+                .AddToggle(
+                    "queen_elizabeth_enabled",
+                    ModSettingsText.Literal("会出现先古之民-伊丽莎白女王"),
+                    QueenElizabethEnabledBinding)));
     }
 }
