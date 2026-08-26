@@ -6,9 +6,9 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 
-namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
+namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-// public sealed class ForYourHeartOnly() : JanusCardModel(2, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
+// public sealed class ForYourHeartOnly() : JanusCardModel(2, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
 // {
 //     public override int MaxUpgradeLevel => 999;
 //

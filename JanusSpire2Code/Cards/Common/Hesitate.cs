@@ -10,6 +10,7 @@ using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
 using MegaCrit.Sts2.Core.ValueProps;
 using JanusSpire2.JanusSpire2Code.Scripts;
+using MegaCrit.Sts2.Core.HoverTips;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Common;
 
@@ -20,6 +21,10 @@ public sealed class Hesitate() : JanusCardModel(1, CardType.Skill, CardRarity.Co
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new BlockVar(8M, ValueProp.Move),
         new DynamicVar("SwiftAmount", 1M)
+    ];
+    
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
+        ..HoverTipFactory.FromEnchantment<Swift>()
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

@@ -1,3 +1,4 @@
+using JanusSpire2.JanusSpire2Code.Keywords;
 using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -21,6 +22,8 @@ public sealed class Overprotective() : JanusCardModel(1, CardType.Power, CardRar
     ];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromPower<StrengthPower>()];
+    
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Transcribe];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

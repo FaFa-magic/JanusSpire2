@@ -104,7 +104,9 @@ public sealed class Nightgown() : JanusCardModel(2, CardType.Power, CardRarity.U
             return 0M;
         }
 
-        int cardGroups = card.Owner.PlayerCombatState.AllCards.Count() / cardsPerBlock;
+        int realCardCount = card.Owner.PlayerCombatState.AllCards
+            .Count(otherCard => otherCard is not JanusRecordMappingCard);
+        int cardGroups = realCardCount / cardsPerBlock;
         return cardGroups * card.DynamicVars["Nightgown"].BaseValue;
     }
 }

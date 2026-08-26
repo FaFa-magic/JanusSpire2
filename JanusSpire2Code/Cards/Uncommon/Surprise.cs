@@ -5,6 +5,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
@@ -15,6 +16,9 @@ public sealed class Surprise() : JanusCardModel(-1, CardType.Attack, CardRarity.
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(4M, ValueProp.Move | ValueProp.Unpowered)];
 
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
+        [HoverTipFactory.FromKeyword(CardKeyword.Exhaust)];
+    
     public override async Task AfterCardGeneratedForCombat(CardModel card, Player? creator)
     {
         if (card != this || CombatState == null || Owner.Creature.IsDead)

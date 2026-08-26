@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://mtgikveqa5pg"]
+
+[ext_resource type="Texture2D" uid="uid://bc0hdudtxplj8" path="res://JanusSpire2/images/ancients/QueenElizabeth.png" id="1_1ysbu"]
+
+[node name="QueenElizabeth" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -960.0
+offset_top = -523.0
+offset_right = 961.0
+offset_bottom = 550.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(1280, 600)
+
+[node name="QueenElizabeth" type="Sprite2D" parent="."]
+position = Vector2(950, 520)
+scale = Vector2(1.35, 1.35)
+texture = ExtResource("1_1ysbu")

@@ -1,9 +1,9 @@
 using JanusSpire2.JanusSpire2Code.Characters;
-using JanusSpire2.JanusSpire2Code.Patches;
 using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -20,6 +20,11 @@ public sealed class Coronet : JanusRelicModel, ISkipPlayerFlushRelic
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         ModCardVars.Int("Smoke", 2)
     ];
+
+    public override bool ShouldFlush(Player player)
+    {
+        return player != Owner || Owner.Creature.CombatState?.CurrentSide != CombatSide.Player;
+    }
     
     public override async Task BeforeSideTurnStart(PlayerChoiceContext choiceContext, CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
     {
@@ -28,4 +33,8 @@ public sealed class Coronet : JanusRelicModel, ISkipPlayerFlushRelic
             await PowerCmd.Apply<SmokePower>(choiceContext, base.Owner.Creature, DynamicVars["Smoke"].BaseValue, base.Owner.Creature, null);
         }
     }
+}
+
+public interface ISkipPlayerFlushRelic
+{
 }

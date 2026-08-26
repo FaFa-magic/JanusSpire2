@@ -1,9 +1,11 @@
 using JanusSpire2.JanusSpire2Code.Keywords;
+using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -13,6 +15,9 @@ public sealed class GuardianAngel() : JanusCardModel(2, CardType.Power, CardRari
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Transcribe];
 
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
+        [HoverTipFactory.FromKeyword(JanusKeywords.Counterattack)];
+    
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         CardModel copy = CreateClone();
@@ -54,11 +59,11 @@ public sealed class GuardianAngel() : JanusCardModel(2, CardType.Power, CardRari
             choiceContext,
             Owner.Creature,
             0M,
-            ValueProp.Unblockable | ValueProp.Unpowered,
+            ValueProp.Move | ValueProp.Unpowered,
             Owner.Creature,
             this,
             null);
     }
 
-    protected override void OnUpgrade() => AddKeyword(JanusKeywords.Counterattack);
+    protected override void OnUpgrade() => EnergyCost.UpgradeBy(-1);
 }

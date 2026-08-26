@@ -17,14 +17,14 @@ public sealed class QueenElizabeth : ModAncientEventTemplate
     public override Color DialogueColor => new(0.12f, 0.2f, 0.8f);
 
     public override EventAssetProfile AssetProfile => new(
-        BackgroundScenePath: "res://Test/scenes/test_ancient.tscn"
+        BackgroundScenePath: "res://JanusSpire2/scenes/ancients/QueenElizabeth.tscn"
     );
 
     public override AncientEventPresentationAssetProfile AncientPresentationAssetProfile => new(
-        MapIconPath: "res://icon.svg",
-        MapIconOutlinePath: "res://icon.svg",
-        RunHistoryIconPath: "res://icon.svg",
-        RunHistoryIconOutlinePath: "res://icon.svg"
+        MapIconPath: "res://JanusSpire2/images/ancients/QueenElizabeth_MapIcon.png",
+        MapIconOutlinePath: "res://JanusSpire2/images/ancients/QueenElizabeth_MapIconOutline.png",
+        RunHistoryIconPath: "res://JanusSpire2/images/ancients/QueenElizabeth_RunHistoryIconPath.png",
+        RunHistoryIconOutlinePath: "res://JanusSpire2/images/ancients/QueenElizabeth_RunHistoryIconPathOutline.png"
     );
 
     private IReadOnlyList<EventOption> Pool1 =>

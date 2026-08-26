@@ -16,7 +16,10 @@ public sealed class Reserved() : JanusCardModel(1, CardType.Skill, CardRarity.Co
         new DynamicVar("SwiftAmount", 1M)
     ];
 
-    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<CatSticker>(this.IsUpgraded)];
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
+        HoverTipFactory.FromCard<CatSticker>(this.IsUpgraded),
+        ..HoverTipFactory.FromEnchantment<Swift>()
+    ];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

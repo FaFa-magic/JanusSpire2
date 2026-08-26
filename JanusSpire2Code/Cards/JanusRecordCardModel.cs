@@ -1,25 +1,26 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+using Godot;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Saves.Runs;
-using STS2RitsuLib.Interactions.RightClick;
-using Godot;
 using STS2RitsuLib.Models.Capabilities;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards;
 
-public abstract class JanusRecordCardModel : JanusCardModel, IModRightClickableCard, ICardOverlayContributor
+public abstract class JanusRecordCardModel : JanusCardModel, ICardOverlayContributor
 {
     private const string CanTakeIconPath =
         "res://JanusSpire2/images/combatui/collection.png";
     private const string CanTakeOverlayId = "janus_record_can_take";
-    private const float CanTakeIconSize = 96F;
+    private const float CanTakeIconSize = 108F;
 
-    private static readonly Vector2 CanTakeIconPosition = new(70F, -254F);
+    private static readonly Vector2 CanTakeIconPosition = new(70F, -230F);
 
     private static Texture2D? _canTakeTexture;
     private bool _canTake;
+
+    [SavedProperty]
+    public int RecordMappingKey { get; set; }
 
     [SavedProperty]
     public bool CanTake
@@ -36,6 +37,7 @@ public abstract class JanusRecordCardModel : JanusCardModel, IModRightClickableC
 
             _canTake = value;
             this.RequestVisualReload();
+            RecordExtraHandManager.SyncFor(this);
         }
     }
 
@@ -71,35 +73,6 @@ public abstract class JanusRecordCardModel : JanusCardModel, IModRightClickableC
         ];
     }
 
-    public bool CanHandleRightClickLocal(ModRightClickContext context)
-    {
-        return context.Model == this &&
-               context.Player == Owner &&
-               context.Trigger.Source == ModRightClickSource.CombatPileCard &&
-               context.Trigger.ExpectedCardPile == MainFile.Diary;
-    }
-
-    public bool CanExecuteRightClick(ModRightClickExecutionContext context)
-    {
-        return context.Model == this &&
-               context.Player == Owner &&
-               context.Trigger.Source == ModRightClickSource.CombatPileCard &&
-               Pile?.Type == MainFile.Diary &&
-               CanTake &&
-               HasRoomInHand();
-    }
-
-    public async Task OnRightClick(ModRightClickExecutionContext context)
-    {
-        if (!CanExecuteRightClick(context))
-        {
-            return;
-        }
-
-        await CardPileCmd.Add(this, PileType.Hand);
-        DisableTake();
-    }
-
     public override Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         if (cardPlay.Card == this)
@@ -108,11 +81,6 @@ public abstract class JanusRecordCardModel : JanusCardModel, IModRightClickableC
         }
 
         return Task.CompletedTask;
-    }
-
-    private bool HasRoomInHand()
-    {
-        return PileType.Hand.GetPile(Owner).Cards.Count < CardPile.MaxCardsInHand;
     }
 
     private static TextureRect CreateCanTakeIcon()

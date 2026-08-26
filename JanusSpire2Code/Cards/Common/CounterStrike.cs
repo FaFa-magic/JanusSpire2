@@ -19,7 +19,7 @@ public sealed class CounterStrike() : JanusCardModel(2, CardType.Attack, CardRar
     
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new CalculationBaseVar(12M),
+        new CalculationBaseVar(6M),
         new ExtraDamageVar(3M),
         new CalculatedDamageVar(ValueProp.Move).WithMultiplier(
             (CardModel card, Creature? _) =>
@@ -40,6 +40,6 @@ public sealed class CounterStrike() : JanusCardModel(2, CardType.Attack, CardRar
 
     protected override void OnUpgrade()
     {
-        base.DynamicVars.ExtraDamage.UpgradeValueBy(2M);
+        base.DynamicVars.ExtraDamage.UpgradeValueBy(1M);
     }
 }

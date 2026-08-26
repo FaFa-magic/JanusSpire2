@@ -16,10 +16,13 @@ public sealed class CounterattackPower : JanusPowerModel
     
     public override bool TryModifyKeywordsInCombat(CardModel card, ISet<CardKeyword> keywords)
     {
-        if (card.Owner != base.Owner.Player || card.Pile?.Type != PileType.Hand)
+        if (card.Owner != base.Owner.Player ||
+            card.Pile?.Type != PileType.Hand ||
+            card.Type is not (CardType.Attack or CardType.Skill))
         {
             return false;
         }
+
         return keywords.Add(JanusKeywords.Counterattack);
     }
     

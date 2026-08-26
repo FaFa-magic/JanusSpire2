@@ -10,15 +10,15 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
+namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
-public sealed class Orderly() : JanusCardModel(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+public sealed class Orderly() : JanusCardModel(1, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
 {
     private const int BaseHitCount = 2;
     private const string CalculatedHitsKey = "CalculatedHits";
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(3M, ValueProp.Move),
+        new DamageVar(4M, ValueProp.Move),
         new CalculationBaseVar(BaseHitCount),
         new CalculationExtraVar(1M),
         new CalculatedVar(CalculatedHitsKey).WithMultiplier(CountGeneratedCards)

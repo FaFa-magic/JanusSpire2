@@ -1,5 +1,4 @@
 using JanusSpire2.JanusSpire2Code.Keywords;
-using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -16,7 +15,7 @@ public sealed class CoyLove() : JanusCardModel(2, CardType.Power, CardRarity.Rar
         new CardsVar(2)
     ];
 
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Perk];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Perk, JanusKeywords.Transcribe];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -45,12 +44,10 @@ public sealed class CoyLove() : JanusCardModel(2, CardType.Power, CardRarity.Rar
             return;
         }
 
-        CardSelectorPrefs prefs = new(SelectionScreenPrompt, 1);
-        CardModel? selected = (await CardSelectCmd.FromSimpleGrid(
+        CardModel? selected = await CardSelectCmd.FromChooseACardScreen(
             choiceContext,
             options,
-            Owner,
-            prefs)).FirstOrDefault();
+            Owner);
         if (selected == null)
         {
             return;

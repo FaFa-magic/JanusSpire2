@@ -1,22 +1,49 @@
 using JanusSpire2.JanusSpire2Code.Interfaces;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Multiplayer;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Multiplayer.Serialization;
+using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Interactions.RightClick;
+using STS2RitsuLib.Networking.ManagedActions;
 
 namespace JanusSpire2.JanusSpire2Code.Powers;
 
-public sealed class BlackCatSealPower : JanusPowerModel, IModRightClickablePower
+public sealed class BlackCatSealPower : JanusPowerModel
 {
+    private static readonly RitsuLibManagedNetActionDescriptor<RightClickPayload> RightClickDescriptor = new(
+        MainFile.ModId,
+        "black_cat_seal_explode_by_combat_id",
+        SerializeRightClickPayload,
+        DeserializeRightClickPayload,
+        ExecuteManagedRightClick,
+        GameActionType.CombatPlayPhaseOnly);
+
+    private static readonly BlackCatSealRightClickHandler RightClickHandler = new();
+    private static int _rightClickRegistered;
+
     public override PowerType Type => PowerType.Debuff;
     public override PowerStackType StackType => PowerStackType.Counter;
 
     private const string FinalDmgKey = "JanusSpire2_BlackCat_FinalDmg";
+
+    internal static void RegisterSynchronizedRightClick()
+    {
+        if (Interlocked.Exchange(ref _rightClickRegistered, 1) != 0)
+        {
+            return;
+        }
+
+        RitsuLibManagedNetActions.Register(RightClickDescriptor);
+        ModRightClickRegistry.Register(RightClickHandler);
+    }
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DynamicVar(FinalDmgKey, 0m)
@@ -61,27 +88,63 @@ public sealed class BlackCatSealPower : JanusPowerModel, IModRightClickablePower
         return 1M + 0.05M * this.Amount;
     }
     
-    public async Task OnRightClick(ModRightClickExecutionContext context)
+    private bool CanExecuteRightClick()
     {
-        ArgumentNullException.ThrowIfNull(context.PlayerChoiceContext);
+        return Owner.Powers.Contains(this) &&
+               Owner.CombatId.HasValue &&
+               !Owner.IsDead &&
+               CombatManager.Instance.IsInProgress &&
+               !CombatManager.Instance.IsOverOrEnding;
+    }
 
+    private async Task ExecuteRightClick(GameActionPlayerChoiceContext choiceContext)
+    {
         BreakAndRunPower? breakAndRun = Owner.GetPower<BreakAndRunPower>();
         if (breakAndRun != null)
         {
-            await breakAndRun.BeforeBlackCatSealDamage(context.PlayerChoiceContext);
+            await breakAndRun.BeforeBlackCatSealDamage(choiceContext);
         }
 
         var dmg = new DamageVar(Amount * 2, ValueProp.Unpowered);
-        await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), Owner, dmg, Owner);
+        await CreatureCmd.Damage(choiceContext, Owner, dmg, Owner);
         
-        await TriggerAfterBlackCatSealExplode(context.PlayerChoiceContext, new BlackCatSealExplodeContext
+        await TriggerAfterBlackCatSealExplode(choiceContext, new BlackCatSealExplodeContext
         {
-            ChoiceContext = context.PlayerChoiceContext,
+            ChoiceContext = choiceContext,
             Owner = Owner,
             Applier = Applier
         });
         
         await PowerCmd.Remove(this);
+    }
+
+    private static byte[] SerializeRightClickPayload(RightClickPayload payload)
+    {
+        var writer = new PacketWriter { WarnOnGrow = false };
+        writer.WriteUInt(payload.OwnerCombatId);
+        writer.ZeroByteRemainder();
+        return [.. writer.Buffer.AsSpan(0, writer.BytePosition)];
+    }
+
+    private static RightClickPayload DeserializeRightClickPayload(ReadOnlySpan<byte> bytes)
+    {
+        var reader = new PacketReader();
+        reader.Reset(bytes.ToArray());
+        return new(reader.ReadUInt());
+    }
+
+    private static async Task ExecuteManagedRightClick(
+        RitsuLibManagedNetActionContext<RightClickPayload> context)
+    {
+        Creature? owner = context.Player.Creature.CombatState?
+            .GetCreature(context.Message.OwnerCombatId);
+        BlackCatSealPower? power = owner?.GetPower<BlackCatSealPower>();
+        if (power == null || !power.CanExecuteRightClick())
+        {
+            return;
+        }
+
+        await power.ExecuteRightClick(context.PlayerChoiceContext);
     }
     
     public static async Task TriggerAfterBlackCatSealExplode(
@@ -120,5 +183,29 @@ public sealed class BlackCatSealPower : JanusPowerModel, IModRightClickablePower
         }
 
         return hooks;
+    }
+
+    private readonly record struct RightClickPayload(uint OwnerCombatId);
+
+    private sealed class BlackCatSealRightClickHandler : IModRightClickHandler
+    {
+        public int Priority => 100;
+
+        public bool TryHandle(ModRightClickContext context)
+        {
+            if (context.Model is not BlackCatSealPower power ||
+                context.Trigger.Source != ModRightClickSource.Power ||
+                !power.CanExecuteRightClick() ||
+                power.Owner.CombatId is not { } ownerCombatId)
+            {
+                return false;
+            }
+
+            return RitsuLibManagedNetActions.Request(
+                RunManager.Instance,
+                RightClickDescriptor,
+                new(ownerCombatId),
+                context.Player.NetId);
+        }
     }
 }

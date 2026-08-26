@@ -2,7 +2,9 @@
 using MegaCrit.Sts2.Core.Entities.Cards;
 using JanusSpire2.JanusSpire2Code.Cards.Token;
 using JanusSpire2.JanusSpire2Code.Keywords;
+using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -16,6 +18,11 @@ public sealed class ConcealGatherings() : JanusCardModel(1, CardType.Attack, Car
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DamageVar(7M, ValueProp.Move),
         ModCardVars.Int("BlackCatSeal", 2)
+    ];
+    
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
+        HoverTipFactory.FromPower<BlackCatSealPower>(),
+        HoverTipFactory.FromCard<CatSticker>()
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords =>

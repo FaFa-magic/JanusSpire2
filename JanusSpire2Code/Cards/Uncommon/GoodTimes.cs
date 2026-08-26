@@ -3,6 +3,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using JanusSpire2.JanusSpire2Code.Keywords;
 using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using STS2RitsuLib.Cards.DynamicVars;
@@ -14,6 +15,9 @@ public sealed class GoodTimes() : JanusCardModel(0, CardType.Power, CardRarity.U
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Transcribe];
 
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
+        [HoverTipFactory.FromPower<GoodTimesPower>()];
+    
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         ModCardVars.Int("GoodTimes", 1),
         new EnergyVar(1),

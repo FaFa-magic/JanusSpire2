@@ -4,6 +4,7 @@ using JanusSpire2.JanusSpire2Code.Keywords;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using STS2RitsuLib.Cards.DynamicVars;
@@ -18,6 +19,9 @@ public sealed class LittleCute() : JanusCardModel(1, CardType.Skill, CardRarity.
         ModCardVars.Int("LittleCute", 1),
         ModCardVars.Int("BlackCatSeal", 4)
     ];
+    
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
+        [HoverTipFactory.FromPower<BlackCatSealPower>()];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

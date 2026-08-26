@@ -3,6 +3,7 @@ using JanusSpire2.JanusSpire2Code.Keywords;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Factories;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
@@ -11,6 +12,9 @@ public sealed class FlowerCrossing() : JanusCardModel(0, CardType.Skill, CardRar
 {
     protected override bool HasEnergyCostX => true;
 
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
+        [HoverTipFactory.FromKeyword(JanusKeywords.Record)];
+    
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         int amount = ResolveEnergyXValue();

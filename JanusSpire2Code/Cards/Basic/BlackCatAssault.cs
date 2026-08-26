@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using JanusSpire2.JanusSpire2Code.Characters;
 using JanusSpire2.JanusSpire2Code.Keywords;
 using JanusSpire2.JanusSpire2Code.Powers;
+using MegaCrit.Sts2.Core.HoverTips;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
 
@@ -17,9 +18,12 @@ public sealed class BlackCatAssault() : JanusCardModel(1, CardType.Attack, CardR
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Counterattack];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(9M, ValueProp.Move),
-        ModCardVars.Int("BlackCatSeal", 1)
+        new DamageVar(7M, ValueProp.Move),
+        ModCardVars.Int("BlackCatSeal", 1M)
     ];
+    
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
+        [HoverTipFactory.FromPower<BlackCatSealPower>()];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -32,5 +36,5 @@ public sealed class BlackCatAssault() : JanusCardModel(1, CardType.Attack, CardR
         await PowerCmd.Apply<BlackCatSealPower>(choiceContext, cardPlay.Target, DynamicVars["BlackCatSeal"].BaseValue, base.Owner.Creature, this);
     }
     
-    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(4M);
+    protected override void OnUpgrade() => DynamicVars["BlackCatSeal"].UpgradeValueBy(2M);
 }

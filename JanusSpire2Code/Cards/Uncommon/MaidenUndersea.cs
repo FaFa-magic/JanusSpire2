@@ -16,7 +16,10 @@ public sealed class MaidenUndersea() : JanusCardModel(0, CardType.Skill, CardRar
         new DynamicVar("SwiftAmount", 3M)
     ];
 
-    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<Wave>()];
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
+        HoverTipFactory.FromCard<Wave>(),
+        ..HoverTipFactory.FromEnchantment<Swift>()
+    ];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

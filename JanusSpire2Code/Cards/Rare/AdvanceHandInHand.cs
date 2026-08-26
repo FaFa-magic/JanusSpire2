@@ -31,6 +31,7 @@ public sealed class AdvanceHandInHand() : JanusCardModel(1, CardType.Attack, Car
     private static decimal CountDistinctCardNames(CardModel card, Creature? _)
     {
         return card.Owner.PlayerCombatState!.AllCards
+            .Where(otherCard => otherCard is not JanusRecordMappingCard)
             .Select(otherCard => otherCard.Id)
             .Distinct()
             .Count();

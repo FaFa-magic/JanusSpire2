@@ -41,9 +41,9 @@ public sealed class RemedyStrike() : JanusRecordCardModel(2, CardType.Attack, Ca
             power is not ITemporaryPower &&
             power.GetTypeForAmount(amount) == PowerType.Debuff)
         {
-            EnableTake();
             EnergyCost.SetUntilPlayed(0);
             SetStarCostUntilPlayed(0);
+            EnableTake();
         }
 
         return Task.CompletedTask;

@@ -1,7 +1,9 @@
 using JanusSpire2.JanusSpire2Code.Cards.Ancient;
 using JanusSpire2.JanusSpire2Code.Cards.Common;
 using JanusSpire2.JanusSpire2Code.Cards.Rare;
+using JanusSpire2.JanusSpire2Code.Cards;
 using JanusSpire2.JanusSpire2Code.Keywords;
+using JanusSpire2.JanusSpire2Code.Patches;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -9,11 +11,13 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Models;
+using JanusSpire2.JanusSpire2Code.Relics;
 
 namespace JanusSpire2.JanusSpire2Code.Singleton;
 
@@ -35,6 +39,94 @@ public class JanusSingleton : HookedSingletonModel
     {
         _counterattackTriggerCounts.Clear();
         _activeAttackCommands.Clear();
+        foreach (Player player in CurrentCombatState?.Players ?? [])
+        {
+            RecordExtraHandManager.SyncPlayer(player);
+        }
+        return Task.CompletedTask;
+    }
+
+    public override async Task AfterSideTurnEndLate(
+        PlayerChoiceContext choiceContext,
+        CombatSide side,
+        IEnumerable<Creature> participants)
+    {
+        if (side != CombatSide.Enemy || CurrentCombatState == null)
+        {
+            return;
+        }
+
+        foreach (Player player in CurrentCombatState.Players)
+        {
+            if (player.Relics.All(relic => relic is not ISkipPlayerFlushRelic))
+            {
+                continue;
+            }
+
+            await FlushDelayedHand(choiceContext, CurrentCombatState, player);
+        }
+    }
+
+    private static async Task FlushDelayedHand(
+        PlayerChoiceContext choiceContext,
+        ICombatState combatState,
+        Player player)
+    {
+        if (player.Creature.IsDead || player.PlayerCombatState == null)
+        {
+            return;
+        }
+
+        CardPile hand = PileType.Hand.GetPile(player);
+        List<CardModel> cardsToFlush = [];
+        List<CardModel> cardsToRetain = [];
+        bool shouldFlush = Hook.ShouldFlush(combatState, player);
+
+        foreach (CardModel card in hand.Cards.ToArray())
+        {
+            if (!shouldFlush || card.ShouldRetainThisTurn)
+            {
+                cardsToRetain.Add(card);
+            }
+            else
+            {
+                cardsToFlush.Add(card);
+            }
+        }
+
+        List<CardModel> flushedCards = [];
+        foreach (CardModel card in cardsToFlush)
+        {
+            if (!ReferenceEquals(card.Pile, hand))
+            {
+                continue;
+            }
+
+            CardPileAddResult result = await CardPileCmd.Add(card, PileType.Discard);
+            if (result.success)
+            {
+                flushedCards.Add(card);
+            }
+        }
+
+        await Hook.AfterFlush(
+            combatState,
+            player,
+            choiceContext,
+            flushedCards,
+            cardsToRetain);
+    }
+
+    public override Task AfterCardChangedPiles(
+        CardModel card,
+        PileType oldPileType,
+        AbstractModel? clonedBy)
+    {
+        if (card is not JanusRecordMappingCard && card.Owner?.PlayerCombatState != null)
+        {
+            RecordExtraHandManager.SyncPlayer(card.Owner);
+        }
+
         return Task.CompletedTask;
     }
 
@@ -152,7 +244,7 @@ public class JanusSingleton : HookedSingletonModel
         }
     }
 
-    public override async Task AfterCardExhausted(
+    public override Task AfterCardExhausted(
         PlayerChoiceContext choiceContext,
         CardModel card,
         bool causedByEthereal)
@@ -162,40 +254,11 @@ public class JanusSingleton : HookedSingletonModel
             !card.Keywords.Contains(JanusKeywords.Sticker) ||
             !card.IsUpgradable)
         {
-            return;
+            return Task.CompletedTask;
         }
 
-        List<CardModel> matchingStickers = PileType.Exhaust.GetPile(card.Owner).Cards
-            .Where(candidate =>
-                candidate.Id == card.Id &&
-                candidate.CurrentUpgradeLevel == card.CurrentUpgradeLevel &&
-                candidate.Keywords.Contains(JanusKeywords.Sticker))
-            .Take(StickerMergeCount)
-            .ToList();
-
-        if (matchingStickers.Count < StickerMergeCount)
-        {
-            return;
-        }
-
-        ICombatState? combatState = card.CombatState;
-        if (combatState == null)
-        {
-            return;
-        }
-
-        CardModel upgradedSticker = combatState.CreateCard(ModelDb.GetById<CardModel>(card.Id), card.Owner);
-        for (int i = 0; i <= card.CurrentUpgradeLevel; i++)
-        {
-            CardCmd.Upgrade(upgradedSticker, CardPreviewStyle.None);
-        }
-
-        await CardPileCmd.RemoveFromCombat(matchingStickers);
-        CardPileAddResult result = await CardPileCmd.AddGeneratedCardToCombat(
-            upgradedSticker,
-            MainFile.Diary,
-            card.Owner);
-        CardCmd.PreviewCardPileAdd(result, 0.2F);
+        StickerMergeAction.Request(card, StickerMergeCount);
+        return Task.CompletedTask;
     }
 
     public override CardLocation ModifyCardPlayResultLocation(

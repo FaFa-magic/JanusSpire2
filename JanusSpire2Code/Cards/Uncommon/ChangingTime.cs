@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
@@ -18,6 +19,8 @@ public sealed class ChangingTime() : JanusCardModel(2, CardType.Skill, CardRarit
         new BlockVar(8M, ValueProp.Move | ValueProp.Unpowered)
     ];
 
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.Static(StaticHoverTip.Block)];
+    
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Record];
     
     public override async Task AfterCardChangedPiles(

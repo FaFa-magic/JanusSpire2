@@ -10,7 +10,7 @@ namespace JanusSpire2.JanusSpire2Code.Relics;
 
 public sealed class Camera : JanusRelicModel
 {
-    public override RelicRarity Rarity => RelicRarity.Shop;
+    public override RelicRarity Rarity => RelicRarity.Rare;
 
     protected override IEnumerable<string> RegisteredKeywordIds =>
     [

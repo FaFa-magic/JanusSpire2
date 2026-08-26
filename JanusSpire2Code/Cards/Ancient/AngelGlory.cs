@@ -51,7 +51,10 @@ public sealed class AngelGlory() : JanusRecordCardModel(0, CardType.Skill, CardR
     ];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
-        [HoverTipFactory.FromPower<AngelGloryPower>()];
+    [
+        HoverTipFactory.FromPower<AngelGloryPower>(),
+        HoverTipFactory.Static(StaticHoverTip.Block)
+    ];
 
     public override Task BeforeCombatStart()
     {

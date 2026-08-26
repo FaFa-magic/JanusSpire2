@@ -12,5 +12,5 @@
   "JANUS_SPIRE2_KEYWORD_RECORD.title" : "记录",
   "JANUS_SPIRE2_KEYWORD_RECORD.description" : "打出后若不[gold]消耗[/gold]，则加入[gold]日记本[/gold]。",
   "JANUS_SPIRE2_KEYWORD_RECOLLECTION.title" : "回忆",
-  "JANUS_SPIRE2_KEYWORD_RECOLLECTION.description" : "在[gold]日记本[/gold]中满足后续条件后，可以[gold]右键[/gold]将其加入手牌，打出这张卡时条件会被重置。"
+  "JANUS_SPIRE2_KEYWORD_RECOLLECTION.description" : "在[gold]日记本[/gold]中满足后续条件后，其投影会自动出现在[gold]额外手牌区[/gold]，可将其从日记本中打出，打出后条件会被重置。"
 }

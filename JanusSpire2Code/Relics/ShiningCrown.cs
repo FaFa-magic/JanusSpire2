@@ -3,6 +3,7 @@ using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -19,6 +20,11 @@ public sealed class ShiningCrown : JanusRelicModel, ISkipPlayerFlushRelic
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         ModCardVars.Int(SmokeVar, 1)
     ];
+
+    public override bool ShouldFlush(Player player)
+    {
+        return player != Owner || Owner.Creature.CombatState?.CurrentSide != CombatSide.Player;
+    }
     
     public override async Task BeforeSideTurnStart(PlayerChoiceContext choiceContext, CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
     {
