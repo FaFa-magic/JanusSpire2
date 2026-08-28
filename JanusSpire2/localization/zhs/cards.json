@@ -211,7 +211,7 @@
   "JANUS_SPIRE2_CARD_CAT_STICKER.title": "猫猫贴纸",
   "JANUS_SPIRE2_CARD_CAT_STICKER.description": "可无限升级。\n造成{Damage:diff()}点伤害。\n给予{BlackCatSeal:diff()}层[gold]黑猫之印[/gold]。\n[gold]回忆[/gold]:这张牌生成时。",
   "JANUS_SPIRE2_CARD_FLOWERS_IN_THE_MIRROR.title": "镜花水月",
-  "JANUS_SPIRE2_CARD_FLOWERS_IN_THE_MIRROR.description": "下{FlowersInTheMirror:diff()}次打出能生成卡牌的牌时，额外生成等量的复制牌到[b][gold]日记本[/gold][/b]中。\n[gold]回忆[/gold]:每回合开始时。",
+  "JANUS_SPIRE2_CARD_FLOWERS_IN_THE_MIRROR.description": "本回合下{FlowersInTheMirror:diff()}次打出能生成卡牌的牌时，额外生成等量的复制牌到[b][gold]日记本[/gold][/b]中。\n[gold]回忆[/gold]:每回合开始时。",
   "JANUS_SPIRE2_CARD_SMOKE_EMITTER.title": "烟雾发生器",
   "JANUS_SPIRE2_CARD_SMOKE_EMITTER.description": "任一目标获得{Smoke:diff()}层[gold]烟雾[/gold]。",
   "JANUS_SPIRE2_CARD_STICKY_NOTES.title": "便签贴",
