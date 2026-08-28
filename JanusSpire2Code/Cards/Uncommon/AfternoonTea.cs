@@ -18,7 +18,7 @@ public sealed class AfternoonTea() : JanusCardModel(1, CardType.Power, CardRarit
         CardCmd.PreviewCardPileAdd(await CardPileCmd.AddGeneratedCardToCombat(card, MainFile.Diary, base.Owner), 0.2f);
         if (card is JanusRecordCardModel recordCard)
         {
-            recordCard.EnableTake();
+            await recordCard.EnableTake();
         }
     }
     

@@ -80,14 +80,12 @@ public sealed class CatSticker() : JanusRecordCardModel(0, CardType.Attack, Card
         return list;
     }
 
-    public override Task AfterCardGeneratedForCombat(CardModel card, Player? creator)
+    public override async Task AfterCardGeneratedForCombat(CardModel card, Player? creator)
     {
         if (card == this && Pile?.Type == MainFile.Diary)
         {
-            EnableTake();
+            await EnableTake();
         }
-
-        return Task.CompletedTask;
     }
 
     public override Task AfterCardChangedPiles(

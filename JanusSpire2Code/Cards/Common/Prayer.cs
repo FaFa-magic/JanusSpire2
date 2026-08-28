@@ -30,13 +30,11 @@ public sealed class Prayer() : JanusRecordCardModel(0, CardType.Skill, CardRarit
         }
     }
 
-    public override Task AfterShuffle(PlayerChoiceContext choiceContext, Player shuffler)
+    public override async Task AfterShuffle(PlayerChoiceContext choiceContext, Player shuffler)
     {
         if (shuffler == Owner && Pile?.Type == MainFile.Diary)
         {
-            EnableTake();
+            await EnableTake();
         }
-
-        return Task.CompletedTask;
     }
 }

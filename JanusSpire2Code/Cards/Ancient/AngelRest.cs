@@ -49,32 +49,28 @@ public sealed class AngelRest() : JanusRecordCardModel(0, CardType.Skill, CardRa
         new DynamicVar(CardsGeneratedKey, CardsGeneratedThisCombat)
     ];
 
-    public override Task BeforeCombatStart()
+    public override async Task BeforeCombatStart()
     {
         if (CombatState != null)
         {
             CardsGeneratedThisCombat = 0;
-            DisableTake();
+            await DisableTake();
         }
-
-        return Task.CompletedTask;
     }
 
-    public override Task AfterCardGeneratedForCombat(CardModel card, Player? creator)
+    public override async Task AfterCardGeneratedForCombat(CardModel card, Player? creator)
     {
         if (CombatState == null || creator != Owner)
         {
-            return Task.CompletedTask;
+            return;
         }
 
         CardsGeneratedThisCombat++;
         if (Pile?.Type == MainFile.Diary &&
             CardsGeneratedThisCombat >= DynamicVars[CardGenerationThresholdKey].BaseValue)
         {
-            EnableTake();
+            await EnableTake();
         }
-
-        return Task.CompletedTask;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

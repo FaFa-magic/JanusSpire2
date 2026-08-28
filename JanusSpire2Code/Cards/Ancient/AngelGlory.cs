@@ -56,18 +56,16 @@ public sealed class AngelGlory() : JanusRecordCardModel(0, CardType.Skill, CardR
         HoverTipFactory.Static(StaticHoverTip.Block)
     ];
 
-    public override Task BeforeCombatStart()
+    public override async Task BeforeCombatStart()
     {
         if (CombatState != null)
         {
             BlockGainedThisCombat = 0;
-            DisableTake();
+            await DisableTake();
         }
-
-        return Task.CompletedTask;
     }
 
-    public override Task AfterBlockGained(
+    public override async Task AfterBlockGained(
         Creature creature,
         decimal amount,
         ValueProp props,
@@ -75,17 +73,15 @@ public sealed class AngelGlory() : JanusRecordCardModel(0, CardType.Skill, CardR
     {
         if (CombatState == null || creature != Owner.Creature || amount <= 0M)
         {
-            return Task.CompletedTask;
+            return;
         }
 
         BlockGainedThisCombat += decimal.ToInt32(decimal.Floor(amount));
         if (Pile?.Type == MainFile.Diary &&
             BlockGainedThisCombat >= DynamicVars[BlockGainThresholdKey].BaseValue)
         {
-            EnableTake();
+            await EnableTake();
         }
-
-        return Task.CompletedTask;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

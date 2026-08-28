@@ -20,14 +20,12 @@ public sealed class BedsideHeartbeat() : JanusRecordCardModel(0, CardType.Skill,
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
     }
     
-    public override Task BeforeCombatStart()
+    public override async Task BeforeCombatStart()
     {
         if (Pile?.Type == MainFile.Diary)
         {
-            EnableTake();
+            await EnableTake();
         }
-
-        return Task.CompletedTask;
     }
     
     protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(3M);

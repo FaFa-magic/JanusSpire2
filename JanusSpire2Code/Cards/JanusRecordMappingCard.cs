@@ -1,8 +1,11 @@
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.CardPools;
 using MegaCrit.Sts2.Core.Saves.Runs;
+using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Models.Capabilities;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -12,11 +15,17 @@ namespace JanusSpire2.JanusSpire2Code.Cards;
 /// Presentation-only handle for a Record card that remains in the Diary.
 /// It deliberately owns no Record keywords, dynamic variables, enchantments, or card hooks.
 /// </summary>
+[RegisterCard(typeof(TokenCardPool))]
 public sealed class JanusRecordMappingCard : JanusCardModel,
     ICardEnergyCostContributor,
-    ICardStarCostContributor,
-    ICardPlayStateContributor
+    ICardStarCostContributor
 {
+    // Keep the presentation model out of JanusCardPool and every random-generation path. It is
+    // constructed explicitly by RecordExtraHandManager and never offered as a real card.
+    public override bool CanBeGeneratedInCombat => false;
+
+    public override bool CanBeGeneratedByModifiers => false;
+
     [SavedProperty]
     public int OriginalRecordMappingKey { get; set; }
 
@@ -70,6 +79,13 @@ public sealed class JanusRecordMappingCard : JanusCardModel,
         this.RequestVisualReload();
     }
 
+    internal void Unbind()
+    {
+        Original = null;
+        OriginalRecordMappingKey = 0;
+        this.RequestVisualReload();
+    }
+
     public int ModifyEnergyCost(CardModel card, int currentCost, CostModifiers modifiers)
     {
         return Original?.EnergyCost.GetWithModifiers(modifiers) ?? currentCost;
@@ -80,9 +96,9 @@ public sealed class JanusRecordMappingCard : JanusCardModel,
         return Original?.GetStarCostWithModifiers() ?? currentCost;
     }
 
-    public bool? CanPlay(CardModel card)
+    public override Task OnEnqueuePlayVfx(Creature? target)
     {
-        return IsOriginalAvailable() && Original!.CanPlay();
+        return Original?.OnEnqueuePlayVfx(target) ?? Task.CompletedTask;
     }
 
     protected override void AddExtraArgsToDescription(LocString description)

@@ -31,14 +31,12 @@ public sealed class FlowersInTheMirror() : JanusRecordCardModel(0, CardType.Skil
             this);
     }
 
-    public override Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
+    public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
     {
         if (participants.Contains(Owner.Creature) && Pile?.Type == MainFile.Diary)
         {
-            EnableTake();
+            await EnableTake();
         }
-
-        return Task.CompletedTask;
     }
     
     protected override void OnUpgrade()

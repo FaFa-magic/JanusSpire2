@@ -34,6 +34,7 @@ public static class MainFile
 	public static Logger Logger { get; private set; } = null!;
 		
 	public static PileType Diary;
+	public static PileType RecordMappingStorage;
 	public static PileType RecordExtraHand;
 	
 	public static void Initialize()
@@ -73,6 +74,13 @@ public static class MainFile
 			VisibleWhen = ctx => ctx.Player != null && ctx.Pile is { Cards.Count: > 0 },
 		}).PileType;
 
+		RecordMappingStorage = registry.RegisterOwned("record_mapping_storage", new ModCardPileSpec
+		{
+			Scope = ModCardPileScope.CombatOnly,
+			Style = ModCardPileUiStyle.Headless,
+			CardShouldBeVisible = false,
+		}).PileType;
+
 		RecordExtraHand = registry.RegisterOwned("record_extra_hand", new ModCardPileSpec
 		{
 			Scope = ModCardPileScope.CombatOnly,
@@ -104,11 +112,11 @@ public static class MainFile
 		patcher.RegisterPatch<UnceasingTopCombatStartPatch>();
 		patcher.RegisterPatch<ForcedPotionTargetingPatch>();
 		patcher.RegisterPatch<RecordMappingAllCardsPatch>();
-		patcher.RegisterPatch<RecordMappingTargetingStatePatch>();
-		patcher.RegisterPatch<RecordMappingCardPlayPatch>();
-		patcher.RegisterPatch<RecordMappingActionEnqueuePatch>();
-		patcher.RegisterPatch<RecordMappingLocalQueueVisualPatch>();
-		patcher.RegisterPatch<RecordMappingPlayActionPatch>();
+		patcher.RegisterPatch<RecordMappingHookListenersPatch>();
+		patcher.RegisterPatch<RecordMappingPileHookPatch>();
+		patcher.RegisterPatch<RecordMappingCanPlayPatch>();
+		patcher.RegisterPatch<RecordMappingSpendResourcesPatch>();
+		patcher.RegisterPatch<RecordMappingPlayBridgePatch>();
 
 		if (!patcher.PatchAll())
 			throw new InvalidOperationException("Critical patches failed.");

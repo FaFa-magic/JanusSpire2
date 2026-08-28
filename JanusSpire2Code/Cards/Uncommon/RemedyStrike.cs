@@ -29,7 +29,7 @@ public sealed class RemedyStrike() : JanusRecordCardModel(2, CardType.Attack, Ca
             .Execute(choiceContext);
     }
 
-    public override Task AfterPowerAmountChanged(
+    public override async Task AfterPowerAmountChanged(
         PlayerChoiceContext choiceContext,
         PowerModel power,
         decimal amount,
@@ -43,10 +43,8 @@ public sealed class RemedyStrike() : JanusRecordCardModel(2, CardType.Attack, Ca
         {
             EnergyCost.SetUntilPlayed(0);
             SetStarCostUntilPlayed(0);
-            EnableTake();
+            await EnableTake();
         }
-
-        return Task.CompletedTask;
     }
     
     protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(4M);

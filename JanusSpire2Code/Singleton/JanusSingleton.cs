@@ -24,8 +24,6 @@ namespace JanusSpire2.JanusSpire2Code.Singleton;
 [RegisterSingleton]
 public class JanusSingleton : HookedSingletonModel
 {
-    private const int StickerMergeCount = 4;
-
     private readonly Dictionary<CardModel, (int TurnNumber, int TriggerCount)> _counterattackTriggerCounts = new();
     private readonly List<AttackCommand> _activeAttackCommands = [];
 
@@ -35,15 +33,14 @@ public class JanusSingleton : HookedSingletonModel
     {
     }
 
-    public override Task BeforeCombatStart()
+    public override async Task BeforeCombatStart()
     {
         _counterattackTriggerCounts.Clear();
         _activeAttackCommands.Clear();
         foreach (Player player in CurrentCombatState?.Players ?? [])
         {
-            RecordExtraHandManager.SyncPlayer(player);
+            await RecordExtraHandManager.SyncPlayer(player);
         }
-        return Task.CompletedTask;
     }
 
     public override async Task AfterSideTurnEndLate(
@@ -117,17 +114,15 @@ public class JanusSingleton : HookedSingletonModel
             cardsToRetain);
     }
 
-    public override Task AfterCardChangedPiles(
+    public override async Task AfterCardChangedPiles(
         CardModel card,
         PileType oldPileType,
         AbstractModel? clonedBy)
     {
         if (card is not JanusRecordMappingCard && card.Owner?.PlayerCombatState != null)
         {
-            RecordExtraHandManager.SyncPlayer(card.Owner);
+            await RecordExtraHandManager.SyncPlayer(card.Owner);
         }
-
-        return Task.CompletedTask;
     }
 
     public override Task BeforeAttack(AttackCommand command)
@@ -257,7 +252,7 @@ public class JanusSingleton : HookedSingletonModel
             return Task.CompletedTask;
         }
 
-        StickerMergeAction.Request(card, StickerMergeCount);
+        StickerMergeAction.Request(card);
         return Task.CompletedTask;
     }
 

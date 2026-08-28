@@ -46,14 +46,12 @@ public sealed class Collection() : JanusRecordCardModel(0, CardType.Attack, Card
             this);
     }
 
-    public override Task AfterShuffle(PlayerChoiceContext choiceContext, Player shuffler)
+    public override async Task AfterShuffle(PlayerChoiceContext choiceContext, Player shuffler)
     {
         if (shuffler == Owner && Pile?.Type == MainFile.Diary)
         {
-            EnableTake();
+            await EnableTake();
         }
-
-        return Task.CompletedTask;
     }
 
     protected override void OnUpgrade()

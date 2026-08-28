@@ -37,7 +37,6 @@ public abstract class JanusRecordCardModel : JanusCardModel, ICardOverlayContrib
 
             _canTake = value;
             this.RequestVisualReload();
-            RecordExtraHandManager.SyncFor(this);
         }
     }
 
@@ -46,14 +45,16 @@ public abstract class JanusRecordCardModel : JanusCardModel, ICardOverlayContrib
     {
     }
 
-    public void EnableTake()
+    public async Task EnableTake()
     {
         CanTake = true;
+        await RecordExtraHandManager.SyncFor(this);
     }
 
-    public void DisableTake()
+    public async Task DisableTake()
     {
         CanTake = false;
+        await RecordExtraHandManager.SyncFor(this);
     }
 
     public IEnumerable<CardOverlayContribution> GetCardOverlays(CardOverlayContext context)
@@ -73,14 +74,12 @@ public abstract class JanusRecordCardModel : JanusCardModel, ICardOverlayContrib
         ];
     }
 
-    public override Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+    public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         if (cardPlay.Card == this)
         {
-            DisableTake();
+            await DisableTake();
         }
-
-        return Task.CompletedTask;
     }
 
     private static TextureRect CreateCanTakeIcon()

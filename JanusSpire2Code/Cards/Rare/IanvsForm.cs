@@ -20,7 +20,7 @@ public sealed class IanvsForm() : JanusCardModel(3, CardType.Power, CardRarity.R
         CardCmd.PreviewCardPileAdd(await CardPileCmd.AddGeneratedCardToCombat(card, MainFile.Diary, base.Owner), 0.2f);
         if (card is JanusRecordCardModel recordCard)
         {
-            recordCard.EnableTake();
+            await recordCard.EnableTake();
         }
     }
     

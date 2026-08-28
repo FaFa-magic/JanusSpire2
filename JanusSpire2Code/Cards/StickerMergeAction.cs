@@ -14,6 +14,8 @@ namespace JanusSpire2.JanusSpire2Code.Cards;
 
 internal static class StickerMergeAction
 {
+    private const int RequiredCopies = 4;
+
     private static readonly RitsuLibManagedNetActionDescriptor<MergePayload> Descriptor = new(
         MainFile.ModId,
         "merge_exhausted_stickers",
@@ -32,10 +34,9 @@ internal static class StickerMergeAction
         }
     }
 
-    internal static bool Request(CardModel trigger, int mergeCount)
+    internal static bool Request(CardModel trigger)
     {
-        if (mergeCount <= 0 ||
-            trigger.Pile?.Type != PileType.Exhaust ||
+        if (trigger.Pile?.Type != PileType.Exhaust ||
             !trigger.Keywords.Contains(JanusKeywords.Sticker) ||
             !trigger.IsUpgradable)
         {
@@ -47,7 +48,7 @@ internal static class StickerMergeAction
             card.CurrentUpgradeLevel == trigger.CurrentUpgradeLevel &&
             card.Keywords.Contains(JanusKeywords.Sticker) &&
             card.IsUpgradable);
-        if (matchingCount < mergeCount)
+        if (matchingCount < RequiredCopies)
         {
             return false;
         }
@@ -56,7 +57,7 @@ internal static class StickerMergeAction
         return RitsuLibManagedNetActions.Request(
             RunManager.Instance,
             Descriptor,
-            new(trigger.Id, trigger.CurrentUpgradeLevel, mergeCount),
+            new(trigger.Id, trigger.CurrentUpgradeLevel),
             trigger.Owner.NetId);
     }
 
@@ -65,7 +66,6 @@ internal static class StickerMergeAction
         var writer = new PacketWriter { WarnOnGrow = false };
         writer.WriteFullModelId(payload.CardId);
         writer.WriteInt(payload.UpgradeLevel);
-        writer.WriteInt(payload.MergeCount);
         writer.ZeroByteRemainder();
         return [.. writer.Buffer.AsSpan(0, writer.BytePosition)];
     }
@@ -74,7 +74,7 @@ internal static class StickerMergeAction
     {
         var reader = new PacketReader();
         reader.Reset(bytes.ToArray());
-        return new(reader.ReadFullModelId(), reader.ReadInt(), reader.ReadInt());
+        return new(reader.ReadFullModelId(), reader.ReadInt());
     }
 
     private static async Task Execute(RitsuLibManagedNetActionContext<MergePayload> context)
@@ -84,7 +84,7 @@ internal static class StickerMergeAction
         if (combatState == null ||
             !CombatManager.Instance.IsInProgress ||
             CombatManager.Instance.IsOverOrEnding ||
-            payload.MergeCount <= 0)
+            payload.UpgradeLevel < 0)
         {
             return;
         }
@@ -95,14 +95,19 @@ internal static class StickerMergeAction
                 card.CurrentUpgradeLevel == payload.UpgradeLevel &&
                 card.Keywords.Contains(JanusKeywords.Sticker) &&
                 card.IsUpgradable)
-            .Take(payload.MergeCount)
+            .Take(RequiredCopies)
             .ToList();
-        if (matchingStickers.Count < payload.MergeCount)
+        if (matchingStickers.Count < RequiredCopies)
         {
             return;
         }
 
         CardModel canonical = ModelDb.GetById<CardModel>(payload.CardId);
+        if (!canonical.Keywords.Contains(JanusKeywords.Sticker))
+        {
+            return;
+        }
+
         CardModel upgradedSticker = combatState.CreateCard(canonical, context.Player);
         for (int i = 0; i <= payload.UpgradeLevel; i++)
         {
@@ -119,6 +124,5 @@ internal static class StickerMergeAction
 
     private readonly record struct MergePayload(
         ModelId CardId,
-        int UpgradeLevel,
-        int MergeCount);
+        int UpgradeLevel);
 }

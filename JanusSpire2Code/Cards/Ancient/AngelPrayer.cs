@@ -50,32 +50,28 @@ public sealed class AngelPrayer() : JanusRecordCardModel(0, CardType.Skill, Card
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
         [HoverTipFactory.FromPower<AngelPrayerPower>()];
 
-    public override Task BeforeCombatStart()
+    public override async Task BeforeCombatStart()
     {
         if (CombatState != null)
         {
             HpLostThisCombat = 0;
-            DisableTake();
+            await DisableTake();
         }
-
-        return Task.CompletedTask;
     }
 
-    public override Task AfterCurrentHpChanged(Creature creature, decimal delta)
+    public override async Task AfterCurrentHpChanged(Creature creature, decimal delta)
     {
         if (CombatState == null || creature != Owner.Creature || delta >= 0M)
         {
-            return Task.CompletedTask;
+            return;
         }
 
         HpLostThisCombat += decimal.ToInt32(-delta);
         if (Pile?.Type == MainFile.Diary &&
             HpLostThisCombat >= DynamicVars[HpLossThresholdKey].BaseValue)
         {
-            EnableTake();
+            await EnableTake();
         }
-
-        return Task.CompletedTask;
     }
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
