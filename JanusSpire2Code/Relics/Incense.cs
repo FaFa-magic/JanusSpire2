@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -16,7 +13,7 @@ public sealed class Incense : JanusRelicModel, IModRightClickableRelic
 {
     private bool _usedThisCombat;
 
-    public override RelicRarity Rarity => RelicRarity.Shop;
+    public override RelicRarity Rarity => RelicRarity.Rare;
 
     [SavedProperty]
     public bool UsedThisCombat

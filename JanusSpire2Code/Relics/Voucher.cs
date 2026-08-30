@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Merchant;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -17,7 +14,7 @@ public sealed class Voucher : JanusRelicModel
     private int _purchasesUsed;
     private bool _skipPurchaseThatObtainedThisRelic;
 
-    public override RelicRarity Rarity => RelicRarity.Shop;
+    public override RelicRarity Rarity => RelicRarity.Rare;
 
     public override bool IsUsedUp => PurchasesUsed >= MaxPurchases;
 

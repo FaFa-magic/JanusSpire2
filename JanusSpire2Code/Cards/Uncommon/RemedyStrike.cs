@@ -1,9 +1,5 @@
 ﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using JanusSpire2.JanusSpire2Code.Keywords;
 using MegaCrit.Sts2.Core.Factories;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -20,7 +16,7 @@ public sealed class RemedyStrike() : JanusCardModel(2, CardType.Attack, CardRari
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(9M, ValueProp.Move),
+        new DamageVar(13M, ValueProp.Move),
         new CardsVar(1)
     ];
 
@@ -67,5 +63,5 @@ public sealed class RemedyStrike() : JanusCardModel(2, CardType.Attack, CardRari
         await CardPileCmd.AddGeneratedCardsToCombat(generatedCards, PileType.Hand, Owner);
     }
     
-    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(4M);
+    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(5M);
 }

@@ -19,6 +19,6 @@ public sealed class EnergyDebuffPower : JanusPowerModel
         {
             return amount;
         }
-        return amount - (decimal)base.Amount;
+        return global::System.Math.Max(0M, amount - base.Amount);
     }
 }

@@ -11,7 +11,7 @@ using STS2RitsuLib.Combat.HandSize;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-public sealed class GoodTimes() : JanusCardModel(0, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+public sealed class GoodTimes() : JanusCardModel(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Transcribe];
 
@@ -20,19 +20,13 @@ public sealed class GoodTimes() : JanusCardModel(0, CardType.Power, CardRarity.U
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         ModCardVars.Int("GoodTimes", 1),
-        new EnergyVar(1),
-        new CardsVar(0)
+        new EnergyVar(1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         CardModel card = CreateClone();
         CardCmd.PreviewCardPileAdd(await CardPileCmd.AddGeneratedCardToCombat(card, MainFile.Diary, base.Owner), 0.2f);
-
-        if (DynamicVars.Cards.IntValue > 0)
-        {
-            await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, Owner);
-        }
     }
 
     public override async Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
@@ -71,6 +65,6 @@ public sealed class GoodTimes() : JanusCardModel(0, CardType.Power, CardRarity.U
             this);
         await PlayerCmd.GainEnergy(energyGain, Owner);
     }
-
-    protected override void OnUpgrade() => DynamicVars.Cards.UpgradeValueBy(3M);
+    
+    protected override void OnUpgrade() => EnergyCost.UpgradeBy(-1);
 }

@@ -5,11 +5,10 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using STS2RitsuLib.Cards.DynamicVars;
-using STS2RitsuLib.Combat.CardTargeting;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 
-public sealed class SmokeEmitter() : JanusTokenCardModel(0, CardType.Skill, CardRarity.Token, CustomTargetType.Anyone)
+public sealed class SmokeEmitter() : JanusTokenCardModel(0, CardType.Skill, CardRarity.Token, TargetType.AnyPlayer)
 {
     public override int MaxUpgradeLevel => 999;
 

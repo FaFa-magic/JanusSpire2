@@ -34,7 +34,9 @@ public sealed class GuardianAngel() : JanusCardModel(2, CardType.Power, CardRari
         modifiedCost = originalCost;
         if (Pile?.Type != MainFile.Diary ||
             card.Owner != Owner ||
-            !card.Keywords.Contains(JanusKeywords.Counterattack))
+            !card.Keywords.Contains(JanusKeywords.Counterattack) ||
+            !CombatManager.Instance.IsInProgress ||
+            CombatManager.Instance.IsPartOfPlayerTurn(Owner))
         {
             return false;
         }

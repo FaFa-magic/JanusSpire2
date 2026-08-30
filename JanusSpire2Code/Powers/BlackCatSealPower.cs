@@ -1,4 +1,3 @@
-using JanusSpire2.JanusSpire2Code.Interfaces;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -97,8 +96,13 @@ public sealed class BlackCatSealPower : JanusPowerModel
                !CombatManager.Instance.IsOverOrEnding;
     }
 
-    private async Task ExecuteRightClick(GameActionPlayerChoiceContext choiceContext)
+    internal async Task<bool> Bloom(PlayerChoiceContext choiceContext)
     {
+        if (!CanExecuteRightClick())
+        {
+            return false;
+        }
+
         BreakAndRunPower? breakAndRun = Owner.GetPower<BreakAndRunPower>();
         if (breakAndRun != null)
         {
@@ -107,15 +111,9 @@ public sealed class BlackCatSealPower : JanusPowerModel
 
         var dmg = new DamageVar(Amount * 2, ValueProp.Unpowered);
         await CreatureCmd.Damage(choiceContext, Owner, dmg, Owner);
-        
-        await TriggerAfterBlackCatSealExplode(choiceContext, new BlackCatSealExplodeContext
-        {
-            ChoiceContext = choiceContext,
-            Owner = Owner,
-            Applier = Applier
-        });
-        
+
         await PowerCmd.Remove(this);
+        return true;
     }
 
     private static byte[] SerializeRightClickPayload(RightClickPayload payload)
@@ -144,45 +142,7 @@ public sealed class BlackCatSealPower : JanusPowerModel
             return;
         }
 
-        await power.ExecuteRightClick(context.PlayerChoiceContext);
-    }
-    
-    public static async Task TriggerAfterBlackCatSealExplode(
-        PlayerChoiceContext choiceContext,
-        BlackCatSealExplodeContext context)
-    {
-        foreach (var hook in GetHooks<IAfterBlackCatSealExplode>(context.Owner, context.Applier))
-        {
-            await hook.AfterBlackCatSealExplode(choiceContext, context);
-        }
-    }
-
-    private static IReadOnlyList<T> GetHooks<T>(Creature owner, Creature? applier)
-    {
-        List<T> hooks = [];
-        var player = applier?.Player;
-        if (player?.PlayerCombatState != null)
-        {
-            foreach (var card in player.PlayerCombatState.AllCards)
-            {
-                if (card is T cardHook)
-                    hooks.Add(cardHook);
-            }
-
-            foreach (var relic in player.Relics)
-            {
-                if (relic is T relicHook)
-                    hooks.Add(relicHook);
-            }
-        }
-
-        foreach (var power in owner.Powers)
-        {
-            if (power is T powerHook)
-                hooks.Add(powerHook);
-        }
-
-        return hooks;
+        await power.Bloom(context.PlayerChoiceContext);
     }
 
     private readonly record struct RightClickPayload(uint OwnerCombatId);

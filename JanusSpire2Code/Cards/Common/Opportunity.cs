@@ -1,4 +1,3 @@
-﻿using JanusSpire2.JanusSpire2Code.Interfaces;
 using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -9,9 +8,13 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Common;
 
-public sealed class Opportunity() : JanusCardModel(0, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy), IAfterBlackCatSealExplode
+public sealed class Opportunity() : JanusCardModel(0, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(4M, ValueProp.Move)];
+    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    [
+        new DamageVar(6M, ValueProp.Move),
+        new CardsVar(2)
+    ];
     
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
         [HoverTipFactory.FromPower<BlackCatSealPower>()];
@@ -25,19 +28,15 @@ public sealed class Opportunity() : JanusCardModel(0, CardType.Attack, CardRarit
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
-    }
 
-    public async Task AfterBlackCatSealExplode(PlayerChoiceContext choiceContext, BlackCatSealExplodeContext context)
-    {
-        if (context.Applier?.Player != Owner ||
-            Pile?.IsCombatPile != true ||
-            Pile.Type == PileType.Hand)
+        BlackCatSealPower? blackCatSeal = cardPlay.Target.GetPower<BlackCatSealPower>();
+        if (blackCatSeal == null || !await blackCatSeal.Bloom(choiceContext))
         {
             return;
         }
 
-        await CardPileCmd.Add(this, PileType.Hand);
+        await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, Owner);
     }
-    
-    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(2M);
+
+    protected override void OnUpgrade() => DynamicVars.Cards.UpgradeValueBy(1M);
 }
