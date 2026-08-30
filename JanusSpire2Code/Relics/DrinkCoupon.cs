@@ -2,8 +2,10 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
+using MegaCrit.Sts2.Core.Factories;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Relics;
 
@@ -24,6 +26,18 @@ public sealed class DrinkCoupon : JanusRelicModel
 
         Flash();
         await PlayerCmd.GainMaxPotionCount(DynamicVars["PotionSlots"].IntValue, Owner);
+
+        while (Owner.HasOpenPotionSlots)
+        {
+            PotionModel potion = PotionFactory.CreateRandomPotionOutOfCombat(
+                Owner,
+                Owner.RunState.Rng.CombatPotionGeneration).ToMutable();
+
+            if (!(await PotionCmd.TryToProcure(potion, Owner)).success)
+            {
+                break;
+            }
+        }
     }
 
     public override IReadOnlyList<LocString> ModifyExtraRestSiteHealText(

@@ -16,7 +16,7 @@ public sealed class BlackCatUnleash() : JanusCardModel(3, CardType.Attack, CardR
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DamageVar(7M, ValueProp.Move),
-        ModCardVars.Int("BlackCatSeal", 1M)
+        ModCardVars.Int("BlackCatSeal", 2M)
     ];
     
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>

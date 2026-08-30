@@ -46,7 +46,7 @@ public sealed class AHurriedDayPower : JanusPowerModel
             choiceContext,
             Owner,
             damage,
-            ValueProp.Unblockable | ValueProp.Unpowered,
+            ValueProp.Unpowered,
             null,
             null);
     }

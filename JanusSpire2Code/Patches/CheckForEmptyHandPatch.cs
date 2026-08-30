@@ -28,15 +28,24 @@ public sealed class CheckForEmptyHandPatch : IPatchMethod
             })
     ];
 
-    [HarmonyPrefix]
-    public static bool Prefix(ref Task __result, CombatManager __instance, object __0, PlayerChoiceContext choiceContext, Player player)
+    [HarmonyPostfix]
+    public static void Postfix(ref Task __result, CombatManager __instance, object __0, PlayerChoiceContext choiceContext, Player player)
     {
-        __result = PostfixWrapper(__instance, __0, choiceContext, player);
-        return false;
+        __result = AfterVanillaCheck(__result, __instance, __0, choiceContext, player);
     }
 
-    private static async Task PostfixWrapper(CombatManager instance, object turnState, PlayerChoiceContext choiceContext, Player player)
+    private static async Task AfterVanillaCheck(
+        Task vanillaTask,
+        CombatManager instance,
+        object turnState,
+        PlayerChoiceContext choiceContext,
+        Player player)
     {
+        // Preserve the official empty-hand hook and RitsuLib 0.5.18's play-enabled extra-hand
+        // query. Confidence's reduced-hand threshold remains based on the real vanilla hand, so
+        // presentation-only Record mappings do not become gameplay card-counting objects.
+        await vanillaTask;
+
         bool isInProgress = (bool?)AccessTools.Property(turnState.GetType(), "IsInProgress")?.GetValue(turnState) ?? false;
 
         bool isExecuting = instance.IsExecutingCardOrPotionEffect(player);

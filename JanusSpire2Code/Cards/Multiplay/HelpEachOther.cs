@@ -46,6 +46,11 @@ public sealed class HelpEachOther() : JanusCardModel(3, CardType.Power, CardRari
                 CardCmd.PreviewCardPileAdd(results);
             }
 
+            foreach (Assist card in cards)
+            {
+                await card.EnableTake();
+            }
+
             await Cmd.Wait(0.1f);
         }
     }

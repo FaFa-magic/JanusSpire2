@@ -13,6 +13,7 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -26,6 +27,7 @@ public class JanusSingleton : HookedSingletonModel
 {
     private readonly Dictionary<CardModel, (int TurnNumber, int TriggerCount)> _counterattackTriggerCounts = new();
     private readonly List<AttackCommand> _activeAttackCommands = [];
+    private readonly HashSet<Player> _playersRetainingDelayedHand = [];
 
     public static JanusSingleton? Instance { get; private set; }
 
@@ -37,10 +39,43 @@ public class JanusSingleton : HookedSingletonModel
     {
         _counterattackTriggerCounts.Clear();
         _activeAttackCommands.Clear();
+        _playersRetainingDelayedHand.Clear();
         foreach (Player player in CurrentCombatState?.Players ?? [])
         {
             await RecordExtraHandManager.SyncPlayer(player);
         }
+    }
+
+    public override Task BeforeSideTurnEnd(
+        PlayerChoiceContext choiceContext,
+        CombatSide side,
+        IEnumerable<Creature> participants)
+    {
+        if (side != CombatSide.Player || CurrentCombatState == null)
+        {
+            return Task.CompletedTask;
+        }
+
+        HashSet<Creature> participantSet = participants.ToHashSet();
+        foreach (Player player in CurrentCombatState.Players)
+        {
+            if (!participantSet.Contains(player.Creature) ||
+                player.Relics.All(relic => relic is not ISkipPlayerFlushRelic))
+            {
+                continue;
+            }
+
+            if (player.Creature.HasPower<RetainHandPower>())
+            {
+                _playersRetainingDelayedHand.Add(player);
+            }
+            else
+            {
+                _playersRetainingDelayedHand.Remove(player);
+            }
+        }
+
+        return Task.CompletedTask;
     }
 
     public override async Task AfterSideTurnEndLate(
@@ -55,19 +90,25 @@ public class JanusSingleton : HookedSingletonModel
 
         foreach (Player player in CurrentCombatState.Players)
         {
+            bool retainDelayedHand = _playersRetainingDelayedHand.Remove(player);
             if (player.Relics.All(relic => relic is not ISkipPlayerFlushRelic))
             {
                 continue;
             }
 
-            await FlushDelayedHand(choiceContext, CurrentCombatState, player);
+            await FlushDelayedHand(
+                choiceContext,
+                CurrentCombatState,
+                player,
+                retainDelayedHand);
         }
     }
 
     private static async Task FlushDelayedHand(
         PlayerChoiceContext choiceContext,
         ICombatState combatState,
-        Player player)
+        Player player,
+        bool retainHand)
     {
         if (player.Creature.IsDead || player.PlayerCombatState == null)
         {
@@ -77,7 +118,7 @@ public class JanusSingleton : HookedSingletonModel
         CardPile hand = PileType.Hand.GetPile(player);
         List<CardModel> cardsToFlush = [];
         List<CardModel> cardsToRetain = [];
-        bool shouldFlush = Hook.ShouldFlush(combatState, player);
+        bool shouldFlush = !retainHand && Hook.ShouldFlush(combatState, player);
 
         foreach (CardModel card in hand.Cards.ToArray())
         {
@@ -198,20 +239,17 @@ public class JanusSingleton : HookedSingletonModel
             return;
         }
 
-        List<CardModel> counterattackCards = playerCombatState.AllCards
-            .Where(card =>
-                card.Keywords.Contains(JanusKeywords.Counterattack) &&
-                (card.Pile?.Type == PileType.Hand || card is BlackCatUnleash))
-            .Select((card, index) => new
-            {
-                Card = card,
-                Index = index,
-                Cost = card.EnergyCost.GetAmountToSpend()
-            })
-            .OrderBy(entry => entry.Cost)
-            .ThenBy(entry => entry.Index)
-            .Select(entry => entry.Card)
+        List<CardModel> counterattackCards = PileType.Hand.GetPile(player).Cards
+            .Where(card => card.Keywords.Contains(JanusKeywords.Counterattack))
             .ToList();
+
+        // Black Cat Unleash is the sole exception that can counterattack outside the hand,
+        // but an exhausted copy is no longer active. Resolve valid exceptions after the hand.
+        counterattackCards.AddRange(playerCombatState.AllCards.Where(card =>
+            card is BlackCatUnleash &&
+            card.Pile?.Type != PileType.Hand &&
+            card.Pile?.Type != PileType.Exhaust &&
+            card.Keywords.Contains(JanusKeywords.Counterattack)));
 
         foreach (CardModel card in counterattackCards)
         {

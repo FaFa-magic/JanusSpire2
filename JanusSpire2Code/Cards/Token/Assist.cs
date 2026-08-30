@@ -1,6 +1,8 @@
 ﻿using JanusSpire2.JanusSpire2Code.Keywords;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.CardPools;
@@ -24,6 +26,17 @@ public sealed class Assist() : JanusRecordCardModel(0, CardType.Skill, CardRarit
         ArgumentNullException.ThrowIfNull(cardPlay.Target.Player, "cardPlay.Target.Player");
         await PlayerCmd.GainEnergy(base.DynamicVars.Energy.IntValue, cardPlay.Target.Player);
         await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.IntValue, cardPlay.Target.Player);
+    }
+
+    public override async Task AfterSideTurnStart(
+        CombatSide side,
+        IReadOnlyList<Creature> participants,
+        ICombatState combatState)
+    {
+        if (participants.Contains(Owner.Creature) && Pile?.Type == MainFile.Diary)
+        {
+            await EnableTake();
+        }
     }
 
     protected override void OnUpgrade()

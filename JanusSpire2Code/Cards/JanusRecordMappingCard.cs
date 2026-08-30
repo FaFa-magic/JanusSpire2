@@ -20,6 +20,8 @@ public sealed class JanusRecordMappingCard : JanusCardModel,
     ICardEnergyCostContributor,
     ICardStarCostContributor
 {
+    private EnchantmentModel? _observedOriginalEnchantment;
+
     // Keep the presentation model out of JanusCardPool and every random-generation path. It is
     // constructed explicitly by RecordExtraHandManager and never offered as a real card.
     public override bool CanBeGeneratedInCombat => false;
@@ -70,7 +72,13 @@ public sealed class JanusRecordMappingCard : JanusCardModel,
 
     internal void Bind(JanusRecordCardModel original)
     {
-        Original = original;
+        if (!ReferenceEquals(Original, original))
+        {
+            UnsubscribeFromOriginal();
+            Original = original;
+            SubscribeToOriginal();
+        }
+
         OriginalRecordMappingKey = original.RecordMappingKey;
         // Keep the presentation card's own cost in step with the Diary card as well.
         // Extra-hand UI and targeting can inspect the model's base cost before RitsuLib's
@@ -81,8 +89,66 @@ public sealed class JanusRecordMappingCard : JanusCardModel,
 
     internal void Unbind()
     {
+        UnsubscribeFromOriginal();
         Original = null;
         OriginalRecordMappingKey = 0;
+        this.RequestVisualReload();
+    }
+
+    private void SubscribeToOriginal()
+    {
+        if (Original == null)
+        {
+            return;
+        }
+
+        Original.EnchantmentChanged += OnOriginalEnchantmentChanged;
+        Original.AfflictionChanged += OnOriginalAfflictionChanged;
+        ObserveOriginalEnchantment();
+    }
+
+    private void UnsubscribeFromOriginal()
+    {
+        if (Original != null)
+        {
+            Original.EnchantmentChanged -= OnOriginalEnchantmentChanged;
+            Original.AfflictionChanged -= OnOriginalAfflictionChanged;
+        }
+
+        if (_observedOriginalEnchantment != null)
+        {
+            _observedOriginalEnchantment.StatusChanged -= OnOriginalEnchantmentStatusChanged;
+            _observedOriginalEnchantment = null;
+        }
+    }
+
+    private void ObserveOriginalEnchantment()
+    {
+        if (_observedOriginalEnchantment != null)
+        {
+            _observedOriginalEnchantment.StatusChanged -= OnOriginalEnchantmentStatusChanged;
+        }
+
+        _observedOriginalEnchantment = Original?.Enchantment;
+        if (_observedOriginalEnchantment != null)
+        {
+            _observedOriginalEnchantment.StatusChanged += OnOriginalEnchantmentStatusChanged;
+        }
+    }
+
+    private void OnOriginalEnchantmentChanged()
+    {
+        ObserveOriginalEnchantment();
+        this.RequestVisualReload();
+    }
+
+    private void OnOriginalEnchantmentStatusChanged()
+    {
+        this.RequestVisualReload();
+    }
+
+    private void OnOriginalAfflictionChanged()
+    {
         this.RequestVisualReload();
     }
 

@@ -1,22 +1,31 @@
 ﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using JanusSpire2.JanusSpire2Code.Keywords;
-using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.Entities.Powers;
+using MegaCrit.Sts2.Core.Factories;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-public sealed class RemedyStrike() : JanusRecordCardModel(2, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+public sealed class RemedyStrike() : JanusCardModel(2, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
     protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
-    public override IEnumerable<CardKeyword> CanonicalKeywords =>
-        [JanusKeywords.Record, JanusKeywords.Recollection];
-    
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(9M, ValueProp.Move)];
+
+    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    [
+        new DamageVar(9M, ValueProp.Move),
+        new CardsVar(1)
+    ];
+
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
+        [HoverTipFactory.FromKeyword(JanusKeywords.Record)];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -27,24 +36,35 @@ public sealed class RemedyStrike() : JanusRecordCardModel(2, CardType.Attack, Ca
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
-    }
 
-    public override async Task AfterPowerAmountChanged(
-        PlayerChoiceContext choiceContext,
-        PowerModel power,
-        decimal amount,
-        Creature? applier,
-        CardModel? cardSource)
-    {
-        if (Pile?.Type == MainFile.Diary &&
-            amount != 0M &&
-            power is not ITemporaryPower &&
-            power.GetTypeForAmount(amount) == PowerType.Debuff)
+        List<CardPoolModel> cardPools = Owner.UnlockState.CharacterCardPools.ToList();
+        if (cardPools.Count > 1)
         {
-            EnergyCost.SetUntilPlayed(0);
-            SetStarCostUntilPlayed(0);
-            await EnableTake();
+            cardPools.Remove(Owner.Character.CardPool);
         }
+
+        IEnumerable<CardModel> candidates = cardPools.SelectMany(pool =>
+            pool.GetUnlockedCards(
+                Owner.UnlockState,
+                Owner.RunState.CardMultiplayerConstraint));
+        List<CardModel> generatedCards = CardFactory.GetForCombat(
+            Owner,
+            candidates,
+            DynamicVars.Cards.IntValue,
+            Owner.RunState.Rng.CombatCardGeneration).ToList();
+
+        foreach (CardModel generatedCard in generatedCards)
+        {
+            if (IsUpgraded)
+            {
+                CardCmd.Upgrade(generatedCard);
+            }
+
+            generatedCard.AddKeyword(JanusKeywords.Record);
+            generatedCard.SetToFreeThisTurn();
+        }
+
+        await CardPileCmd.AddGeneratedCardsToCombat(generatedCards, PileType.Hand, Owner);
     }
     
     protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(4M);

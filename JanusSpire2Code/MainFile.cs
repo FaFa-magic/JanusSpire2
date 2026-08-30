@@ -92,6 +92,9 @@ public static class MainFile
 				Direction = ModExtraHandLayoutDirection.VanillaHand,
 				ShowPlayableGlow = true,
 				AllowCardPlay = true,
+				// The projection is playable through RitsuLib, but it is not a real hand card:
+				// do not apply hand end-of-turn rules or flush it with the vanilla hand.
+				Behaviors = ModExtraHandBehavior.None,
 			},
 			VisibleWhen = ctx => ctx.Player != null,
 		}).PileType;
@@ -110,13 +113,14 @@ public static class MainFile
 		patcher.RegisterPatch<RemovedRelicRewardAnimationPatch>();
 		patcher.RegisterPatch<UnceasingTopEmptyHandPatch>();
 		patcher.RegisterPatch<UnceasingTopCombatStartPatch>();
-		patcher.RegisterPatch<ForcedPotionTargetingPatch>();
 		patcher.RegisterPatch<RecordMappingAllCardsPatch>();
 		patcher.RegisterPatch<RecordMappingHookListenersPatch>();
 		patcher.RegisterPatch<RecordMappingPileHookPatch>();
 		patcher.RegisterPatch<RecordMappingCanPlayPatch>();
 		patcher.RegisterPatch<RecordMappingSpendResourcesPatch>();
 		patcher.RegisterPatch<RecordMappingPlayBridgePatch>();
+		patcher.RegisterPatch<RecordMappingDescriptionPatch>();
+		patcher.RegisterPatch<RecordMappingEnchantmentVisualPatch>();
 
 		if (!patcher.PatchAll())
 			throw new InvalidOperationException("Critical patches failed.");

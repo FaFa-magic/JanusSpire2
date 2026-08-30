@@ -13,7 +13,7 @@ public sealed class UnableToMove() : JanusCardModel(-1, CardType.Skill, CardRari
 {
     public override bool GainsBlock => true;
     
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Unplayable];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Unplayable, CardKeyword.Ethereal];
     
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
         [HoverTipFactory.FromKeyword(CardKeyword.Exhaust)];
