@@ -5,6 +5,8 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
+using JanusSpire2.JanusSpire2Code.Keywords;
+using STS2RitsuLib.Cards.DynamicVars;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
@@ -12,6 +14,7 @@ public sealed class AdvanceHandInHand() : JanusCardModel(1, CardType.Attack, Car
 {
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
+        ModCardVars.Int(InspirationKeyword.AmountVar, 1),
         new CalculationBaseVar(0M),
         new ExtraDamageVar(1M),
         new CalculatedDamageVar(ValueProp.Move).WithMultiplier(CountDistinctCardNames)
@@ -39,6 +42,6 @@ public sealed class AdvanceHandInHand() : JanusCardModel(1, CardType.Attack, Car
     
     protected override void OnUpgrade()
     {
-        AddKeyword(CardKeyword.Innate);
+        AddKeyword(JanusKeywords.Inspiration);
     }
 }

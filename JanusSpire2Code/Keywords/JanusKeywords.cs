@@ -14,6 +14,7 @@ namespace JanusSpire2.JanusSpire2Code.Keywords;
 [RegisterOwnedCardKeyword(nameof(Transcribe), CardDescriptionPlacement = ModKeywordCardDescriptionPlacement.None)]
 [RegisterOwnedCardKeyword(nameof(Record), CardDescriptionPlacement = ModKeywordCardDescriptionPlacement.AfterCardDescription)]
 [RegisterOwnedCardKeyword(nameof(Recollection), CardDescriptionPlacement = ModKeywordCardDescriptionPlacement.None)]
+[RegisterOwnedCardKeyword(nameof(Inspiration), CardDescriptionPlacement = ModKeywordCardDescriptionPlacement.None)]
 public sealed class JanusKeywords
 {
     private static bool _persistenceRegistered;
@@ -25,6 +26,7 @@ public sealed class JanusKeywords
     public static readonly CardKeyword Transcribe = ModContentRegistry.GetQualifiedKeywordId(MainFile.ModId, nameof(Transcribe)).GetModCardKeyword();
     public static readonly CardKeyword Record = ModContentRegistry.GetQualifiedKeywordId(MainFile.ModId, nameof(Record)).GetModCardKeyword();
     public static readonly CardKeyword Recollection = ModContentRegistry.GetQualifiedKeywordId(MainFile.ModId, nameof(Recollection)).GetModCardKeyword();
+    public static readonly CardKeyword Inspiration = ModContentRegistry.GetQualifiedKeywordId(MainFile.ModId, nameof(Inspiration)).GetModCardKeyword();
 
     internal static void RegisterPersistence()
     {

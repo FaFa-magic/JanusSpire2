@@ -6,7 +6,6 @@ using JanusSpire2.JanusSpire2Code.Keywords;
 using JanusSpire2.JanusSpire2Code.Patches;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -26,7 +25,6 @@ namespace JanusSpire2.JanusSpire2Code.Singleton;
 public class JanusSingleton : HookedSingletonModel
 {
     private readonly Dictionary<CardModel, (int TurnNumber, int TriggerCount)> _counterattackTriggerCounts = new();
-    private readonly List<AttackCommand> _activeAttackCommands = [];
     private readonly HashSet<Player> _playersRetainingDelayedHand = [];
 
     public static JanusSingleton? Instance { get; private set; }
@@ -38,7 +36,6 @@ public class JanusSingleton : HookedSingletonModel
     public override async Task BeforeCombatStart()
     {
         _counterattackTriggerCounts.Clear();
-        _activeAttackCommands.Clear();
         _playersRetainingDelayedHand.Clear();
         foreach (Player player in CurrentCombatState?.Players ?? [])
         {
@@ -166,34 +163,6 @@ public class JanusSingleton : HookedSingletonModel
         }
     }
 
-    public override Task BeforeAttack(AttackCommand command)
-    {
-        _activeAttackCommands.Add(command);
-        return Task.CompletedTask;
-    }
-
-    public override async Task AfterAttack(
-        PlayerChoiceContext choiceContext,
-        AttackCommand command)
-    {
-        _activeAttackCommands.Remove(command);
-        if (CombatManager.Instance.IsOverOrEnding)
-        {
-            return;
-        }
-
-        List<Player> damagedPlayers = command.Results
-            .SelectMany(hit => hit)
-            .Select(result => result.Receiver.Player)
-            .OfType<Player>()
-            .Distinct()
-            .ToList();
-        foreach (Player player in damagedPlayers)
-        {
-            await TriggerCounterattacks(choiceContext, player);
-        }
-    }
-
     public override async Task AfterDamageReceived(
         PlayerChoiceContext choiceContext,
         Creature target,
@@ -202,11 +171,6 @@ public class JanusSingleton : HookedSingletonModel
         Creature? dealer,
         CardModel? cardSource)
     {
-        if (IsDamageFromActiveAttack(dealer, props, cardSource))
-        {
-            return;
-        }
-
         Player? player = target.Player;
         if (player == null || target != player.Creature)
         {
@@ -214,17 +178,6 @@ public class JanusSingleton : HookedSingletonModel
         }
 
         await TriggerCounterattacks(choiceContext, player);
-    }
-
-    private bool IsDamageFromActiveAttack(
-        Creature? dealer,
-        ValueProp props,
-        CardModel? cardSource)
-    {
-        return _activeAttackCommands.Any(command =>
-            command.Attacker == dealer &&
-            command.DamageProps == props &&
-            command.ModelSource as CardModel == cardSource);
     }
 
     private async Task TriggerCounterattacks(
@@ -244,11 +197,15 @@ public class JanusSingleton : HookedSingletonModel
             .ToList();
 
         // Black Cat Unleash is the sole exception that can counterattack outside the hand,
-        // but an exhausted copy is no longer active. Resolve valid exceptions after the hand.
+        // but cards being played, exhausted, or outside every pile are not active sources.
+        // Resolve valid exceptions after the hand to preserve left-to-right hand ordering.
         counterattackCards.AddRange(playerCombatState.AllCards.Where(card =>
             card is BlackCatUnleash &&
-            card.Pile?.Type != PileType.Hand &&
-            card.Pile?.Type != PileType.Exhaust &&
+            card.Pile != null &&
+            card.Pile.Type != PileType.Hand &&
+            card.Pile.Type != PileType.Exhaust &&
+            card.Pile.Type != PileType.Play &&
+            card.Pile.Type != PileType.None &&
             card.Keywords.Contains(JanusKeywords.Counterattack)));
 
         foreach (CardModel card in counterattackCards)

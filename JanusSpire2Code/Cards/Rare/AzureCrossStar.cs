@@ -1,21 +1,42 @@
-using JanusSpire2.JanusSpire2Code.Keywords;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
+using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
 public sealed class AzureCrossStar() : JanusCardModel(0, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
 {
-    public override int MaxUpgradeLevel => 999;
+    private bool _copiedThisTurn;
+
+    [SavedProperty]
+    public bool CopiedThisTurn
+    {
+        get => _copiedThisTurn;
+        private set
+        {
+            AssertMutable();
+            if (_copiedThisTurn == value)
+            {
+                return;
+            }
+
+            _copiedThisTurn = value;
+            this.RequestVisualReload();
+        }
+    }
     
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, JanusKeywords.Sticker];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, CardKeyword.Retain];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(5M, ValueProp.Move)
+        new DamageVar(6M, ValueProp.Move)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -31,15 +52,44 @@ public sealed class AzureCrossStar() : JanusCardModel(0, CardType.Attack, CardRa
 
     public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        if (Pile?.Type != PileType.Hand || cardPlay.Player != Owner || cardPlay.Card is AzureCrossStar)
+        if (CopiedThisTurn
+            || Pile?.Type != PileType.Hand
+            || cardPlay.Player != Owner
+            || cardPlay.Card is AzureCrossStar)
         {
             return;
         }
 
+        CopiedThisTurn = true;
         CardModel copy = CreateClone();
         CardCmd.PreviewCardPileAdd(
             await CardPileCmd.AddGeneratedCardToCombat(copy, PileType.Hand, Owner),
             0.2F);
+    }
+
+    public override Task BeforeSideTurnStart(
+        PlayerChoiceContext choiceContext,
+        CombatSide side,
+        IReadOnlyList<Creature> participants,
+        ICombatState combatState)
+    {
+        if (participants.Contains(Owner.Creature))
+        {
+            CopiedThisTurn = false;
+        }
+
+        return Task.CompletedTask;
+    }
+
+    protected override void AfterCloned()
+    {
+        base.AfterCloned();
+        _copiedThisTurn = false;
+    }
+
+    protected override void AddExtraArgsToDescription(LocString description)
+    {
+        description.Add(nameof(CopiedThisTurn), CopiedThisTurn);
     }
 
     protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(2M);

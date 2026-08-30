@@ -52,7 +52,7 @@ public static class MainFile
 		RitsuLibFramework.RegisterArchaicToothTranscendenceMapping<BlackCatAssault, BlackCatUnleash>();
 		RitsuLibFramework.RegisterTouchOfOrobasRefinementMapping<Coronet, ShiningCrown>();
 		BlackCatSealPower.RegisterSynchronizedRightClick();
-		HolyNight.RegisterSynchronizedRightClick();
+		InspirationKeyword.RegisterSynchronizedRightClick();
 		StickerMergeAction.Register();
 		
 		var registry = ModCardPileRegistry.For(ModId);

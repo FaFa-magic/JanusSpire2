@@ -2,6 +2,7 @@
 using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using STS2RitsuLib.Cards.DynamicVars;
@@ -20,9 +21,13 @@ public sealed class SmokeEmitter() : JanusTokenCardModel(0, CardType.Skill, Card
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target, nameof(cardPlay.Target));
-        
-        await PowerCmd.Apply<SmokePower>(choiceContext, cardPlay.Target, DynamicVars["Smoke"].BaseValue, base.Owner.Creature, this);
+        Creature target = cardPlay.Target ?? Owner.Creature;
+        await PowerCmd.Apply<SmokePower>(
+            choiceContext,
+            target,
+            DynamicVars["Smoke"].BaseValue,
+            Owner.Creature,
+            this);
     }
     
     protected override void OnUpgrade() => DynamicVars["Smoke"].UpgradeValueBy(1M);

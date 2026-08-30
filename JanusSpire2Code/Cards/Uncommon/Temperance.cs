@@ -13,7 +13,7 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 public sealed class Temperance() : JanusCardModel(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new CardsVar(2)
+        new CardsVar(3)
     ];
     
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Perk];
@@ -23,17 +23,23 @@ public sealed class Temperance() : JanusCardModel(1, CardType.Skill, CardRarity.
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        IEnumerable<CardModel> selectedCards = await CardSelectCmd.FromHand(
+        List<CardModel> selectedCards = (await CardSelectCmd.FromHand(
             choiceContext,
             Owner,
-            new CardSelectorPrefs(SelectionScreenPrompt, DynamicVars.Cards.IntValue),
+            new CardSelectorPrefs(SelectionScreenPrompt, 0, DynamicVars.Cards.IntValue),
             null,
-            this);
+            this)).ToList();
 
-        await CardPileCmd.Add(selectedCards, MainFile.Diary);
+        IReadOnlyList<CardPileAddResult> addResults = await CardPileCmd.Add(selectedCards, MainFile.Diary);
+        int cardsAdded = addResults.Count(result => result.success);
+        if (cardsAdded == 0)
+        {
+            return;
+        }
+
         await CatSticker.CreateInHand(
             Owner,
-            DynamicVars.Cards.IntValue,
+            cardsAdded,
             CombatState,
             IsUpgraded);
     }

@@ -46,5 +46,5 @@ public sealed class PilotLamp() : JanusCardModel(2, CardType.Attack, CardRarity.
             0.2f);
     }
     
-    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(9M);
+    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(6M);
 }
