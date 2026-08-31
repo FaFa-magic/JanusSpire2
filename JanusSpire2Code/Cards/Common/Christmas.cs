@@ -8,12 +8,12 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Common;
 
-public sealed class Christmas() : JanusCardModel(0, CardType.Skill, CardRarity.Common, TargetType.Self)
+public sealed class Christmas() : JanusCardModel(1, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
     public override bool GainsBlock => true;
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new BlockVar(5M, ValueProp.Move),
+        new BlockVar(7M, ValueProp.Move),
         new CardsVar(1)
     ];
 
@@ -28,9 +28,16 @@ public sealed class Christmas() : JanusCardModel(0, CardType.Skill, CardRarity.C
                 Owner.RunState.CardMultiplayerConstraint),
             DynamicVars.Cards.IntValue,
             Owner.RunState.Rng.CombatCardGeneration).ToList();
-
+        
+        if (IsUpgraded)
+        {
+            foreach (var item in generatedCards)
+            {
+                CardCmd.Upgrade(item);
+            }
+        }
         await CardPileCmd.AddGeneratedCardsToCombat(generatedCards, PileType.Hand, Owner);
     }
 
-    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(3M);
+    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(2M);
 }

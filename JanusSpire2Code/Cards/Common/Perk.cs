@@ -28,5 +28,5 @@ public sealed class Perk() : JanusCardModel(1, CardType.Attack, CardRarity.Commo
         await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.IntValue, base.Owner);
     }
     
-    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(3M);
+    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(4M);
 }

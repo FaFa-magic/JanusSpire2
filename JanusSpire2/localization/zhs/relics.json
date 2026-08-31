@@ -63,7 +63,7 @@
   "JANUS_SPIRE2_RELIC_OVERTURNED_TEA_SET.description": "拾起时，将[blue]1[/blue]张[gold]诡异茶会[/gold]加入你的[gold]牌组[/gold]。",
   "JANUS_SPIRE2_RELIC_OVERTURNED_TEA_SET.flavor": "",
   "JANUS_SPIRE2_RELIC_DRINK_COUPON.title": "畅饮券",
-  "JANUS_SPIRE2_RELIC_DRINK_COUPON.description": "每当你[gold]休息[/gold]时，获得[blue]{PotionSlots}[/blue]个药水栏位，并用随机药水填满你的空药水栏。",
-  "JANUS_SPIRE2_RELIC_DRINK_COUPON.additionalRestSiteHealText": "获得[blue]{PotionSlots}[/blue]个药水栏位，并用随机药水填满你的空药水栏。",
+  "JANUS_SPIRE2_RELIC_DRINK_COUPON.description": "每当你[gold]休息[/gold]时，获得[blue]{PotionSlots}[/blue]个药水栏位（至多[blue]{MaxPotionSlots}[/blue]个），并用随机药水填满你的空药水栏。",
+  "JANUS_SPIRE2_RELIC_DRINK_COUPON.additionalRestSiteHealText": "获得[blue]{PotionSlots}[/blue]个药水栏位（至多[blue]{MaxPotionSlots}[/blue]个），并用随机药水填满你的空药水栏。",
   "JANUS_SPIRE2_RELIC_DRINK_COUPON.flavor": ""
 }

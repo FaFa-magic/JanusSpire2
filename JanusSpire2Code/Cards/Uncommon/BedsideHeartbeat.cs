@@ -11,9 +11,9 @@ public sealed class BedsideHeartbeat() : JanusRecordCardModel(0, CardType.Skill,
 {
     public override bool GainsBlock => true;
     
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Collection, JanusKeywords.Record];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Collection, JanusKeywords.Record, JanusKeywords.Recollection];
     
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new BlockVar(7M, ValueProp.Move)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new BlockVar(5M, ValueProp.Move)];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -28,5 +28,5 @@ public sealed class BedsideHeartbeat() : JanusRecordCardModel(0, CardType.Skill,
         }
     }
     
-    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(3M);
+    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(2M);
 }

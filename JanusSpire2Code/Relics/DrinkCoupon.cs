@@ -11,10 +11,15 @@ namespace JanusSpire2.JanusSpire2Code.Relics;
 
 public sealed class DrinkCoupon : JanusRelicModel
 {
+    // SerializablePotion and multiplayer potion hovering encode slot indices in four bits.
+    // Indices 0-15 are therefore the largest range that is safe across save/network paths.
+    private const int MaxNetworkSafePotionSlots = 1 << 4;
+
     public override RelicRarity Rarity => RelicRarity.Ancient;
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DynamicVar("PotionSlots", 1M)
+        new DynamicVar("PotionSlots", 1M),
+        new DynamicVar("MaxPotionSlots", MaxNetworkSafePotionSlots)
     ];
 
     public override async Task AfterRestSiteHeal(Player player, bool isMimicked)
@@ -24,10 +29,25 @@ public sealed class DrinkCoupon : JanusRelicModel
             return;
         }
 
-        Flash();
-        await PlayerCmd.GainMaxPotionCount(DynamicVars["PotionSlots"].IntValue, Owner);
+        int remainingSafeSlots = MaxNetworkSafePotionSlots - Owner.MaxPotionCount;
+        int slotsToGain = DynamicVars["PotionSlots"].IntValue;
+        if (slotsToGain > remainingSafeSlots)
+        {
+            slotsToGain = remainingSafeSlots;
+        }
 
-        while (Owner.HasOpenPotionSlots)
+        if (slotsToGain <= 0 && !HasOpenNetworkSafePotionSlot(Owner))
+        {
+            return;
+        }
+
+        Flash();
+        if (slotsToGain > 0)
+        {
+            await PlayerCmd.GainMaxPotionCount(slotsToGain, Owner);
+        }
+
+        while (HasOpenNetworkSafePotionSlot(Owner))
         {
             PotionModel potion = PotionFactory.CreateRandomPotionOutOfCombat(
                 Owner,
@@ -38,6 +58,23 @@ public sealed class DrinkCoupon : JanusRelicModel
                 break;
             }
         }
+    }
+
+    private static bool HasOpenNetworkSafePotionSlot(Player player)
+    {
+        int safeSlotCount = player.PotionSlots.Count < MaxNetworkSafePotionSlots
+            ? player.PotionSlots.Count
+            : MaxNetworkSafePotionSlots;
+
+        for (int i = 0; i < safeSlotCount; i++)
+        {
+            if (player.PotionSlots[i] == null)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public override IReadOnlyList<LocString> ModifyExtraRestSiteHealText(

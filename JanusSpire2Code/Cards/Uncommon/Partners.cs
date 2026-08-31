@@ -13,7 +13,7 @@ public sealed class Partners() : JanusCardModel(8, CardType.Attack, CardRarity.U
 {
     public override bool GainsBlock => true;
     
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Counterattack, CardKeyword.Exhaust];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Counterattack, CardKeyword.Retain];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new BlockVar(6M, ValueProp.Move),

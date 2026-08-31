@@ -120,7 +120,11 @@ public static class MainFile
 		patcher.RegisterPatch<RecordMappingSpendResourcesPatch>();
 		patcher.RegisterPatch<RecordMappingPlayBridgePatch>();
 		patcher.RegisterPatch<RecordMappingDescriptionPatch>();
+		patcher.RegisterPatch<RecordMappingDynamicVarPreviewPatch>();
+		patcher.RegisterPatch<RecordMappingDynamicVarPreviewResetPatch>();
 		patcher.RegisterPatch<RecordMappingEnchantmentVisualPatch>();
+		patcher.RegisterPatch<InspirationPileGlowInitPatch>();
+		patcher.RegisterPatch<InspirationPileGlowPatch>();
 
 		if (!patcher.PatchAll())
 			throw new InvalidOperationException("Critical patches failed.");

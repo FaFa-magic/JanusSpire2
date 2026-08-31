@@ -60,6 +60,23 @@ public static class InspirationKeyword
         return amount >= 0;
     }
 
+    internal static bool ShouldGlow(CardModel card)
+    {
+        if (card.IsCanonical ||
+            card.Owner?.PlayerCombatState == null ||
+            card.Pile is not { } sourcePile ||
+            sourcePile.Type == PileType.Hand ||
+            !IsSupportedRightClickPile(sourcePile.Type) ||
+            !TryGetAmount(card, out int amount))
+        {
+            return false;
+        }
+
+        CardPile? diaryPile = card.Owner.PlayerCombatState.AllPiles
+            .FirstOrDefault(pile => pile.Type == MainFile.Diary);
+        return diaryPile != null && diaryPile.Cards.Count >= amount;
+    }
+
     private static bool CanExecuteRightClick(CardModel card, PileType expectedPile, out int amount)
     {
         amount = 0;

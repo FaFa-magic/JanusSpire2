@@ -17,7 +17,7 @@ public sealed class LittleCute() : JanusCardModel(1, CardType.Skill, CardRarity.
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         ModCardVars.Int("LittleCute", 1),
-        ModCardVars.Int("BlackCatSeal", 4)
+        ModCardVars.Int("BlackCatSeal", 3)
     ];
     
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>

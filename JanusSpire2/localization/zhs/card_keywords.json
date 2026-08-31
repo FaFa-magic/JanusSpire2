@@ -4,7 +4,7 @@
   "JANUS_SPIRE2_KEYWORD_COLLECTION.title" : "珍藏",
   "JANUS_SPIRE2_KEYWORD_COLLECTION.description" : "这张卡在战斗开始时会加入[gold]日记本[/gold]。",
   "JANUS_SPIRE2_KEYWORD_COUNTERATTACK.title" : "反击",
-  "JANUS_SPIRE2_KEYWORD_COUNTERATTACK.description" : "每次受到伤害时（即使伤害为[blue]0[/blue]），手牌中的每张[gold]反击[/gold]牌从左到右依次打出一张复制牌。\n每张牌在你的两次回合开始之间，最多触发等同于其当前费用的次数。",
+  "JANUS_SPIRE2_KEYWORD_COUNTERATTACK.description" : "每次受到伤害时（即使伤害为[blue]0[/blue]），手牌中的每张[gold]反击[/gold]牌从左到右依次打出一张复制牌。\n每回合最多触发等同于其当前费用的次数。",
   "JANUS_SPIRE2_KEYWORD_STICKER.title" : "贴纸",
   "JANUS_SPIRE2_KEYWORD_STICKER.description" : "可以无限升级。\n[gold]消耗[/gold]牌堆中每有[blue]4[/blue]张相同升级等级、相同卡名的[gold]贴纸[/gold]牌，便会移除他们并将一张升级后的该[gold]贴纸[/gold]牌加入[gold]日记本[/gold]。",
   "JANUS_SPIRE2_KEYWORD_TRANSCRIBE.title": "誊抄",

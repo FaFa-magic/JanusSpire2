@@ -23,7 +23,7 @@ public sealed class NewSeason() : JanusCardModel(2, CardType.Power, CardRarity.R
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
     [
-        HoverTipFactory.FromKeyword(JanusKeywords.Counterattack),
+        HoverTipFactory.FromKeyword(JanusKeywords.Sticker),
         ..HoverTipFactory.FromEnchantment<Swift>(DynamicVars[SwiftAmountKey].IntValue)
     ];
 
