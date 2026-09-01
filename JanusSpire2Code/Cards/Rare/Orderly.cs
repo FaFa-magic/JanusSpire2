@@ -12,9 +12,9 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
-public sealed class Orderly() : JanusCardModel(1, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
+public sealed class Orderly() : JanusCardModel(2, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
 {
-    private const int BaseHitCount = 2;
+    private const int BaseHitCount = 3;
     private const string CalculatedHitsKey = "CalculatedHits";
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [

@@ -1,4 +1,5 @@
-﻿using MegaCrit.Sts2.Core.Entities.Cards;
+﻿using JanusSpire2.JanusSpire2Code.Keywords;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -11,6 +12,8 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
 public sealed class LittleDevil() : JanusCardModel(1, CardType.Skill, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Retain, JanusKeywords.Record];
+    
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new CalculationBaseVar(0M),

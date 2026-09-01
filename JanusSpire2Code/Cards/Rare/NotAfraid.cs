@@ -64,5 +64,5 @@ public sealed class NotAfraid() : JanusCardModel(3, CardType.Skill, CardRarity.R
         }
     }
 
-    protected override void OnUpgrade() => DynamicVars.Cards.UpgradeValueBy(1M);
+    protected override void OnUpgrade() => DynamicVars.Cards.UpgradeValueBy(2M);
 }

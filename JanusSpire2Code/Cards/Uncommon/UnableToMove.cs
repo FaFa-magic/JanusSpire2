@@ -1,50 +1,54 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+using JanusSpire2.JanusSpire2Code.Keywords;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.Factories;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.ValueProps;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-public sealed class UnableToMove() : JanusCardModel(-1, CardType.Skill, CardRarity.Uncommon, TargetType.None)
+public sealed class UnableToMove() : JanusCardModel(2, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
-    public override bool GainsBlock => true;
-    
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Unplayable, CardKeyword.Ethereal];
-    
-    protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
-        [HoverTipFactory.FromKeyword(CardKeyword.Exhaust)];
-    
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new BlockVar(6M, ValueProp.Move | ValueProp.Unpowered)];
-    
-    public override async Task AfterCardGeneratedForCombat(CardModel card, Player? creator)
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Counterattack];
+
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new CardsVar(1)];
+
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromKeyword(CardKeyword.Exhaust)];
+
+    protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        if (card != this || Owner.Creature.IsDead)
+        List<CardPoolModel> cardPools = Owner.UnlockState.CharacterCardPools.ToList();
+        if (cardPools.Count > 1)
+        {
+            cardPools.Remove(Owner.Character.CardPool);
+        }
+
+        IEnumerable<CardModel> candidates = cardPools
+            .SelectMany(pool => pool.GetUnlockedCards(
+                Owner.UnlockState,
+                Owner.RunState.CardMultiplayerConstraint))
+            .Where(card => card.Type == CardType.Attack);
+
+        CardModel? generatedCard = CardFactory.GetDistinctForCombat(
+                Owner,
+                candidates,
+                DynamicVars.Cards.IntValue,
+                Owner.RunState.Rng.CombatCardGeneration)
+            .FirstOrDefault();
+        if (generatedCard == null)
         {
             return;
         }
 
-        await CreatureCmd.GainBlock(base.Owner.Creature, DynamicVars.Block.BaseValue, ValueProp.Move | ValueProp.Unpowered, null);
-    }
-
-    public override async Task AfterCardExhausted(
-        PlayerChoiceContext choiceContext,
-        CardModel card,
-        bool causedByEthereal)
-    {
-        if (card != this || Owner.Creature.IsDead)
+        if (IsUpgraded)
         {
-            return;
+            CardCmd.Upgrade(generatedCard);
         }
 
-        CardModel copy = CreateClone();
-        CardCmd.PreviewCardPileAdd(
-            await CardPileCmd.AddGeneratedCardToCombat(copy, PileType.Discard, Owner),
-            0.2f);
+        generatedCard.ExhaustOnNextPlay = true;
+        await CardPileCmd.AddGeneratedCardToCombat(generatedCard, PileType.Play, Owner);
+        await CardCmd.AutoPlay(choiceContext, generatedCard, null);
     }
-
-    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(3M);
 }

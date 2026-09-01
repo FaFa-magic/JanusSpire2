@@ -1,4 +1,5 @@
-﻿using MegaCrit.Sts2.Core.Entities.Cards;
+﻿using JanusSpire2.JanusSpire2Code.Configs;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Models.CardPools;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
@@ -14,9 +15,22 @@ public abstract class JanusTokenCardModel : ModCardTemplate
     }
     
     public override CardAssetProfile AssetProfile => new(
-        PortraitPath: $"res://JanusSpire2/images/cards/{GetType().Name}.png"
-        // FramePath: "", // 卡牌背景
-        // PortraitBorderPath: "", // 边框（状态牌感染使用的）
-        // BannerTexturePath: "" // 横幅（不同类型）
+        PortraitPath: $"res://JanusSpire2/images/cards/{GetType().Name}.png",
+        BannerTexturePath: "res://JanusSpire2/images/card_frames/janus_Banner.png",
+        AncientBannerPath: "res://JanusSpire2/images/card_frames/janus_Banner.png",
+        AncientBorderPath: "res://JanusSpire2/images/card_frames/janus_ancient.png",
+        FramePath: Type switch
+        {
+            CardType.Attack => JanusConfigPage.CardFrameBinding.Read() == JanusCardFrameMode.卡框一
+                ? "res://JanusSpire2/images/card_frames/janus_attack_1.png"
+                : "res://JanusSpire2/images/card_frames/janus_attack_2.png",
+            CardType.Skill => JanusConfigPage.CardFrameBinding.Read() == JanusCardFrameMode.卡框一
+                ? "res://JanusSpire2/images/card_frames/janus_skill_1.png"
+                : "res://JanusSpire2/images/card_frames/janus_skill_2.png",
+            CardType.Power => JanusConfigPage.CardFrameBinding.Read() == JanusCardFrameMode.卡框一
+                ? "res://JanusSpire2/images/card_frames/janus_power_1.png"
+                : "res://JanusSpire2/images/card_frames/janus_power_2.png",
+            _ => ""
+        }
     );
 }

@@ -17,7 +17,7 @@ public sealed class FlowerCrossing() : JanusCardModel(0, CardType.Skill, CardRar
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        int amount = ResolveEnergyXValue();
+        int amount = ResolveEnergyXValue() + 1;
         if (amount <= 0)
         {
             return;

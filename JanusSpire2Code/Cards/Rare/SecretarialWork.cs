@@ -23,7 +23,8 @@ public sealed class SecretarialWork() : JanusCardModel(0, CardType.Skill, CardRa
             context: choiceContext,
             pile: PileType.Draw.GetPile(Owner),
             player: Owner,
-            filter: card => card.Type is CardType.Skill or CardType.Attack)).FirstOrDefault();
+            filter: card => card is not SecretarialWork &&
+                            (card.Type is CardType.Skill or CardType.Attack))).FirstOrDefault();
         if (cardModel != null)
         {
             CardModel cardClone = cardModel.CreateClone();

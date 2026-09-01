@@ -1,7 +1,5 @@
-using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
@@ -32,22 +30,12 @@ public sealed class WaterLightOnTheCloud() : JanusCardModel(1, CardType.Attack, 
             recordedCards.Add(card);
         }
 
-        foreach (CardModel _ in recordedCards)
+        if (recordedCards.Count > 0 && CombatState is { } combatState)
         {
-            if (CombatManager.Instance.IsOverOrEnding || CombatState == null)
-            {
-                break;
-            }
-
-            Creature? target = Owner.RunState.Rng.CombatTargets.NextItem(CombatState.HittableEnemies);
-            if (target == null)
-            {
-                break;
-            }
-
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+                .WithHitCount(recordedCards.Count)
                 .FromCard(this, cardPlay)
-                .Targeting(target)
+                .TargetingRandomOpponents(combatState)
                 .WithHitFx("vfx/vfx_attack_slash")
                 .Execute(choiceContext);
         }

@@ -22,7 +22,7 @@ public sealed class ForYourHeartOnly() : JanusCardModel(0, CardType.Attack, Card
         new CalculationBaseVar(3M),
         new ExtraDamageVar(1M),
         new CalculatedDamageVar(ValueProp.Move).WithMultiplier(CountCardsExhaustedThisTurn),
-        ModCardVars.Int(InspirationKeyword.AmountVar, 1)
+        ModCardVars.Int(InspirationKeyword.AmountVar, 2)
     ];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>

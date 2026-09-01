@@ -26,9 +26,6 @@ public sealed class CatSticker() : JanusRecordCardModel(0, CardType.Attack, Card
 
     public override int MaxUpgradeLevel => 999;
 
-    public override CardAssetProfile AssetProfile => new(
-        PortraitPath: $"res://JanusSpire2/images/cards/{GetType().Name}.png");
-
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
         [CardKeyword.Exhaust, JanusKeywords.Sticker, JanusKeywords.Recollection];
     
