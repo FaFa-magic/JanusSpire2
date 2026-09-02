@@ -104,6 +104,7 @@ public sealed class JanusRecordMappingCard : JanusCardModel,
 
         Original.EnchantmentChanged += OnOriginalEnchantmentChanged;
         Original.AfflictionChanged += OnOriginalAfflictionChanged;
+        Original.Upgraded += OnOriginalUpgraded;
         ObserveOriginalEnchantment();
     }
 
@@ -113,6 +114,7 @@ public sealed class JanusRecordMappingCard : JanusCardModel,
         {
             Original.EnchantmentChanged -= OnOriginalEnchantmentChanged;
             Original.AfflictionChanged -= OnOriginalAfflictionChanged;
+            Original.Upgraded -= OnOriginalUpgraded;
         }
 
         if (_observedOriginalEnchantment != null)
@@ -148,6 +150,11 @@ public sealed class JanusRecordMappingCard : JanusCardModel,
     }
 
     private void OnOriginalAfflictionChanged()
+    {
+        this.RequestVisualReload();
+    }
+
+    private void OnOriginalUpgraded()
     {
         this.RequestVisualReload();
     }

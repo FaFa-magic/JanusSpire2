@@ -14,8 +14,8 @@ public sealed class Matched() : JanusCardModel(2, CardType.Skill, CardRarity.Com
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new PowerVar<WeakPower>(1M),
-        new PowerVar<VulnerablePower>(1M)
+        new PowerVar<WeakPower>(2M),
+        new PowerVar<VulnerablePower>(2M)
     ];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>

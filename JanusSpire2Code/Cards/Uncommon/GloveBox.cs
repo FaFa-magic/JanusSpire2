@@ -15,7 +15,7 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
 public sealed class GloveBox() : JanusCardModel(2, CardType.Power, CardRarity.Uncommon, TargetType.Self), ICardDescriptionContributor
 {
-    private const int StickerThreshold = 4;
+    private const int StickerThreshold = 6;
     private const string StickersPlayedKey = "StickersPlayed";
 
     private int _stickersPlayed;

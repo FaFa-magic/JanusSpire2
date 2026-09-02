@@ -23,7 +23,7 @@ public sealed class SmokePower : JanusPowerModel
     {
         if (target == base.Owner)
         {
-            return 0.5m;
+            return 0.6m;
         }
         
         return 1m;

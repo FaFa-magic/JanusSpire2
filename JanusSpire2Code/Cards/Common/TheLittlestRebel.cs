@@ -32,8 +32,7 @@ public sealed class TheLittlestRebel() : JanusCardModel(2, CardType.Attack, Card
             return;
         }
 
-        CardModel? cardToCopy = Owner.RunState.Rng.CombatCardSelection
-            .NextItem(PileType.Draw.GetPile(Owner).Cards);
+        CardModel? cardToCopy = SelectCardToCopy();
         if (cardToCopy != null)
         {
             CardModel copy = cardToCopy.CreateClone();
@@ -41,6 +40,30 @@ public sealed class TheLittlestRebel() : JanusCardModel(2, CardType.Attack, Card
             await CardPileCmd.AddGeneratedCardToCombat(copy, PileType.Play, Owner);
             await CardCmd.AutoPlay(choiceContext, copy, null);
         }
+    }
+
+    private CardModel? SelectCardToCopy()
+    {
+        IReadOnlyList<CardModel> drawPile = PileType.Draw.GetPile(Owner).Cards;
+        if (drawPile.Count == 0)
+        {
+            return null;
+        }
+
+        List<CardModel> candidates = drawPile
+            .Where(card => card.Rarity != CardRarity.Basic &&
+                           card.Type is CardType.Attack or CardType.Skill or CardType.Power)
+            .ToList();
+
+        if (candidates.Count == 0)
+        {
+            candidates = drawPile
+                .Where(card => card.Rarity == CardRarity.Basic)
+                .ToList();
+        }
+
+        return Owner.RunState.Rng.CombatCardSelection.NextItem(
+            candidates.Count > 0 ? candidates : drawPile);
     }
     
     protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(6M);

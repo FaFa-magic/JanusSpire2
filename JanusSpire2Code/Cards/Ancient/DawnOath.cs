@@ -17,13 +17,11 @@ public sealed class DawnOath() : JanusCardModel(2, CardType.Skill, CardRarity.An
             return;
         }
 
-        var cardsToCopy = diaryPile.Cards.ToList();
+        List<CardModel> copies = diaryPile.Cards
+            .Select(card => card.CreateClone())
+            .ToList();
 
-        foreach (var card in cardsToCopy)
-        {
-            CardModel copy = card.CreateClone();
-            await CardPileCmd.Add(copy, diaryPile);
-        }
+        await CardPileCmd.AddGeneratedCardsToCombat(copies, MainFile.Diary, Owner);
     }
     
     protected override void OnUpgrade()

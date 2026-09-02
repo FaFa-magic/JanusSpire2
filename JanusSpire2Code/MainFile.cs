@@ -123,6 +123,7 @@ public static class MainFile
 		patcher.RegisterPatch<RecordMappingDynamicVarPreviewPatch>();
 		patcher.RegisterPatch<RecordMappingDynamicVarPreviewResetPatch>();
 		patcher.RegisterPatch<RecordMappingEnchantmentVisualPatch>();
+		patcher.RegisterPatch<RecordMappingUpgradeTitleVisualPatch>();
 		patcher.RegisterPatch<InspirationPileGlowInitPatch>();
 		patcher.RegisterPatch<InspirationPileGlowPatch>();
 

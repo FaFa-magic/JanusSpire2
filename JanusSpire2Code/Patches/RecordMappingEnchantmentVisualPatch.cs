@@ -6,6 +6,8 @@ using MegaCrit.Sts2.addons.mega_text;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Enchantments;
+using MegaCrit.Sts2.Core.Entities.UI;
+using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Cards;
@@ -195,5 +197,42 @@ public sealed class RecordMappingEnchantmentVisualPatch : IPatchMethod
         label.SetTextAutoSize(enchantment.DisplayAmount.ToString());
         label.Visible = enchantment.ShowAmount;
         SetEnchantmentStatus?.Invoke(__instance, enchantment.Status);
+    }
+}
+
+/// <summary>
+/// NCard colors titles from the displayed model's own upgrade level. A Record mapping deliberately
+/// stays unupgraded, so delegate that visual decision to its Diary original without changing any
+/// gameplay or serialization state on the mapping.
+/// </summary>
+public sealed class RecordMappingUpgradeTitleVisualPatch : IPatchMethod
+{
+    public static string PatchId => "janus_record_mapping_upgrade_title_visual";
+
+    public static string Description =>
+        "Render an upgraded Record mapping title with vanilla upgraded-card colors";
+
+    public static bool IsCritical => true;
+
+    public static ModPatchTarget[] GetTargets() =>
+    [
+        new(typeof(NCard), "UpdateTitleLabel", Type.EmptyTypes)
+    ];
+
+    [HarmonyPostfix]
+    public static void Postfix(NCard __instance)
+    {
+        if (__instance.Visibility != ModelVisibility.Visible ||
+            __instance.Model is not JanusRecordMappingCard mapping ||
+            RecordExtraHandManager.ResolveOriginal(mapping)?.CurrentUpgradeLevel <= 0)
+        {
+            return;
+        }
+
+        MegaLabel titleLabel = __instance.GetNode<MegaLabel>("%TitleLabel");
+        titleLabel.AddThemeColorOverride(ThemeConstants.Label.FontColor, StsColors.green);
+        titleLabel.AddThemeColorOverride(
+            ThemeConstants.Label.FontOutlineColor,
+            StsColors.cardTitleOutlineSpecial);
     }
 }
