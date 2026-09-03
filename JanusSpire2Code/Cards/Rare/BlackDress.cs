@@ -43,5 +43,5 @@ public sealed class BlackDress() : JanusCardModel(1, CardType.Attack, CardRarity
         return Task.CompletedTask;
     }
 
-    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(3M);
+    protected override void OnUpgrade() => base.EnergyCost.UpgradeBy(-1);
 }

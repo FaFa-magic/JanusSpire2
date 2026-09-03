@@ -13,11 +13,11 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
 public sealed class LittleCute() : JanusCardModel(1, CardType.Skill, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Transcribe];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Transcribe, CardKeyword.Exhaust];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         ModCardVars.Int("LittleCute", 1),
-        ModCardVars.Int("BlackCatSeal", 3)
+        ModCardVars.Int("BlackCatSeal", 4)
     ];
     
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>

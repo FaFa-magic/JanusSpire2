@@ -1,46 +1,32 @@
-﻿using JanusSpire2.JanusSpire2Code.Keywords;
+﻿using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.ValueProps;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Common;
 
-public sealed class MoonAndFlowers() : JanusCardModel(0, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+public sealed class MoonAndFlowers() : JanusCardModel(0, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Record];
-    
-    protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(3M, ValueProp.Move),
-        new CardsVar(2)
-    ];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new CardsVar(2)];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target, nameof(cardPlay.Target));
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .WithHitFx("vfx/vfx_attack_slash")
-            .Execute(choiceContext);
-    }
-    
-    public override async Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
-    {
-        if (card != this) return;
+        List<CardModel> selectedCards = (await CardSelectCmd.FromHand(
+            choiceContext,
+            Owner,
+            new CardSelectorPrefs(SelectionScreenPrompt, 0, DynamicVars.Cards.IntValue),
+            null,
+            this)).ToList();
 
-        await Cmd.Wait(0.25f);
-        
-        List<CardModel> copiedCards = [];
-        for (int i = 0; i < DynamicVars.Cards.IntValue; i++)
+        IReadOnlyList<CardPileAddResult> results = await CardPileCmd.Add(selectedCards, MainFile.Diary);
+        int movedCards = results.Count(result => result.success);
+        if (movedCards > 0)
         {
-            copiedCards.Add(CreateClone());
+            await CardPileCmd.Draw(choiceContext, movedCards, Owner);
         }
-
-        await CardPileCmd.AddGeneratedCardsToCombat(copiedCards, PileType.Hand, base.Owner);
     }
     
-    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(1M);
+    protected override void OnUpgrade() => DynamicVars.Cards.UpgradeValueBy(1M);
 }

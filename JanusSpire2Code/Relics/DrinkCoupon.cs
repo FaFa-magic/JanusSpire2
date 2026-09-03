@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.Factories;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Rooms;
 
 namespace JanusSpire2.JanusSpire2Code.Relics;
 
@@ -22,9 +23,9 @@ public sealed class DrinkCoupon : JanusRelicModel
         new DynamicVar("MaxPotionSlots", MaxNetworkSafePotionSlots)
     ];
 
-    public override async Task AfterRestSiteHeal(Player player, bool isMimicked)
+    public override async Task AfterRoomEntered(AbstractRoom room)
     {
-        if (player != Owner)
+        if (room is not RestSiteRoom)
         {
             return;
         }
@@ -36,17 +37,23 @@ public sealed class DrinkCoupon : JanusRelicModel
             slotsToGain = remainingSafeSlots;
         }
 
-        if (slotsToGain <= 0 && !HasOpenNetworkSafePotionSlot(Owner))
+        if (slotsToGain <= 0)
         {
             return;
         }
 
         Flash();
-        if (slotsToGain > 0)
+        await PlayerCmd.GainMaxPotionCount(slotsToGain, Owner);
+    }
+
+    public override async Task AfterRestSiteHeal(Player player, bool isMimicked)
+    {
+        if (player != Owner || !HasOpenNetworkSafePotionSlot(Owner))
         {
-            await PlayerCmd.GainMaxPotionCount(slotsToGain, Owner);
+            return;
         }
 
+        Flash();
         while (HasOpenNetworkSafePotionSlot(Owner))
         {
             PotionModel potion = PotionFactory.CreateRandomPotionOutOfCombat(

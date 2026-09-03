@@ -1,10 +1,12 @@
 using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Rooms;
 
@@ -67,16 +69,25 @@ public sealed class CatInBox : JanusRelicModel
             return;
         }
 
-        List<CardTransformation> transformations = PileType.Hand
-            .GetPile(Owner)
-            .Cards
-            .Where(card => card.IsTransformable)
-            .Select(card => new CardTransformation(card))
-            .ToList();
-        if (transformations.Count == 0)
+        if (!PileType.Hand.GetPile(Owner).Cards.Any(card => card.IsTransformable))
         {
             return;
         }
+
+        List<CardModel> selectedCards = (await CardSelectCmd.FromHand(
+            choiceContext,
+            Owner,
+            new CardSelectorPrefs(SelectionScreenPrompt, 0, 999),
+            card => card.IsTransformable,
+            this)).ToList();
+        if (selectedCards.Count == 0)
+        {
+            return;
+        }
+
+        List<CardTransformation> transformations = selectedCards
+            .Select(card => new CardTransformation(card))
+            .ToList();
 
         Flash();
         await CardCmd.Transform(

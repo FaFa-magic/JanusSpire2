@@ -8,7 +8,7 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
-public sealed class NotAfraid() : JanusCardModel(3, CardType.Skill, CardRarity.Rare, TargetType.Self)
+public sealed class NotAfraid() : JanusCardModel(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
 {
     private static readonly HashSet<CardModel> CardsReturningToDiary = [];
 

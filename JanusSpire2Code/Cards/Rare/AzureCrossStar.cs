@@ -1,7 +1,5 @@
-using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -36,7 +34,7 @@ public sealed class AzureCrossStar() : JanusCardModel(0, CardType.Attack, CardRa
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, CardKeyword.Retain];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(6M, ValueProp.Move)
+        new DamageVar(4M, ValueProp.Move)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -67,20 +65,6 @@ public sealed class AzureCrossStar() : JanusCardModel(0, CardType.Attack, CardRa
             0.2F);
     }
 
-    public override Task BeforeSideTurnStart(
-        PlayerChoiceContext choiceContext,
-        CombatSide side,
-        IReadOnlyList<Creature> participants,
-        ICombatState combatState)
-    {
-        if (participants.Contains(Owner.Creature))
-        {
-            CopiedThisTurn = false;
-        }
-
-        return Task.CompletedTask;
-    }
-
     protected override void AfterCloned()
     {
         base.AfterCloned();
@@ -92,5 +76,5 @@ public sealed class AzureCrossStar() : JanusCardModel(0, CardType.Attack, CardRa
         description.Add(nameof(CopiedThisTurn), CopiedThisTurn);
     }
 
-    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(2M);
+    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(1M);
 }

@@ -22,7 +22,7 @@ public sealed class Involuntarily() : JanusCardModel(1, CardType.Power, CardRari
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        ModCardVars.Int("Involuntarily", 30)
+        ModCardVars.Int("Involuntarily", 40)
     ];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>

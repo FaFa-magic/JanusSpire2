@@ -7,7 +7,6 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -16,8 +15,6 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 public sealed class LonelyNight() : JanusCardModel(2, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
 {
     private const decimal MaximumDamage = 999999999M;
-
-    private LonelyNight? _pendingTransformation;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
@@ -35,27 +32,6 @@ public sealed class LonelyNight() : JanusCardModel(2, CardType.Attack, CardRarit
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
-
-        _pendingTransformation = (LonelyNight)CreateClone();
-    }
-
-    public override async Task AfterCardChangedPiles(
-        CardModel card,
-        PileType oldPileType,
-        AbstractModel? clonedBy)
-    {
-        if (card != this ||
-            oldPileType != PileType.Play ||
-            Pile?.Type == PileType.Play ||
-            _pendingTransformation is not { } replacement)
-        {
-            return;
-        }
-
-        // Transform only after vanilla has moved the played card out of the play area.
-        // CardCmd.Transform records the replacement in combat history as a generated card.
-        _pendingTransformation = null;
-        await CardCmd.Transform(this, replacement, CardPreviewStyle.None);
     }
 
     public override Task AfterCardGeneratedForCombat(CardModel card, Player? creator)
@@ -80,9 +56,7 @@ public sealed class LonelyNight() : JanusCardModel(2, CardType.Attack, CardRarit
             {
                 continue;
             }
-
-            // A generated Lonely Night had the accumulated total as its attack value at
-            // the moment it was generated. Adding that value produces S -> 2S -> 4S.
+            
             decimal attackValue = entry.Card is LonelyNight
                 ? ApplyEnchantment(entry.Card, total, ValueProp.Move)
                 : GetAttackValue(entry.Card, target);

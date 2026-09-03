@@ -1,4 +1,5 @@
 ﻿using JanusSpire2.JanusSpire2Code.Keywords;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Commands;
@@ -10,7 +11,7 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-public sealed class LittleDevil() : JanusCardModel(1, CardType.Skill, CardRarity.Uncommon, TargetType.AnyEnemy)
+public sealed class LittleDevil() : JanusRecordCardModel(1, CardType.Skill, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Retain, JanusKeywords.Record];
     
@@ -42,5 +43,24 @@ public sealed class LittleDevil() : JanusCardModel(1, CardType.Skill, CardRarity
         return MainFile.Diary.GetPile(card.Owner).Cards.Count;
     }
 
-    protected override void OnUpgrade() => EnergyCost.UpgradeBy(-1);
+    internal static async Task RecallAfterBlackCatSealBloom(ICombatState combatState)
+    {
+        foreach (var player in combatState.Players)
+        {
+            LittleDevil[] cards = MainFile.Diary.GetPile(player).Cards
+                .OfType<LittleDevil>()
+                .Where(card => card.Keywords.Contains(JanusKeywords.Recollection) && !card.CanTake)
+                .ToArray();
+
+            foreach (LittleDevil card in cards)
+            {
+                if (card.Pile?.Type == MainFile.Diary)
+                {
+                    await card.EnableTake();
+                }
+            }
+        }
+    }
+
+    protected override void OnUpgrade() => AddKeyword(JanusKeywords.Recollection);
 }

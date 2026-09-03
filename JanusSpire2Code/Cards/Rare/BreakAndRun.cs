@@ -8,7 +8,7 @@ using STS2RitsuLib.Cards.DynamicVars;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
-public sealed class BreakAndRun() : JanusCardModel(2, CardType.Skill, CardRarity.Rare, TargetType.AllEnemies)
+public sealed class BreakAndRun() : JanusCardModel(1, CardType.Skill, CardRarity.Rare, TargetType.AllEnemies)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         ModCardVars.Int("BlackCatSeal", 4),

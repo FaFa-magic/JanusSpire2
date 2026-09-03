@@ -1,3 +1,4 @@
+using JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -72,7 +73,7 @@ public sealed class BlackCatSealPower : JanusPowerModel
             return;
 
         int amount = this.Amount;
-        decimal calculatedDmg = amount * 2m * (1m + 0.04m * amount);
+        decimal calculatedDmg = amount * 2m * (1m + 0.02m * amount);
 
         DynamicVars[FinalDmgKey].BaseValue = Math.Floor(calculatedDmg);
 
@@ -84,7 +85,7 @@ public sealed class BlackCatSealPower : JanusPowerModel
         if (this.Owner?.CombatState == null || !props.HasFlag(ValueProp.Unpowered) || target != this.Owner)
             return 1M;
         
-        return 1M + 0.04M * this.Amount;
+        return 1M + 0.02M * this.Amount;
     }
     
     private bool CanExecuteRightClick()
@@ -113,6 +114,11 @@ public sealed class BlackCatSealPower : JanusPowerModel
         await CreatureCmd.Damage(choiceContext, Owner, dmg, Owner);
 
         await PowerCmd.Remove(this);
+        ICombatState? combatState = Owner.CombatState;
+        if (combatState != null)
+        {
+            await LittleDevil.RecallAfterBlackCatSealBloom(combatState);
+        }
         return true;
     }
 

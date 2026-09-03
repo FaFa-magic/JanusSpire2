@@ -53,5 +53,5 @@ public sealed class BadIntentions() : JanusCardModel(1, CardType.Power, CardRari
             this);
     }
 
-    protected override void OnUpgrade() => DynamicVars["BadIntentions"].UpgradeValueBy(1M);
+    protected override void OnUpgrade() => AddKeyword(CardKeyword.Innate);
 }

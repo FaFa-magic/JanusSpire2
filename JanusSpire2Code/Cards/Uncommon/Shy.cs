@@ -13,7 +13,7 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
 public sealed class Shy() : JanusCardModel(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [ModCardVars.Int("Shy", 3M)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [ModCardVars.Int("Shy", 4M)];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.Static(StaticHoverTip.Block)];
     

@@ -5,6 +5,8 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
@@ -12,13 +14,15 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 public sealed class Flustered() : JanusCardModel(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
     protected override bool HasEnergyCostX => true;
+    
+    public override bool GainsBlock => true;
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Record];
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         ModCardVars.Int("Flustered", 3),
-        new CardsVar(3)
+        new BlockVar(7M, ValueProp.Move)
     ];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
@@ -26,22 +30,31 @@ public sealed class Flustered() : JanusCardModel(0, CardType.Skill, CardRarity.U
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        int repeatCount = ResolveEnergyXValue();
-        for (int i = 0; i < repeatCount; i++)
+        ArgumentNullException.ThrowIfNull(CombatState);
+
+        await PowerCmd.Apply<GoodTimesPower>(
+            choiceContext,
+            Owner.Creature,
+            DynamicVars["Flustered"].BaseValue,
+            Owner.Creature,
+            this);
+        await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
+
+        int amount = ResolveEnergyXValue();
+        List<CardModel> generatedCards = new(amount);
+        for (int i = 0; i < amount; i++)
         {
-            await PowerCmd.Apply<GoodTimesPower>(
-                choiceContext,
-                Owner.Creature,
-                DynamicVars["Flustered"].BaseValue,
-                Owner.Creature,
-                this);
-            await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.BaseValue, Owner);
+            CardModel generatedCard = CombatState.CreateCard<Flustered>(Owner);
+            if (IsUpgraded)
+            {
+                CardCmd.Upgrade(generatedCard);
+            }
+
+            generatedCards.Add(generatedCard);
         }
+
+        await CardPileCmd.AddGeneratedCardsToCombat(generatedCards, PileType.Hand, Owner);
     }
 
-    protected override void OnUpgrade()
-    {
-        DynamicVars["Flustered"].UpgradeValueBy(1M);
-        DynamicVars.Cards.UpgradeValueBy(1M);
-    }
+    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(2M);
 }

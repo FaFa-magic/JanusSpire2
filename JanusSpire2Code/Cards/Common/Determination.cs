@@ -1,6 +1,7 @@
 ﻿using JanusSpire2.JanusSpire2Code.Keywords;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -22,6 +23,14 @@ public sealed class Determination() : JanusCardModel(4, CardType.Attack, CardRar
             .TargetingAllOpponents(CombatState)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
+    }
+
+    public override async Task AfterAutoPostPlayPhaseEntered(PlayerChoiceContext choiceContext, Player player)
+    {
+        if (player == Owner && Pile?.Type == MainFile.Diary)
+        {
+            await CardCmd.AutoPlay(choiceContext, this, null);
+        }
     }
     
     protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(8M);

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using JanusSpire2.JanusSpire2Code.Characters;
 using JanusSpire2.JanusSpire2Code.Keywords;
 using MegaCrit.Sts2.Core.Commands;
@@ -10,7 +8,7 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
-public sealed class Colorful() : JanusCardModel(2, CardType.Power, CardRarity.Rare, TargetType.Self)
+public sealed class Colorful() : JanusCardModel(3, CardType.Power, CardRarity.Rare, TargetType.Self)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Transcribe];
 

@@ -3,7 +3,7 @@
   "name": "JanusSpire2",
   "author": "HCP_A3",
   "description": "Adds 'Janus' from AzurLane as a playable character for Slay the Spire 2.",
-  "version": "v0.0.5",
+  "version": "v0.0.6",
   "min_game_version": "0.111.0",
   "has_pck": true,
   "has_dll": true,
