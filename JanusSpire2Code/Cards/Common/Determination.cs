@@ -12,7 +12,7 @@ public sealed class Determination() : JanusCardModel(4, CardType.Attack, CardRar
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Perk];
     
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(28M, ValueProp.Move)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(22M, ValueProp.Move)];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -33,5 +33,5 @@ public sealed class Determination() : JanusCardModel(4, CardType.Attack, CardRar
         }
     }
     
-    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(8M);
+    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(6M);
 }

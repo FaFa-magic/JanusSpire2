@@ -9,6 +9,7 @@ using JanusSpire2.JanusSpire2Code.Keywords;
 using JanusSpire2.JanusSpire2Code.Patches;
 using JanusSpire2.JanusSpire2Code.Powers;
 using JanusSpire2.JanusSpire2Code.Relics;
+using JanusSpire2.JanusSpire2Code.Rewards;
 using JanusSpire2.Scripts.Telemetry;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Localization;
@@ -45,6 +46,7 @@ public static class MainFile
 		ModTypeDiscoveryHub.RegisterModAssembly(ModId, assembly);
 		RitsuLibFramework.EnsureGodotScriptsRegistered(assembly, Logger);
 		JanusKeywords.RegisterPersistence();
+		MagicGlovesTransformReward.Register();
 
 		JanusConfigPage.Register();
 		JanusTelemetry.Register();
@@ -126,6 +128,7 @@ public static class MainFile
 		patcher.RegisterPatch<RecordMappingUpgradeTitleVisualPatch>();
 		patcher.RegisterPatch<InspirationPileGlowInitPatch>();
 		patcher.RegisterPatch<InspirationPileGlowPatch>();
+		patcher.RegisterPatch<DazzlingTenderPatch>();
 
 		if (!patcher.PatchAll())
 			throw new InvalidOperationException("Critical patches failed.");

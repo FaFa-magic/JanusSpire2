@@ -83,7 +83,7 @@
   "JANUS_SPIRE2_CARD_FLIP.title": "翻阅",
   "JANUS_SPIRE2_CARD_FLIP.description": "[gold]誊抄[/gold]:[b][gold]日记本[/gold][/b]内卡牌数量变化时，获得{Flip:diff()}点[gold]格挡[/gold]。",
   "JANUS_SPIRE2_CARD_FLUSTERED.title": "慌乱",
-  "JANUS_SPIRE2_CARD_FLUSTERED.description": "获得{Flustered:diff()}点[gold]手牌上限[/gold]。\n获得{Block:diff()}点[gold]格挡[/gold]。\n将X张[b][color=#3EE6B3]{IfUpgraded:show:慌乱+|慌乱}[/color][/b]加入手牌。",
+  "JANUS_SPIRE2_CARD_FLUSTERED.description": "获得X点[gold]手牌上限[/gold]。\n获得{Block:diff()}点[gold]格挡[/gold]。\n将X张[b][color=#3EE6B3]{IfUpgraded:show:慌乱+|慌乱}[/color][/b]加入手牌。",
   "JANUS_SPIRE2_CARD_FOR_YOUR_HEART_ONLY.title": "真心为你",
   "JANUS_SPIRE2_CARD_FOR_YOUR_HEART_ONLY.description": "对所有敌人造成{CalculatedDamage:diff()}点伤害。\n本回合每[gold]消耗[/gold]一张牌，伤害增加{ExtraDamage:diff()}。\n[gold]灵感[/gold]{Inspiration:diff()}。",
   "JANUS_SPIRE2_CARD_GLOVE_BOX.title": "杂物箱",

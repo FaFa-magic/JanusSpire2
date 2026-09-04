@@ -7,7 +7,7 @@ using MegaCrit.Sts2.Core.Nodes.CommonUi;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
-public sealed class SecretarialWork() : JanusCardModel(0, CardType.Skill, CardRarity.Rare, TargetType.Self)
+public sealed class SecretarialWork() : JanusCardModel(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
 {
     private CardModel? _pendingTransformation;
 

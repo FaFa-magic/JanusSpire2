@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c503yilbbjf44"
-path="res://.godot/imported/ShyPower.png-9a058337ab00f7ccdc90c96cd52054f5.ctex"
+uid="uid://ckdgw7ab4njyp"
+path="res://.godot/imported/GoodTimesPower.png-3b76fca1deb2f2dd99179c62faf43950.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://JanusSpire2/images/powers/big/ShyPower.png"
-dest_files=["res://.godot/imported/ShyPower.png-9a058337ab00f7ccdc90c96cd52054f5.ctex"]
+source_file="res://JanusSpire2/images/powers/big/GoodTimesPower.png"
+dest_files=["res://.godot/imported/GoodTimesPower.png-3b76fca1deb2f2dd99179c62faf43950.ctex"]
 
 [params]
 

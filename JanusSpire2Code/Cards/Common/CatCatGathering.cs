@@ -11,6 +11,8 @@ public sealed class CatCatGathering() : JanusCardModel(1, CardType.Skill, CardRa
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new CardsVar(3)
     ];
+    
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<CatSticker>()];
     

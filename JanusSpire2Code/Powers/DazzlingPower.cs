@@ -71,4 +71,34 @@ public sealed class DazzlingPower : JanusPowerModel
             Owner,
             null);
     }
+
+    /// <summary>
+    /// Tender represents one temporary stat-loss effect as two independent power
+    /// applications and records a shared amount to restore at end of turn.  Going
+    /// through the ordinary modifier hook would therefore only replace the first
+    /// half and would leave both the other half and the later restoration behind.
+    /// Treat that pair as one debuff transaction instead.
+    /// </summary>
+    internal async Task ConvertTenderPenalty(PlayerChoiceContext choiceContext)
+    {
+        if (Amount <= 0 || Owner.IsDead)
+        {
+            return;
+        }
+
+        Flash();
+        await PowerCmd.Decrement(this);
+
+        if (Owner.IsDead)
+        {
+            return;
+        }
+
+        await PowerCmd.Apply<BlackCatSealPower>(
+            choiceContext,
+            Owner,
+            1M,
+            Owner,
+            null);
+    }
 }

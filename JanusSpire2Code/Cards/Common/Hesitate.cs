@@ -19,7 +19,7 @@ public sealed class Hesitate() : JanusCardModel(1, CardType.Skill, CardRarity.Co
     public override bool GainsBlock => true;
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new BlockVar(8M, ValueProp.Move),
+        new BlockVar(7M, ValueProp.Move),
         new DynamicVar("SwiftAmount", 1M)
     ];
     

@@ -12,7 +12,7 @@ public sealed class HeavyMemories() : JanusCardModel(1, CardType.Attack, CardRar
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new CalculationBaseVar(3m),
-        new ExtraDamageVar(3m),
+        new ExtraDamageVar(2m),
         new CalculatedDamageVar(ValueProp.Move).WithMultiplier((CardModel card, Creature? _) => MainFile.Diary.GetPile(card.Owner).Cards.Count)
     ];
     

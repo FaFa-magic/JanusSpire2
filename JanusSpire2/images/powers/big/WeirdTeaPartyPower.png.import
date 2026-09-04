@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://v5ysnfcbktt1"
-path="res://.godot/imported/ShyPower.png-4401533e80f2c3eb9c1269fbea3b000a.ctex"
+uid="uid://b6ec3rawju8rm"
+path="res://.godot/imported/WeirdTeaPartyPower.png-f220b8da7b0da370d6b20ce85792071e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://JanusSpire2/images/powers/packed/ShyPower.png"
-dest_files=["res://.godot/imported/ShyPower.png-4401533e80f2c3eb9c1269fbea3b000a.ctex"]
+source_file="res://JanusSpire2/images/powers/big/WeirdTeaPartyPower.png"
+dest_files=["res://.godot/imported/WeirdTeaPartyPower.png-f220b8da7b0da370d6b20ce85792071e.ctex"]
 
 [params]
 

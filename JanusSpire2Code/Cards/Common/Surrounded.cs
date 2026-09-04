@@ -14,7 +14,7 @@ public sealed class Surrounded() : JanusCardModel(2, CardType.Skill, CardRarity.
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new CardsVar(2),
-        new BlockVar(12M, ValueProp.Move)
+        new BlockVar(11M, ValueProp.Move)
     ];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<CatSticker>(this.IsUpgraded)];
