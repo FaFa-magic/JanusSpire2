@@ -53,7 +53,7 @@ public static class MainFile
 		
 		RitsuLibFramework.RegisterArchaicToothTranscendenceMapping<BlackCatAssault, BlackCatUnleash>();
 		RitsuLibFramework.RegisterTouchOfOrobasRefinementMapping<Coronet, ShiningCrown>();
-		BlackCatSealPower.RegisterSynchronizedRightClick();
+		BlackCatSealPower.RegisterSynchronizedBloom();
 		InspirationKeyword.RegisterSynchronizedRightClick();
 		StickerMergeAction.Register();
 		
@@ -129,6 +129,7 @@ public static class MainFile
 		patcher.RegisterPatch<InspirationPileGlowInitPatch>();
 		patcher.RegisterPatch<InspirationPileGlowPatch>();
 		patcher.RegisterPatch<DazzlingTenderPatch>();
+		patcher.RegisterPatch<BlackCatSealCreatureClickPatch>();
 
 		if (!patcher.PatchAll())
 			throw new InvalidOperationException("Critical patches failed.");

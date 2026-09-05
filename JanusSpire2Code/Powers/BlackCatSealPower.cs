@@ -4,6 +4,7 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Multiplayer;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -11,38 +12,35 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Multiplayer.Serialization;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
-using STS2RitsuLib.Interactions.RightClick;
 using STS2RitsuLib.Networking.ManagedActions;
 
 namespace JanusSpire2.JanusSpire2Code.Powers;
 
 public sealed class BlackCatSealPower : JanusPowerModel
 {
-    private static readonly RitsuLibManagedNetActionDescriptor<RightClickPayload> RightClickDescriptor = new(
+    private static readonly RitsuLibManagedNetActionDescriptor<BloomRequest> BloomDescriptor = new(
         MainFile.ModId,
-        "black_cat_seal_explode_by_combat_id",
-        SerializeRightClickPayload,
-        DeserializeRightClickPayload,
-        ExecuteManagedRightClick,
+        "black_cat_seal_bloom_by_creature_click_v2",
+        SerializeBloomRequest,
+        DeserializeBloomRequest,
+        ExecuteManagedBloom,
         GameActionType.CombatPlayPhaseOnly);
 
-    private static readonly BlackCatSealRightClickHandler RightClickHandler = new();
-    private static int _rightClickRegistered;
+    private static int _bloomActionRegistered;
 
     public override PowerType Type => PowerType.Debuff;
     public override PowerStackType StackType => PowerStackType.Counter;
 
     private const string FinalDmgKey = "JanusSpire2_BlackCat_FinalDmg";
 
-    internal static void RegisterSynchronizedRightClick()
+    internal static void RegisterSynchronizedBloom()
     {
-        if (Interlocked.Exchange(ref _rightClickRegistered, 1) != 0)
+        if (Interlocked.Exchange(ref _bloomActionRegistered, 1) != 0)
         {
             return;
         }
 
-        RitsuLibManagedNetActions.Register(RightClickDescriptor);
-        ModRightClickRegistry.Register(RightClickHandler);
+        RitsuLibManagedNetActions.Register(BloomDescriptor);
     }
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
@@ -88,18 +86,55 @@ public sealed class BlackCatSealPower : JanusPowerModel
         return 1M + 0.02M * this.Amount;
     }
     
-    private bool CanExecuteRightClick()
+    private bool CanBloom()
     {
         return Owner.Powers.Contains(this) &&
                Owner.CombatId.HasValue &&
-               !Owner.IsDead &&
+               Owner.IsAlive &&
                CombatManager.Instance.IsInProgress &&
                !CombatManager.Instance.IsOverOrEnding;
     }
 
+    private bool CanExecuteManualBloom(Player requester, int requestedTurnNumber)
+    {
+        ICombatState? combatState = Owner.CombatState;
+        PlayerCombatState? playerCombatState = requester.PlayerCombatState;
+        return CanBloom() &&
+               combatState != null &&
+               playerCombatState != null &&
+               requester.Creature.IsAlive &&
+               ReferenceEquals(requester.Creature.CombatState, combatState) &&
+               combatState.CurrentSide == CombatSide.Player &&
+               playerCombatState.Phase == PlayerTurnPhase.Play &&
+               playerCombatState.TurnNumber == requestedTurnNumber &&
+               !CombatManager.Instance.IsPlayerReadyToEndTurn(requester) &&
+               RunManager.Instance.ActionQueueSynchronizer.CombatState ==
+               ActionSynchronizerCombatState.PlayPhase;
+    }
+
+    internal static bool TryRequestManualBloom(Player requester, Creature target)
+    {
+        PlayerCombatState? playerCombatState = requester.PlayerCombatState;
+        BlackCatSealPower? power = target.GetPower<BlackCatSealPower>();
+        if (playerCombatState == null ||
+            power == null ||
+            CombatManager.Instance.PlayerActionsDisabled ||
+            !power.CanExecuteManualBloom(requester, playerCombatState.TurnNumber) ||
+            target.CombatId is not { } targetCombatId)
+        {
+            return false;
+        }
+
+        return RitsuLibManagedNetActions.Request(
+            RunManager.Instance,
+            BloomDescriptor,
+            new(targetCombatId, playerCombatState.TurnNumber),
+            requester.NetId);
+    }
+
     internal async Task<bool> Bloom(PlayerChoiceContext choiceContext)
     {
-        if (!CanExecuteRightClick())
+        if (!CanBloom())
         {
             return false;
         }
@@ -122,28 +157,30 @@ public sealed class BlackCatSealPower : JanusPowerModel
         return true;
     }
 
-    private static byte[] SerializeRightClickPayload(RightClickPayload payload)
+    private static byte[] SerializeBloomRequest(BloomRequest request)
     {
         var writer = new PacketWriter { WarnOnGrow = false };
-        writer.WriteUInt(payload.OwnerCombatId);
+        writer.WriteUInt(request.TargetCombatId);
+        writer.WriteInt(request.RequesterTurnNumber);
         writer.ZeroByteRemainder();
         return [.. writer.Buffer.AsSpan(0, writer.BytePosition)];
     }
 
-    private static RightClickPayload DeserializeRightClickPayload(ReadOnlySpan<byte> bytes)
+    private static BloomRequest DeserializeBloomRequest(ReadOnlySpan<byte> bytes)
     {
         var reader = new PacketReader();
         reader.Reset(bytes.ToArray());
-        return new(reader.ReadUInt());
+        return new(reader.ReadUInt(), reader.ReadInt());
     }
 
-    private static async Task ExecuteManagedRightClick(
-        RitsuLibManagedNetActionContext<RightClickPayload> context)
+    private static async Task ExecuteManagedBloom(
+        RitsuLibManagedNetActionContext<BloomRequest> context)
     {
-        Creature? owner = context.Player.Creature.CombatState?
-            .GetCreature(context.Message.OwnerCombatId);
-        BlackCatSealPower? power = owner?.GetPower<BlackCatSealPower>();
-        if (power == null || !power.CanExecuteRightClick())
+        Creature? target = context.Player.Creature.CombatState?
+            .GetCreature(context.Message.TargetCombatId);
+        BlackCatSealPower? power = target?.GetPower<BlackCatSealPower>();
+        if (power == null ||
+            !power.CanExecuteManualBloom(context.Player, context.Message.RequesterTurnNumber))
         {
             return;
         }
@@ -151,27 +188,5 @@ public sealed class BlackCatSealPower : JanusPowerModel
         await power.Bloom(context.PlayerChoiceContext);
     }
 
-    private readonly record struct RightClickPayload(uint OwnerCombatId);
-
-    private sealed class BlackCatSealRightClickHandler : IModRightClickHandler
-    {
-        public int Priority => 100;
-
-        public bool TryHandle(ModRightClickContext context)
-        {
-            if (context.Model is not BlackCatSealPower power ||
-                context.Trigger.Source != ModRightClickSource.Power ||
-                !power.CanExecuteRightClick() ||
-                power.Owner.CombatId is not { } ownerCombatId)
-            {
-                return false;
-            }
-
-            return RitsuLibManagedNetActions.Request(
-                RunManager.Instance,
-                RightClickDescriptor,
-                new(ownerCombatId),
-                context.Player.NetId);
-        }
-    }
+    private readonly record struct BloomRequest(uint TargetCombatId, int RequesterTurnNumber);
 }
