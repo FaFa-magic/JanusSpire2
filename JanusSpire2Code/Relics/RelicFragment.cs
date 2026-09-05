@@ -4,7 +4,6 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.Factories;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rewards;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Relics;
 
@@ -15,9 +14,6 @@ public sealed class RelicFragment : JanusRelicModel
     public override RelicRarity Rarity => RelicRarity.Event;
 
     public override bool HasUponPickupEffect => true;
-
-    public override RelicAssetProfile AssetProfile =>
-        ContentAssetProfiles.Relic("CrackedCore");
 
     public override async Task AfterRewardTaken(Player player, Reward reward)
     {

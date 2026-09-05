@@ -3,7 +3,6 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Powers;
 
@@ -19,9 +18,6 @@ public sealed class DazzlingPower : JanusPowerModel
     public override PowerType Type => PowerType.Buff;
 
     public override PowerStackType StackType => PowerStackType.Counter;
-
-    public override PowerAssetProfile AssetProfile =>
-        ContentAssetProfiles.Power("ArtifactPower");
 
     protected override object InitInternalData() => new Data();
 
