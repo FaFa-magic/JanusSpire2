@@ -16,8 +16,8 @@ public sealed class RemedyStrike() : JanusCardModel(2, CardType.Attack, CardRari
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(13M, ValueProp.Move),
-        new CardsVar(1)
+        new DamageVar(12M, ValueProp.Move),
+        new CardsVar(2)
     ];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
@@ -63,5 +63,5 @@ public sealed class RemedyStrike() : JanusCardModel(2, CardType.Attack, CardRari
         await CardPileCmd.AddGeneratedCardsToCombat(generatedCards, PileType.Hand, Owner);
     }
     
-    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(5M);
+    protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(4M);
 }

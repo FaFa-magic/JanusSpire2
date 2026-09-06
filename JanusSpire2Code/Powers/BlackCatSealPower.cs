@@ -114,6 +114,29 @@ public sealed class BlackCatSealPower : JanusPowerModel
 
     internal static bool TryRequestManualBloom(Player requester, Creature target)
     {
+        if (!TryCreateManualBloomRequest(requester, target, out BloomRequest request))
+        {
+            return false;
+        }
+
+        return RitsuLibManagedNetActions.Request(
+            RunManager.Instance,
+            BloomDescriptor,
+            request,
+            requester.NetId);
+    }
+
+    internal static bool CanRequestManualBloom(Player requester, Creature target)
+    {
+        return TryCreateManualBloomRequest(requester, target, out _);
+    }
+
+    private static bool TryCreateManualBloomRequest(
+        Player requester,
+        Creature target,
+        out BloomRequest request)
+    {
+        request = default;
         PlayerCombatState? playerCombatState = requester.PlayerCombatState;
         BlackCatSealPower? power = target.GetPower<BlackCatSealPower>();
         if (playerCombatState == null ||
@@ -125,11 +148,8 @@ public sealed class BlackCatSealPower : JanusPowerModel
             return false;
         }
 
-        return RitsuLibManagedNetActions.Request(
-            RunManager.Instance,
-            BloomDescriptor,
-            new(targetCombatId, playerCombatState.TurnNumber),
-            requester.NetId);
+        request = new(targetCombatId, playerCombatState.TurnNumber);
+        return true;
     }
 
     internal async Task<bool> Bloom(PlayerChoiceContext choiceContext)

@@ -16,7 +16,7 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 public sealed class ConcealGatherings() : JanusCardModel(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(7M, ValueProp.Move),
+        new DamageVar(5M, ValueProp.Move),
         ModCardVars.Int("BlackCatSeal", 2)
     ];
     

@@ -18,7 +18,7 @@ public sealed class HallucinationEnchantment : ModEnchantmentTemplate
     public override bool HasExtraCardText => true;
 
     public override EnchantmentAssetProfile AssetProfile => new(
-        IconPath: "res://icon.svg"
+        IconPath: "res://JanusSpire2/images/enchantments/HallucinationEnchantment.png"
     );
     
     public override async Task BeforeSideTurnStart(

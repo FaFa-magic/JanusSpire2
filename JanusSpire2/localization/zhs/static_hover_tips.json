@@ -3,6 +3,9 @@
   "JANUS_SPIRE2_CARDPILE_DIARY_PILE.description": "记录的卡牌不进入[gold]弃牌堆[/gold]而是进入[gold]日记本[/gold]。",
   "JANUS_SPIRE2_CARDPILE_DIARY_PILE.info": "这里存放着所有进入日记本的卡牌。",
   "JANUS_SPIRE2_CARDPILE_DIARY_PILE.empty": "日记本是空的。",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.back": "返回",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.previous_page": "上一页（Page Up）",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.next_page": "下一页（Page Down）",
   "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.title": "记录映射",
   "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.description": "这里显示当前可以从日记本打出的卡牌映射。",
   "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.empty": "当前没有可打出的记录牌。"

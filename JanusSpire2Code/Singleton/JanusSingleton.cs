@@ -223,9 +223,13 @@ public class JanusSingleton : HookedSingletonModel
             }
 
             _counterattackTriggerCounts[card] = (turnNumber, triggerCount + 1);
-            CardModel cardclone = card.CreateClone();
-            cardclone.ExhaustOnNextPlay = true;
-            await CardCmd.AutoPlay(choiceContext, cardclone, null);
+            CardModel copy = card.CreateClone();
+            copy.ExhaustOnNextPlay = true;
+            await CardPileCmd.AddGeneratedCardToCombat(
+                copy,
+                PileType.Play,
+                player);
+            await CardCmd.AutoPlay(choiceContext, copy, null);
 
             if (CombatManager.Instance.IsOverOrEnding || player.Creature.IsDead)
             {

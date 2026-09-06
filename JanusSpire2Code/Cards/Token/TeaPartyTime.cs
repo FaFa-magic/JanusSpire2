@@ -19,7 +19,7 @@ public sealed class TeaPartyTime() : JanusRecordCardModel(0, CardType.Skill, Car
         [JanusKeywords.Recollection, JanusKeywords.Record];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new CardsVar(3)
+        new CardsVar(1)
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -57,6 +57,6 @@ public sealed class TeaPartyTime() : JanusRecordCardModel(0, CardType.Skill, Car
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Cards.UpgradeValueBy(2M);
+        DynamicVars.Cards.UpgradeValueBy(1M);
     }
 }

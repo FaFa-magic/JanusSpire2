@@ -1,4 +1,6 @@
+using JanusSpire2.JanusSpire2Code.Nodes;
 using MegaCrit.Sts2.Core.CardSelection;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -8,6 +10,7 @@ using MegaCrit.Sts2.Core.GameActions;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Multiplayer.Serialization;
+using MegaCrit.Sts2.Core.Nodes.Screens;
 using MegaCrit.Sts2.Core.Nodes.Screens.Capstones;
 using MegaCrit.Sts2.Core.Runs;
 using STS2RitsuLib.Interactions.RightClick;
@@ -21,7 +24,7 @@ public static class InspirationKeyword
 
     private static readonly RitsuLibManagedNetActionDescriptor<RightClickPayload> RightClickDescriptor = new(
         MainFile.ModId,
-        "inspiration_take_from_diary",
+        "inspiration_take_from_diary_v2",
         SerializeRightClickPayload,
         DeserializeRightClickPayload,
         ExecuteManagedRightClick,
@@ -96,25 +99,35 @@ public static class InspirationKeyword
                diaryPile.Cards.Count >= amount;
     }
 
+    private static bool CanAct(Player player, int turnNumber)
+    {
+        PlayerCombatState? combatState = player.PlayerCombatState;
+        return CombatManager.Instance.IsInProgress &&
+               !CombatManager.Instance.IsOverOrEnding &&
+               player.Creature.IsAlive &&
+               combatState is { Phase: PlayerTurnPhase.Play } &&
+               combatState.TurnNumber == turnNumber &&
+               CombatManager.Instance.IsPartOfPlayerTurn(player) &&
+               !CombatManager.Instance.IsPlayerReadyToEndTurn(player) &&
+               RunManager.Instance.ActionQueueSynchronizer.CombatState ==
+               ActionSynchronizerCombatState.PlayPhase;
+    }
+
     private static async Task ExecuteRightClick(
         GameActionPlayerChoiceContext choiceContext,
         Player actionPlayer,
         CardModel card,
-        PileType expectedPile)
+        PileType expectedPile,
+        int turnNumber)
     {
-        if (!ReferenceEquals(actionPlayer, card.Owner) ||
+        if (!CanAct(actionPlayer, turnNumber) ||
+            !ReferenceEquals(actionPlayer, card.Owner) ||
             !CanExecuteRightClick(card, expectedPile, out int amount))
         {
             return;
         }
 
         CardPile diaryPile = MainFile.Diary.GetPile(card.Owner);
-        if (LocalContext.IsMe(actionPlayer) &&
-            NCapstoneContainer.Instance is { InUse: true } capstone)
-        {
-            capstone.Close();
-        }
-
         if (amount > 0)
         {
             // A fixed Diary snapshot makes the official multiplayer choice synchronizer
@@ -126,9 +139,12 @@ public static class InspirationKeyword
                 card.Owner,
                 new CardSelectorPrefs(CardSelectorPrefs.ExhaustSelectionPrompt, amount))).ToList();
 
-            if (selected.Count != amount ||
+            if (!CanAct(actionPlayer, turnNumber) ||
+                !CanExecuteRightClick(card, expectedPile, out int currentAmount) ||
+                currentAmount != amount ||
+                selected.Count != amount ||
                 selected.Distinct().Count() != amount ||
-                selected.Any(selectedCard => selectedCard.Pile?.Type != MainFile.Diary))
+                selected.Any(selectedCard => !diaryPile.Cards.Contains(selectedCard)))
             {
                 return;
             }
@@ -139,14 +155,24 @@ public static class InspirationKeyword
             }
         }
 
+        // Exhaust hooks can end combat or remove a card entirely. Do not restore a card
+        // after combat cleanup; selecting the Inspiration card itself as payment is valid.
+        if (!CombatManager.Instance.IsInProgress || CombatManager.Instance.IsOverOrEnding ||
+            card.Pile is not { IsCombatPile: true })
+        {
+            return;
+        }
+
         await CardPileCmd.Add(card, PileType.Hand);
     }
 
     private static byte[] SerializeRightClickPayload(RightClickPayload payload)
     {
         var writer = new PacketWriter { WarnOnGrow = false };
-        writer.WriteEnum(payload.SourcePile);
-        writer.WriteInt(payload.CardIndex);
+        // WriteEnum reserves bits for vanilla values only and truncates custom pile IDs.
+        writer.WriteInt((int)payload.SourcePile);
+        writer.WriteUInt(payload.CombatCardId);
+        writer.WriteInt(payload.TurnNumber);
         writer.ZeroByteRemainder();
         return [.. writer.Buffer.AsSpan(0, writer.BytePosition)];
     }
@@ -155,30 +181,31 @@ public static class InspirationKeyword
     {
         var reader = new PacketReader();
         reader.Reset(bytes.ToArray());
-        return new(reader.ReadEnum<PileType>(), reader.ReadInt());
+        return new((PileType)reader.ReadInt(), reader.ReadUInt(), reader.ReadInt());
     }
 
     private static async Task ExecuteManagedRightClick(
         RitsuLibManagedNetActionContext<RightClickPayload> context)
     {
-        CardPile? sourcePile = context.Player.PlayerCombatState?.AllPiles
-            .FirstOrDefault(pile => pile.Type == context.Message.SourcePile);
-        if (sourcePile == null ||
-            context.Message.CardIndex < 0 ||
-            context.Message.CardIndex >= sourcePile.Cards.Count)
+        // Resolve the exact card, even if another queued action reordered its pile.
+        if (!NetCombatCardDb.Instance.TryGetCard(context.Message.CombatCardId, out CardModel? card) ||
+            card == null)
         {
             return;
         }
 
-        CardModel card = sourcePile.Cards[context.Message.CardIndex];
         await ExecuteRightClick(
             context.PlayerChoiceContext,
             context.Player,
             card,
-            context.Message.SourcePile);
+            context.Message.SourcePile,
+            context.Message.TurnNumber);
     }
 
-    private readonly record struct RightClickPayload(PileType SourcePile, int CardIndex);
+    private readonly record struct RightClickPayload(
+        PileType SourcePile,
+        uint CombatCardId,
+        int TurnNumber);
 
     private sealed class InspirationRightClickHandler : IModRightClickHandler
     {
@@ -186,8 +213,12 @@ public static class InspirationKeyword
 
         public bool TryHandle(ModRightClickContext context)
         {
-            if (context.Model is not CardModel card ||
+            if (!LocalContext.IsMe(context.Player) ||
+                context.Model is not CardModel { IsMutable: true } card ||
                 !ReferenceEquals(context.Player, card.Owner) ||
+                context.Player.PlayerCombatState is not { } combatState ||
+                !CanAct(context.Player, combatState.TurnNumber) ||
+                CombatManager.Instance.PlayerActionsDisabled ||
                 context.Trigger.Source != ModRightClickSource.CombatPileCard ||
                 context.Trigger.ExpectedCardPile is not { } expectedPile ||
                 !CanExecuteRightClick(card, expectedPile, out _))
@@ -195,16 +226,28 @@ public static class InspirationKeyword
                 return false;
             }
 
-            int cardIndex = card.Pile!.Cards.ToList().IndexOf(card);
-            if (cardIndex < 0)
+            if (!NetCombatCardDb.Instance.TryGetCardId(card, out uint combatCardId))
             {
                 return false;
+            }
+
+            // Close only the pile being clicked, before queuing. Never close a choice
+            // screen (or a remote player's UI) from the synchronized executor.
+            if (NCapstoneContainer.Instance is { } capstone &&
+                (capstone.CurrentCapstoneScreen switch
+                {
+                    NCardPileScreen screen => ReferenceEquals(screen.Pile, card.Pile),
+                    NDiaryCardPileScreen screen => ReferenceEquals(screen.Pile, card.Pile),
+                    _ => false
+                }))
+            {
+                capstone.Close();
             }
 
             return RitsuLibManagedNetActions.Request(
                 RunManager.Instance,
                 RightClickDescriptor,
-                new(expectedPile, cardIndex),
+                new(expectedPile, combatCardId, combatState.TurnNumber),
                 context.Player.NetId);
         }
     }

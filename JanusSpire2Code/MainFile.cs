@@ -1,24 +1,19 @@
 using System.Reflection;
-using MegaCrit.Sts2.addons.mega_text;
 using JanusSpire2.JanusSpire2Code.Cards;
 using JanusSpire2.JanusSpire2Code.Cards.Ancient;
 using JanusSpire2.JanusSpire2Code.Cards.Basic;
 using JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 using JanusSpire2.JanusSpire2Code.Configs;
 using JanusSpire2.JanusSpire2Code.Keywords;
+using JanusSpire2.JanusSpire2Code.Nodes;
 using JanusSpire2.JanusSpire2Code.Patches;
 using JanusSpire2.JanusSpire2Code.Powers;
 using JanusSpire2.JanusSpire2Code.Relics;
 using JanusSpire2.JanusSpire2Code.Rewards;
 using JanusSpire2.Scripts.Telemetry;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Modding;
-using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes.Cards;
-using MegaCrit.Sts2.Core.Nodes.Screens;
 using MegaCrit.Sts2.Core.Nodes.Screens.Capstones;
-using MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary;
 using STS2RitsuLib;
 using STS2RitsuLib.CardPiles;
 using STS2RitsuLib.Interop;
@@ -137,74 +132,16 @@ public static class MainFile
 
 	private static void OpenDiaryPile(ModCardPileOpenContext context)
 	{
-		context.ShowDefaultPileScreen();
-		if (NCapstoneContainer.Instance?.CurrentCapstoneScreen is not NCardPileScreen screen)
+		if (NCapstoneContainer.Instance is not { } container)
 		{
 			return;
 		}
-
-		MegaRichTextLabel bottomLabel = screen.GetNode<MegaRichTextLabel>("%BottomLabel");
-		bottomLabel.Text = "[center]" + new LocString(
-			ModCardPileSpec.HoverTipLocTable,
-			$"{context.Definition.Id}.info").GetFormattedText();
-		bottomLabel.Visible = true;
-
-		NCardGrid grid = screen.GetNode<NCardGrid>("CardGrid");
-		void RefreshDiaryViewOrder()
+		if (container.CurrentCapstoneScreen is NDiaryCardPileScreen screen &&
+		    ReferenceEquals(screen.Pile, context.Pile))
 		{
-			if (!Godot.GodotObject.IsInstanceValid(grid))
-			{
-				return;
-			}
-
-			List<CardModel> cards = context.Pile.Cards
-				.OrderBy(card => GetDiaryRarityOrder(card.Rarity))
-				.ThenBy(card => GetDiaryTypeOrder(card.Type))
-				.ThenBy(card => card.Id.Entry, StringComparer.Ordinal)
-				.ToList();
-			grid.SetCards(cards, Diary, [SortingOrders.Ascending]);
+			container.Close();
+			return;
 		}
-
-		void OnScreenTreeExiting()
-		{
-			context.Pile.ContentsChanged -= RefreshDiaryViewOrder;
-			screen.TreeExiting -= OnScreenTreeExiting;
-		}
-
-		context.Pile.ContentsChanged += RefreshDiaryViewOrder;
-		screen.TreeExiting += OnScreenTreeExiting;
-		RefreshDiaryViewOrder();
-	}
-
-	private static int GetDiaryRarityOrder(CardRarity rarity)
-	{
-		return rarity switch
-		{
-			CardRarity.Ancient => 0,
-			CardRarity.Rare => 1,
-			CardRarity.Uncommon => 2,
-			CardRarity.Common => 3,
-			CardRarity.Basic => 4,
-			CardRarity.Status => 5,
-			CardRarity.Curse => 6,
-			CardRarity.Event => 7,
-			CardRarity.Quest => 8,
-			CardRarity.Token => 9,
-			_ => 10,
-		};
-	}
-
-	private static int GetDiaryTypeOrder(CardType type)
-	{
-		return type switch
-		{
-			CardType.Power => 0,
-			CardType.Attack => 1,
-			CardType.Skill => 2,
-			CardType.Status => 3,
-			CardType.Curse => 4,
-			CardType.Quest => 5,
-			_ => 6,
-		};
+		context.OpenCapstoneScreen(NDiaryCardPileScreen.Create(context));
 	}
 }

@@ -1,5 +1,5 @@
-using Godot;
 using JanusSpire2.JanusSpire2Code.Keywords;
+using JanusSpire2.JanusSpire2Code.Relics;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
@@ -13,22 +13,18 @@ using MegaCrit.Sts2.Core.Nodes.Screens.CardSelection;
 using MegaCrit.Sts2.Core.Runs;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace JanusSpire2.JanusSpire2Code.Relics;
+namespace JanusSpire2.JanusSpire2Code.RestSite;
 
 internal sealed class WriteDiaryRestSiteOption(
     Player owner,
     BookAndPen source) : ModRestSiteOptionTemplate(owner)
 {
-    private const string FutureIconPath =
-        "res://JanusSpire2/images/rest_site/WriteDiary.png";
-
     private const string PlaceholderIconPath =
-        "res://JanusSpire2/images/combatui/collection.png";
+        "res://JanusSpire2/images/rest_site/WriteDiary.png";
 
     public override string OptionId => BookAndPen.WriteDiaryOptionId;
 
-    public override RestSiteOptionAssetProfile AssetProfile => new(
-        ResourceLoader.Exists(FutureIconPath) ? FutureIconPath : PlaceholderIconPath);
+    public override RestSiteOptionAssetProfile AssetProfile => new(PlaceholderIconPath);
 
     public override LocString CustomTitle =>
         new("relics", $"{source.Id.Entry}.writeDiaryOptionName");

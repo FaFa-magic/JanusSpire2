@@ -10,7 +10,7 @@ using STS2RitsuLib.Cards.DynamicVars;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Ancient;
 
-public sealed class BlackCatUnleash() : JanusCardModel(3, CardType.Attack, CardRarity.Ancient, TargetType.AnyEnemy)
+public sealed class BlackCatUnleash() : JanusCardModel(4, CardType.Attack, CardRarity.Ancient, TargetType.AnyEnemy)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Counterattack];
     

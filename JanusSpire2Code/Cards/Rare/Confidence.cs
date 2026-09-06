@@ -18,7 +18,7 @@ public sealed class Confidence() : JanusCardModel(1, CardType.Attack, CardRarity
         [HoverTipFactory.FromPower<ConfidencePower>()];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(8m, ValueProp.Move),
+        new DamageVar(6m, ValueProp.Move),
         ModCardVars.Int("Confidence", 1)
     ];
     
@@ -33,7 +33,6 @@ public sealed class Confidence() : JanusCardModel(1, CardType.Attack, CardRarity
             .Execute(choiceContext);
 
         await PowerCmd.Apply<ConfidencePower>(choiceContext, base.Owner.Creature, DynamicVars["Confidence"].BaseValue, base.Owner.Creature, this);
-        EnergyCost.AddThisCombat(1);
     }
     
     protected override void OnUpgrade()
