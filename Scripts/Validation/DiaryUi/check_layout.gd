@@ -36,10 +36,18 @@ func check_layout():
         print("PASS 18 distinct slots, left 3x3 / right 3x3, cards fit: ", viewport_size,
             " cell=", all_slots[0].size)
     assert(screen.get_node("Background").texture != null)
+    var left_page_background = screen.get_node("LeftPageBackground") as TextureRect
+    var right_page_background = screen.get_node("RightPageBackground") as TextureRect
+    assert(left_page_background.texture is AtlasTexture)
+    assert(right_page_background.texture is AtlasTexture)
+    assert((left_page_background.texture as AtlasTexture).region == Rect2(0, 0, 842, 935))
+    assert((right_page_background.texture as AtlasTexture).region == Rect2(841, 0, 842, 935))
+    assert(left_page_background.get_global_rect().end.x == right_page_background.get_global_rect().position.x)
+    assert(left_page_background.material == right_page_background.material)
     var left_icon = screen.get_node("PreviousPage/TextureRect")
     var right_icon = screen.get_node("NextPage/TextureRect")
     assert(left_icon.texture != null and right_icon.texture != null)
     assert(left_icon.material != right_icon.material)
-    print("PASS background, local font/arrow resources and independent arrow materials")
+    print("PASS seamless split diary background, local font/arrow resources and independent arrow materials")
     screen.free()
     quit()

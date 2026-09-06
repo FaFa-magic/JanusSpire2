@@ -308,8 +308,8 @@ public partial class NDiaryCardPileScreen : Control, ICapstoneScreen
         int index = snapshot.IndexOf(card);
         if (index < 0 || NGame.Instance == null)
             return;
+        DetachInspectScreen();
         _inspectScreen = NGame.Instance.GetInspectCardScreen();
-        _inspectScreen.VisibilityChanged -= OnInspectVisibilityChanged;
         _inspectScreen.VisibilityChanged += OnInspectVisibilityChanged;
         _back.Disabled = true;
         _previous.Disable();
@@ -321,12 +321,21 @@ public partial class NDiaryCardPileScreen : Control, ICapstoneScreen
     {
         if (_inspectScreen is not { Visible: false })
             return;
-        _inspectScreen.VisibilityChanged -= OnInspectVisibilityChanged;
-        _inspectScreen = null;
+        DetachInspectScreen();
         if (_closed)
             return;
         _back.Disabled = false;
         RefreshCards();
+    }
+
+    private void DetachInspectScreen()
+    {
+        var screen = _inspectScreen;
+        _inspectScreen = null;
+        // Closing the capstone and exiting the tree may both clean up this subscription.
+        if (screen != null && GodotObject.IsInstanceValid(screen) &&
+            screen.IsConnected(CanvasItem.SignalName.VisibilityChanged, Callable.From(OnInspectVisibilityChanged)))
+            screen.VisibilityChanged -= OnInspectVisibilityChanged;
     }
 
     public override void _UnhandledInput(InputEvent inputEvent)
@@ -420,6 +429,7 @@ public partial class NDiaryCardPileScreen : Control, ICapstoneScreen
 
     private void DetachEvents()
     {
+        DetachInspectScreen();
         if (_context == null)
             return;
         Pile.ContentsChanged -= QueueRefresh;
@@ -429,8 +439,6 @@ public partial class NDiaryCardPileScreen : Control, ICapstoneScreen
             NHotkeyManager.Instance?.RemoveHotkeyReleasedBinding(hotkey, Close);
         NHotkeyManager.Instance?.RemoveHotkeyReleasedBinding(MegaInput.viewDeckAndTabLeft, PageLeft);
         NHotkeyManager.Instance?.RemoveHotkeyReleasedBinding(MegaInput.viewExhaustPileAndTabRight, PageRight);
-        if (_inspectScreen != null && GodotObject.IsInstanceValid(_inspectScreen))
-            _inspectScreen.VisibilityChanged -= OnInspectVisibilityChanged;
     }
 
     private static int RarityOrder(CardRarity rarity) => rarity switch
