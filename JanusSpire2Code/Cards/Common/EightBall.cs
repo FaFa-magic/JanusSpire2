@@ -34,7 +34,7 @@ public sealed class EightBall() : JanusCardModel(8, CardType.Attack, CardRarity.
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Record];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(12M, ValueProp.Move),
+        new DamageVar(10M, ValueProp.Move),
         new CardsVar(AttackThreshold),
         new DynamicVar(AttacksPlayedKey, AttacksPlayed)
     ];

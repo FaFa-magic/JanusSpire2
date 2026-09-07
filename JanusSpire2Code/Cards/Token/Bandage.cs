@@ -13,7 +13,7 @@ public sealed class Bandage() : JanusTokenCardModel(0, CardType.Skill, CardRarit
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, JanusKeywords.Sticker];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new HealVar(3m)
+        new HealVar(1m)
     ];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

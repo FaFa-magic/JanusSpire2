@@ -24,27 +24,13 @@ public sealed class TeaPartyTime() : JanusRecordCardModel(0, CardType.Skill, Car
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        CardSelectorPrefs prefs = new CardSelectorPrefs(base.SelectionScreenPrompt, 0, DynamicVars.Cards.IntValue);
-
         IEnumerable<CardModel> selectedCards = await CardSelectCmd.FromHand(
             choiceContext,
-            base.Owner,
-            prefs,
-            card => card.Type == CardType.Status || card.Rarity == CardRarity.Curse,
-            this
-        );
-
-        List<CardModel> selectedList = selectedCards.ToList();
-
-        foreach (CardModel card in selectedList)
-        {
-            await CardPileCmd.Add(card, MainFile.Diary);
-        }
-
-        if (selectedList.Count > 0)
-        {
-            await CardPileCmd.Draw(choiceContext, selectedList.Count, base.Owner);
-        }
+            Owner,
+            new CardSelectorPrefs(SelectionScreenPrompt, DynamicVars.Cards.IntValue),
+            null,
+            this);
+        await CardPileCmd.Add(selectedCards, MainFile.Diary);
     }
     
     public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)

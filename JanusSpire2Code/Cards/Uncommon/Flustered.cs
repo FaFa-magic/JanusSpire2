@@ -1,3 +1,4 @@
+using JanusSpire2.JanusSpire2Code.Keywords;
 using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -43,7 +44,7 @@ public sealed class Flustered() : JanusCardModel(0, CardType.Skill, CardRarity.U
             {
                 CardCmd.Upgrade(generatedCard);
             }
-
+            generatedCard.AddKeyword(JanusKeywords.Record);
             generatedCards.Add(generatedCard);
         }
 

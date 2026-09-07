@@ -19,6 +19,7 @@ public abstract class JanusCardModel : ModCardTemplate
         BannerTexturePath: "res://JanusSpire2/images/card_frames/janus_Banner.png",
         AncientBannerPath: "res://JanusSpire2/images/card_frames/janus_Banner.png",
         AncientBorderPath: "res://JanusSpire2/images/card_frames/janus_ancient.png",
+        AncientBorderMaterialPath: "res://JanusSpire2/materials/cards/janus_ancient_border_opaque.tres",
         FramePath: Type switch
         {
             CardType.Attack => JanusConfigPage.CardFrameBinding.Read() == JanusCardFrameMode.卡框一

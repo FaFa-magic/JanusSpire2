@@ -7,14 +7,14 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 
-namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
+namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
-public sealed class AfternoonNap() : JanusCardModel(3, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+public sealed class AfternoonNap() : JanusCardModel(3, CardType.Skill, CardRarity.Rare, TargetType.Self)
 {
     public override bool GainsBlock => true;
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new BlockVar(16M, ValueProp.Move)
+        new BlockVar(17M, ValueProp.Move)
     ];
     
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
@@ -27,5 +27,5 @@ public sealed class AfternoonNap() : JanusCardModel(3, CardType.Skill, CardRarit
         PlayerCmd.EndTurn(base.Owner, canBackOut: false);
     }
     
-    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(6M);
+    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(7M);
 }

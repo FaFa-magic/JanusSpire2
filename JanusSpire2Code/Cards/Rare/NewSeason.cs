@@ -6,26 +6,18 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Enchantments;
+using MegaCrit.Sts2.Core.ValueProps;
+using STS2RitsuLib.Cards.DynamicVars;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
-public sealed class NewSeason() : JanusCardModel(2, CardType.Power, CardRarity.Rare, TargetType.Self)
+public sealed class NewSeason() : JanusCardModel(1, CardType.Power, CardRarity.Rare, TargetType.Self)
 {
-    private const string SwiftAmountKey = "SwiftAmount";
-
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Transcribe];
     
-    protected override IEnumerable<DynamicVar> CanonicalVars =>
-    [
-        new DynamicVar(SwiftAmountKey, 1M)
-    ];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [ModCardVars.Int("NewSeason", 1M)];
 
-    protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
-    [
-        HoverTipFactory.FromKeyword(JanusKeywords.Sticker),
-        ..HoverTipFactory.FromEnchantment<Swift>(DynamicVars[SwiftAmountKey].IntValue)
-    ];
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.Static(StaticHoverTip.Block)];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -35,26 +27,22 @@ public sealed class NewSeason() : JanusCardModel(2, CardType.Power, CardRarity.R
             0.2F);
     }
 
-    public override Task AfterCardGeneratedForCombat(CardModel card, Player? creator)
+    public override async Task AfterCardGeneratedForCombat(CardModel card, Player? creator)
     {
         if (Pile?.Type != MainFile.Diary ||
             creator != Owner ||
-            Owner.Creature.IsDead ||
-            card.CombatState == null ||
-            !card.Keywords.Contains(JanusKeywords.Sticker) ||
-            card.Enchantment is not null and not Swift)
+            Owner.Creature.IsDead)
         {
-            return Task.CompletedTask;
+            return;
         }
 
-        Swift swift = ModelDb.Enchantment<Swift>();
-        if (swift.CanEnchant(card))
-        {
-            CardCmd.Enchant<Swift>(card, DynamicVars[SwiftAmountKey].BaseValue);
-        }
-
-        return Task.CompletedTask;
+        await CreatureCmd.TriggerAnim(Owner.Creature, "BlockStart", 0.3f);
+        await CreatureCmd.GainBlock(
+            Owner.Creature,
+            DynamicVars["NewSeason"].BaseValue,
+            ValueProp.Unpowered | ValueProp.Move,
+            null);
     }
 
-    protected override void OnUpgrade() => EnergyCost.UpgradeBy(-1);
+    protected override void OnUpgrade() => AddKeyword(CardKeyword.Innate);
 }

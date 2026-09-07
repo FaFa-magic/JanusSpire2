@@ -1,6 +1,7 @@
 using JanusSpire2.JanusSpire2Code.Cards.Ancient;
 using JanusSpire2.JanusSpire2Code.Cards.Common;
 using JanusSpire2.JanusSpire2Code.Cards.Rare;
+using JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 using JanusSpire2.JanusSpire2Code.Cards;
 using JanusSpire2.JanusSpire2Code.Keywords;
 using JanusSpire2.JanusSpire2Code.Patches;
@@ -196,9 +197,16 @@ public class JanusSingleton : HookedSingletonModel
             .Where(card => card.Keywords.Contains(JanusKeywords.Counterattack))
             .ToList();
 
-        // Black Cat Unleash is the sole exception that can counterattack outside the hand,
-        // but cards being played, exhausted, or outside every pile are not active sources.
-        // Resolve valid exceptions after the hand to preserve left-to-right hand ordering.
+        CardPile diary = MainFile.Diary.GetPile(player);
+        if (diary.Cards.Any(card => card is AfternoonTea))
+        {
+            counterattackCards.AddRange(diary.Cards.Where(card =>
+                card.Keywords.Contains(JanusKeywords.Counterattack)));
+        }
+
+        // Afternoon Tea explicitly enables Diary sources. Black Cat Unleash remains the
+        // general exception outside the hand, but never while exhausted, playing, or unpiled.
+        // Resolve it last to preserve hand-first and then Diary pile ordering.
         counterattackCards.AddRange(playerCombatState.AllCards.Where(card =>
             card is BlackCatUnleash &&
             card.Pile != null &&
@@ -206,7 +214,8 @@ public class JanusSingleton : HookedSingletonModel
             card.Pile.Type != PileType.Exhaust &&
             card.Pile.Type != PileType.Play &&
             card.Pile.Type != PileType.None &&
-            card.Keywords.Contains(JanusKeywords.Counterattack)));
+            card.Keywords.Contains(JanusKeywords.Counterattack) &&
+            !counterattackCards.Contains(card)));
 
         foreach (CardModel card in counterattackCards)
         {
