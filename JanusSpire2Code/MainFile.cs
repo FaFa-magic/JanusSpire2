@@ -125,6 +125,13 @@ public static class MainFile
 		patcher.RegisterPatch<InspirationPileGlowPatch>();
 		patcher.RegisterPatch<DazzlingTenderPatch>();
 		patcher.RegisterPatch<BlackCatSealCreatureClickPatch>();
+		patcher.RegisterPatch<JanusSkinEnumerationPatch>();
+		patcher.RegisterPatch<JanusSharedProgressionLookupPatch>();
+		patcher.RegisterPatch<JanusSharedGameOverProgressionPatch>();
+		patcher.RegisterPatch<JanusSkinSelectPatch>();
+		patcher.RegisterPatch<JanusSkinSelectEmbarkPatch>();
+		patcher.RegisterPatch<JanusSkinSelectUnreadyPatch>();
+		patcher.RegisterPatch<JanusCombatSpineIdleBootstrapPatch>();
 
 		if (!patcher.PatchAll())
 			throw new InvalidOperationException("Critical patches failed.");

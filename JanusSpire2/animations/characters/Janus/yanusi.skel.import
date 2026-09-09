@@ -1,0 +1,14 @@
+[remap]
+
+importer="spine.skel"
+type="SpineSkeletonFileResource"
+uid="uid://b2ede5nqokhdv"
+path="res://.godot/imported/yanusi.skel-2e78c8dcb1f36242ff97f53db18baf64.spskel"
+
+[deps]
+
+source_file="res://JanusSpire2/animations/characters/Janus/yanusi.skel"
+dest_files=["res://.godot/imported/yanusi.skel-2e78c8dcb1f36242ff97f53db18baf64.spskel"]
+
+[params]
+

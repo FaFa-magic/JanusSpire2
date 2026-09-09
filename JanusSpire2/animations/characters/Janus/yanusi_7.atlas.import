@@ -1,0 +1,16 @@
+[remap]
+
+importer="spine.atlas"
+type="SpineAtlasResource"
+uid="uid://bamve3rqn24xr"
+path="res://.godot/imported/yanusi_7.atlas-cdf918583181afd098939cd6180b75c4.spatlas"
+
+[deps]
+
+source_file="res://JanusSpire2/animations/characters/Janus/yanusi_7.atlas"
+dest_files=["res://.godot/imported/yanusi_7.atlas-cdf918583181afd098939cd6180b75c4.spatlas"]
+
+[params]
+
+normal_map_prefix="n"
+specular_map_prefix="s"

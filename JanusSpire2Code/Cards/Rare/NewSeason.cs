@@ -13,9 +13,9 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
 public sealed class NewSeason() : JanusCardModel(1, CardType.Power, CardRarity.Rare, TargetType.Self)
 {
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Transcribe];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Transcribe, CardKeyword.Innate];
     
-    protected override IEnumerable<DynamicVar> CanonicalVars => [ModCardVars.Int("NewSeason", 1M)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [ModCardVars.Int("NewSeason", 2M)];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.Static(StaticHoverTip.Block)];
 
@@ -44,5 +44,5 @@ public sealed class NewSeason() : JanusCardModel(1, CardType.Power, CardRarity.R
             null);
     }
 
-    protected override void OnUpgrade() => AddKeyword(CardKeyword.Innate);
+    protected override void OnUpgrade() => DynamicVars["NewSeason"].UpgradeValueBy(1M);
 }

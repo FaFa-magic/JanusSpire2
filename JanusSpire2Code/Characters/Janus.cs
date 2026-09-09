@@ -1,15 +1,18 @@
 using Godot;
 using JanusSpire2.JanusSpire2Code.Configs;
+using MegaCrit.Sts2.Core.Animation;
+using MegaCrit.Sts2.Core.Bindings.MegaSpine;
 using MegaCrit.Sts2.Core.Entities.Characters;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Characters;
 using STS2RitsuLib.Scaffolding.Godot;
+using STS2RitsuLib.Scaffolding.Visuals.StateMachine;
 
 namespace JanusSpire2.JanusSpire2Code.Characters;
 
 [RegisterCharacter]
-public sealed class JanusCharacter : ModCharacterTemplate<JanusCardPool, JanusRelicPool, JanusPotionPool>
+public class JanusCharacter : ModCharacterTemplate<JanusCardPool, JanusRelicPool, JanusPotionPool>
 {
 	public override Color NameColor => new("#9FDCFA");
 	public override Color EnergyLabelOutlineColor => new Color("7BABC2");
@@ -17,6 +20,8 @@ public sealed class JanusCharacter : ModCharacterTemplate<JanusCardPool, JanusRe
 
 	public const string CharacterId = "Janus";
 	public const string CharacterColor = "Janus_blue";
+	public virtual JanusSkin CurrentSkin => JanusSkin.Default;
+	public JanusSkinDefinition CurrentSkinDefinition => JanusSkinManager.GetDefinition(CurrentSkin);
 	public override CharacterGender Gender => CharacterGender.Feminine;
 	
 	public override int StartingHp => 70;
@@ -35,9 +40,9 @@ public sealed class JanusCharacter : ModCharacterTemplate<JanusCardPool, JanusRe
                 // 能量表盘tscn路径。
                 EnergyCounterPath: "res://JanusSpire2/scenes/vfx/janus_energy_counter.tscn",
                 // 商店人物场景。
-                MerchantAnimPath: "res://JanusSpire2/scenes/characters/janus_merchant.tscn",
+                MerchantAnimPath: CurrentSkinDefinition.MerchantAnimPath,
                 // 篝火休息场景。
-                RestSiteAnimPath: "res://JanusSpire2/scenes/characters/janus_rest_site.tscn"
+                RestSiteAnimPath: CurrentSkinDefinition.RestSiteAnimPath
             ),
             Ui: new(
                 // 人物头像路径。
@@ -59,6 +64,10 @@ public sealed class JanusCharacter : ModCharacterTemplate<JanusCardPool, JanusRe
                 // 卡牌拖尾场景。
                 TrailPath: "res://JanusSpire2/scenes/vfx/card_trail_janus.tscn"
             ),
+            Spine: new(
+	            // 七套独立骨架通过角色资源 Profile 切换，战斗场景只需维护一份。
+	            CombatSkeletonDataPath: CurrentSkinDefinition.SpineSkeletonDataPath
+	        ),
             Audio: new(
                 // // 攻击音效
                 // AttackSfx: "res://JanusSpire2/sfx/Janus_attacksfx.mp3",
@@ -89,7 +98,6 @@ public sealed class JanusCharacter : ModCharacterTemplate<JanusCardPool, JanusRe
 		            ? "res://JanusSpire2/images/characters/hands/multiplayer_hand_janus_scissors.png"
 		            : "res://JanusSpire2/images/characters/feet/multiplayer_foot_janus_scissors.png"
             ),
-            // Spine: null,
             // VisualCues: null, // 帧动画静态图人物使用，查看角色动画一章
             // WorldProceduralVisuals: null,
             VanillaCardVisualOverrides: [
@@ -116,6 +124,17 @@ public sealed class JanusCharacter : ModCharacterTemplate<JanusCardPool, JanusRe
 
 	 // 自动转换人物场景，让你不需要手动挂脚本。
 	 protected override NCreatureVisuals? TryCreateCreatureVisuals() => RitsuGodotNodeFactories.CreateFromScenePath<NCreatureVisuals>(AssetProfile.Scenes!.VisualsPath!);
+
+	 // 将游戏的通用角色动作映射到这批 Spine 文件中的实际动画名。
+	 protected override CreatureAnimator? SetupCustomCreatureAnimator(MegaSprite controller) =>
+		 ModAnimStateMachines.Standard(
+			 controller,
+			 idleName: "normal",
+			 deadName: "dead",
+			 hitName: "touch",
+			 attackName: "attack",
+			 castName: "attack_left",
+			 relaxedName: "sleep");
 	 
 	 public override List<string> GetArchitectAttackVfx() => [
 		 "vfx/vfx_attack_blunt",
