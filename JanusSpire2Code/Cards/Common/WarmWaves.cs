@@ -9,7 +9,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Common;
 
-public sealed class GildingTheLily() : JanusCardModel(0, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+public sealed class WarmWaves() : JanusCardModel(0, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [

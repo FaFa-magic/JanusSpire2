@@ -71,7 +71,7 @@
   "JANUS_SPIRE2_POWER_SPRING_FEELING_POWER.description": "下回合开始时，将{Card}的复制牌加入[gold]手牌[/gold]。",
   "JANUS_SPIRE2_POWER_SPRING_FEELING_POWER.smartDescription": "下回合开始时，将[blue]{Amount}[/blue]张{Card}的复制牌加入[gold]手牌[/gold]。",
   "JANUS_SPIRE2_POWER_SPRING_FEELING_POWER.title": "春意",
-  "JANUS_SPIRE2_POWER_WEIRD_TEA_PARTY_POWER.description": "战斗结束时，失去所有药水。",
-  "JANUS_SPIRE2_POWER_WEIRD_TEA_PARTY_POWER.smartDescription": "战斗结束时，失去所有药水。",
-  "JANUS_SPIRE2_POWER_WEIRD_TEA_PARTY_POWER.title": "茶会代价"
+  "JANUS_SPIRE2_POWER_SPECIAL_PARTY_POWER.description": "战斗结束时，失去所有药水。",
+  "JANUS_SPIRE2_POWER_SPECIAL_PARTY_POWER.smartDescription": "战斗结束时，失去所有药水。",
+  "JANUS_SPIRE2_POWER_SPECIAL_PARTY_POWER.title": "派对代价"
 }

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6ec3rawju8rm"
-path="res://.godot/imported/WeirdTeaPartyPower.png-f220b8da7b0da370d6b20ce85792071e.ctex"
+uid="uid://b44a5rqlfk1cw"
+path="res://.godot/imported/WarmWaves.png-61d13d4b6ff072cfde2aedd1116c19e9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://JanusSpire2/images/powers/big/WeirdTeaPartyPower.png"
-dest_files=["res://.godot/imported/WeirdTeaPartyPower.png-f220b8da7b0da370d6b20ce85792071e.ctex"]
+source_file="res://JanusSpire2/images/cards/WarmWaves.png"
+dest_files=["res://.godot/imported/WarmWaves.png-61d13d4b6ff072cfde2aedd1116c19e9.ctex"]
 
 [params]
 

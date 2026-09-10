@@ -14,11 +14,11 @@ public sealed class OverturnedTeaSet : JanusRelicModel
     public override bool HasUponPickupEffect => true;
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
-        HoverTipFactory.FromCardWithCardHoverTips<WeirdTeaParty>();
+        HoverTipFactory.FromCardWithCardHoverTips<SpecialParty>();
 
     public override async Task AfterObtained()
     {
-        CardModel card = Owner.RunState.CreateCard<WeirdTeaParty>(Owner);
+        CardModel card = Owner.RunState.CreateCard<SpecialParty>(Owner);
         CardCmd.PreviewCardPileAdd(await CardPileCmd.Add(card, PileType.Deck));
     }
 }

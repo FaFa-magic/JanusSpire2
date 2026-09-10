@@ -62,7 +62,7 @@
   "JANUS_SPIRE2_RELIC_AFTERNOON_TEA_SUPPLY.description": "每场战斗开始时，[red]失去[/red][blue]{StrengthPower}[/blue]点[gold]力量[/gold]。\n每回合开始时，若有空药水栏，获得一瓶随机药水。该药水会在回合结束或战斗结束时被丢弃。",
   "JANUS_SPIRE2_RELIC_AFTERNOON_TEA_SUPPLY.flavor": "",
   "JANUS_SPIRE2_RELIC_OVERTURNED_TEA_SET.title": "打翻的茶具",
-  "JANUS_SPIRE2_RELIC_OVERTURNED_TEA_SET.description": "拾起时，将[blue]1[/blue]张[gold]诡异茶会[/gold]加入你的[gold]牌组[/gold]。",
+  "JANUS_SPIRE2_RELIC_OVERTURNED_TEA_SET.description": "拾起时，将[blue]1[/blue]张[gold]特别的派对[/gold]加入你的[gold]牌组[/gold]。",
   "JANUS_SPIRE2_RELIC_OVERTURNED_TEA_SET.flavor": "",
   "JANUS_SPIRE2_RELIC_DRINK_COUPON.title": "畅饮券",
   "JANUS_SPIRE2_RELIC_DRINK_COUPON.description": "每当你进入[gold]休息处[/gold]时，获得[blue]{PotionSlots}[/blue]个空药水栏位（至多[blue]{MaxPotionSlots}[/blue]个）。\n每当你[gold]休息[/gold]时，用随机药水填满你的空药水栏。",

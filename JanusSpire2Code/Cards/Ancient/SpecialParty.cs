@@ -9,7 +9,7 @@ using JanusSpire2.JanusSpire2Code.Powers;
 namespace JanusSpire2.JanusSpire2Code.Cards.Ancient;
 
 [RegisterCard(typeof(EventCardPool))]
-public sealed class WeirdTeaParty() : JanusCardModel(2, CardType.Skill, CardRarity.Ancient, TargetType.Self)
+public sealed class SpecialParty() : JanusCardModel(2, CardType.Skill, CardRarity.Ancient, TargetType.Self)
 {
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -21,7 +21,7 @@ public sealed class WeirdTeaParty() : JanusCardModel(2, CardType.Skill, CardRari
             }
         }
 
-        await PowerCmd.Apply<WeirdTeaPartyPower>(
+        await PowerCmd.Apply<SpecialPartyPower>(
             choiceContext,
             Owner.Creature,
             1M,

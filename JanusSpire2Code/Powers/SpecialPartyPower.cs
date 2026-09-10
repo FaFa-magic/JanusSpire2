@@ -8,7 +8,7 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace JanusSpire2.JanusSpire2Code.Powers;
 
-public sealed class WeirdTeaPartyPower : JanusPowerModel
+public sealed class SpecialPartyPower : JanusPowerModel
 {
     public override PowerType Type => PowerType.Debuff;
 
