@@ -26,6 +26,7 @@ public sealed class SealedTreasureChest : JanusRelicModel
     {
         List<CardCreationResult> candidates = Owner.Character.CardPool
             .GetUnlockedCards(Owner.UnlockState, Owner.RunState.CardMultiplayerConstraint)
+            .Where(card => card.Rarity != CardRarity.Ancient)
             .DistinctBy(card => card.Id)
             .Select(card => new CardCreationResult(Owner.RunState.CreateCard(card, Owner)))
             .ToList();

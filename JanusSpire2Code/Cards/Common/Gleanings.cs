@@ -1,4 +1,5 @@
 ﻿using MegaCrit.Sts2.Core.CardSelection;
+using JanusSpire2.JanusSpire2Code.Singleton;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -9,10 +10,6 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Common;
 
 public sealed class Gleanings() : JanusCardModel(0, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
-    private static readonly HashSet<CardModel> CardsReturningToDiary = [];
-
-    internal static bool ShouldReturnToDiary(CardModel card) => CardsReturningToDiary.Contains(card);
-
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new CardsVar(2)
     ];
@@ -35,22 +32,7 @@ public sealed class Gleanings() : JanusCardModel(0, CardType.Skill, CardRarity.C
             return;
         }
 
-        CardsReturningToDiary.Add(selected);
-        try
-        {
-            await CardCmd.AutoPlay(choiceContext, selected, null);
-        }
-        finally
-        {
-            CardsReturningToDiary.Remove(selected);
-        }
-        
-        if (!selected.HasBeenRemovedFromState &&
-            selected.Pile?.Type != MainFile.Diary &&
-            !Owner.Creature.IsDead)
-        {
-            await CardPileCmd.Add(selected, MainFile.Diary);
-        }
+        await JanusSingleton.AutoPlayWithDiaryResult(choiceContext, selected);
     }
     
     protected override void OnUpgrade() => DynamicVars.Cards.UpgradeValueBy(1M);

@@ -1,3 +1,4 @@
+using JanusSpire2.JanusSpire2Code.Singleton;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -10,11 +11,6 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
 public sealed class NotAfraid() : JanusCardModel(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
 {
-    private static readonly HashSet<CardModel> CardsReturningToDiary = [];
-
-    internal static bool ShouldReturnToDiary(CardModel card) =>
-        CardsReturningToDiary.Contains(card);
-
     protected override IEnumerable<DynamicVar> CanonicalVars => [new CardsVar(4)];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -42,25 +38,7 @@ public sealed class NotAfraid() : JanusCardModel(2, CardType.Skill, CardRarity.R
                 break;
             }
 
-            CardsReturningToDiary.Add(card);
-            try
-            {
-                await CardCmd.AutoPlay(choiceContext, card, null);
-
-                // Unplayable or hook-blocked cards bypass the normal result-location hook.
-                if (!card.HasBeenRemovedFromState &&
-                    card.Pile?.IsCombatPile == true &&
-                    card.Pile.Type != MainFile.Diary &&
-                    !CombatManager.Instance.IsOverOrEnding &&
-                    !Owner.Creature.IsDead)
-                {
-                    await CardPileCmd.Add(card, MainFile.Diary);
-                }
-            }
-            finally
-            {
-                CardsReturningToDiary.Remove(card);
-            }
+            await JanusSingleton.AutoPlayWithDiaryResult(choiceContext, card);
         }
     }
 

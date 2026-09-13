@@ -33,6 +33,7 @@
   "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.flavor": "",
   "JANUS_SPIRE2_RELIC_MAGIC_MIRROR.title": "魔镜",
   "JANUS_SPIRE2_RELIC_MAGIC_MIRROR.description": "将至多[blue]{Cards}[/blue]张牌[gold]附魔[/gold]:[purple]幻化[/purple]。",
+  "JANUS_SPIRE2_RELIC_MAGIC_MIRROR.selectionScreenPrompt": "选择至多[blue]{Cards}[/blue]张牌进行[gold]附魔[/gold]。",
   "JANUS_SPIRE2_RELIC_MAGIC_MIRROR.flavor": "",
   "JANUS_SPIRE2_RELIC_MAGIC_GLOVES.title": "魔术手套",
   "JANUS_SPIRE2_RELIC_MAGIC_GLOVES.description": "战斗胜利后，战斗奖励中出现一项奖励。领取时，从牌组中所有可变化的牌里选择[blue]{Cards}[/blue]张进行变化。",

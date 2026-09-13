@@ -22,6 +22,7 @@ public sealed class JanusConfig
     public FjordMosaicMode 多人模式使用哪种模型 { get; set; } = FjordMosaicMode.手部模型;
     public JanusCardFrameMode 选用哪种卡框 { get; set; } = JanusCardFrameMode.卡框一;
     public bool 会出现先古之民伊丽莎白女王 { get; set; } = true;
+    public bool 会出现小猫的卡牌游戏事件 { get; set; } = true;
 }
 
 public static class JanusConfigPage
@@ -40,6 +41,10 @@ public static class JanusConfigPage
         MainFile.ModId, DataKey, SaveScope.Profile,
         static s => s.会出现先古之民伊丽莎白女王,
         static (s, v) => s.会出现先古之民伊丽莎白女王 = v);
+    public static readonly ModSettingsValueBinding<JanusConfig, bool> KittenCardGameEnabledBinding = new(
+        MainFile.ModId, DataKey, SaveScope.Profile,
+        static s => s.会出现小猫的卡牌游戏事件,
+        static (s, v) => s.会出现小猫的卡牌游戏事件 = v);
 
     public static void Register()
     {
@@ -74,6 +79,10 @@ public static class JanusConfigPage
                 .AddToggle(
                     "queen_elizabeth_enabled",
                     ModSettingsText.Literal("会出现先古之民-伊丽莎白女王"),
-                    QueenElizabethEnabledBinding)));
+                    QueenElizabethEnabledBinding)
+                .AddToggle(
+                    "kitten_card_game_enabled",
+                    ModSettingsText.Literal("会出现事件-小猫的卡牌游戏"),
+                    KittenCardGameEnabledBinding)));
     }
 }

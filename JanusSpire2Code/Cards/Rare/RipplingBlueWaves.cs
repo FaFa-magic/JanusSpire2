@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
+using STS2RitsuLib.Combat.HandSize;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
@@ -33,7 +34,7 @@ public sealed class RipplingBlueWaves() : JanusCardModel(2, CardType.Attack, Car
     {
         ArgumentNullException.ThrowIfNull(CombatState);
 
-        int emptyHandSlots = CardPile.MaxCardsInHand - PileType.Hand.GetPile(Owner).Cards.Count;
+        int emptyHandSlots = GetEmptyHandSlots(Owner);
         List<CardModel> waves = new(emptyHandSlots);
         for (int i = 0; i < emptyHandSlots; i++)
         {
@@ -69,15 +70,22 @@ public sealed class RipplingBlueWaves() : JanusCardModel(2, CardType.Attack, Car
 
     private static int CalculateExpectedHits(CardModel card)
     {
-        CardPile hand = PileType.Hand.GetPile(card.Owner);
-        int handCountAfterPlaying = hand.Cards.Count;
-        if (ReferenceEquals(card.Pile, hand))
+        int wavesToGenerate = GetEmptyHandSlots(card.Owner, card);
+        return GetStatuses(card.Owner).Count() + wavesToGenerate;
+    }
+
+    private static int GetEmptyHandSlots(
+        Player owner,
+        CardModel? cardLeavingHand = null)
+    {
+        CardPile hand = PileType.Hand.GetPile(owner);
+        int currentHandSize = hand.Cards.Count;
+        if (ReferenceEquals(cardLeavingHand?.Pile, hand))
         {
-            handCountAfterPlaying--;
+            currentHandSize--;
         }
 
-        int wavesToGenerate = Math.Max(0, CardPile.MaxCardsInHand - handCountAfterPlaying);
-        return GetStatuses(card.Owner).Count() + wavesToGenerate;
+        return Math.Max(0, MaxHandSizeCalculator.Calculate(owner) - currentHandSize);
     }
 
     protected override void OnUpgrade() => DynamicVars.Damage.UpgradeValueBy(2M);

@@ -25,6 +25,7 @@ namespace JanusSpire2.JanusSpire2Code.Singleton;
 [RegisterSingleton]
 public class JanusSingleton : HookedSingletonModel
 {
+    private static readonly HashSet<CardModel> CardsWithDiaryPlayResult = [];
     private readonly Dictionary<CardModel, (int TurnNumber, int TriggerCount)> _counterattackTriggerCounts = new();
     private readonly HashSet<Player> _playersRetainingDelayedHand = [];
 
@@ -34,8 +35,28 @@ public class JanusSingleton : HookedSingletonModel
     {
     }
 
+    internal static async Task AutoPlayWithDiaryResult(
+        PlayerChoiceContext choiceContext,
+        CardModel card,
+        Creature? target = null)
+    {
+        bool addedMarker = CardsWithDiaryPlayResult.Add(card);
+        try
+        {
+            await CardCmd.AutoPlay(choiceContext, card, target);
+        }
+        finally
+        {
+            if (addedMarker)
+            {
+                CardsWithDiaryPlayResult.Remove(card);
+            }
+        }
+    }
+
     public override async Task BeforeCombatStart()
     {
+        CardsWithDiaryPlayResult.Clear();
         _counterattackTriggerCounts.Clear();
         _playersRetainingDelayedHand.Clear();
         foreach (Player player in CurrentCombatState?.Players ?? [])
@@ -270,7 +291,9 @@ public class JanusSingleton : HookedSingletonModel
         ResourceInfo resources,
         CardLocation cardLocation)
     {
-        if (Gleanings.ShouldReturnToDiary(card) || NotAfraid.ShouldReturnToDiary(card))
+        if (CardsWithDiaryPlayResult.Contains(card) &&
+            cardLocation.pileType.IsCombatPile() &&
+            cardLocation.pileType != PileType.Play)
         {
             cardLocation.pileType = MainFile.Diary;
             return cardLocation;
