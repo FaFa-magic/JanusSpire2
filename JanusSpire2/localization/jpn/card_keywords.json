@@ -1,0 +1,18 @@
+{
+  "JANUS_SPIRE2_KEYWORD_PERK.title": "奮起",
+  "JANUS_SPIRE2_KEYWORD_PERK.description": "エナジーが足りない場合、不足分と同じ枚数のカードを[gold]日記帳[/gold]から廃棄してプレイできる。",
+  "JANUS_SPIRE2_KEYWORD_COLLECTION.title": "秘蔵",
+  "JANUS_SPIRE2_KEYWORD_COLLECTION.description": "戦闘開始時、このカードを[gold]日記帳[/gold]に加える。",
+  "JANUS_SPIRE2_KEYWORD_COUNTERATTACK.title": "反撃",
+  "JANUS_SPIRE2_KEYWORD_COUNTERATTACK.description": "ダメージを受けるたび（[blue]0[/blue]ダメージでも）、手札の各[gold]反撃[/gold]カードが左から順に自身のコピーを作成してプレイする。\n各ターン、現在のコストと同じ回数まで発動する。",
+  "JANUS_SPIRE2_KEYWORD_STICKER.title": "ステッカー",
+  "JANUS_SPIRE2_KEYWORD_STICKER.description": "何度でもアップグレードできる。\n[gold]廃棄札[/gold]にカード名とアップグレード段階が同じ[gold]ステッカー[/gold]カードが[blue]4[/blue]枚あるたび、それらを取り除き、その[gold]ステッカー[/gold]カードを1段階アップグレードして[gold]日記帳[/gold]に加える。",
+  "JANUS_SPIRE2_KEYWORD_TRANSCRIBE.title": "転記",
+  "JANUS_SPIRE2_KEYWORD_TRANSCRIBE.description": "プレイ後、このカードの[gold]コピー[/gold]を[gold]日記帳[/gold]に加える。\nこのカードが[gold]日記帳[/gold]にある間、以降の効果が有効になる。",
+  "JANUS_SPIRE2_KEYWORD_RECORD.title": "記録",
+  "JANUS_SPIRE2_KEYWORD_RECORD.description": "プレイ後、[gold]廃棄[/gold]されない場合は[gold]日記帳[/gold]に加える。",
+  "JANUS_SPIRE2_KEYWORD_RECOLLECTION.title": "回想",
+  "JANUS_SPIRE2_KEYWORD_RECOLLECTION.description": "[gold]日記帳[/gold]にある間、以降の条件を満たすと、その投影が[gold]追加手札[/gold]に自動的に現れ、日記帳からプレイできる。プレイ後、条件はリセットされる。",
+  "JANUS_SPIRE2_KEYWORD_INSPIRATION.title": "ひらめき",
+  "JANUS_SPIRE2_KEYWORD_INSPIRATION.description": "[gold]ひらめき[/gold]X：このカードが[gold]手札[/gold]にない時、右クリックして[gold]日記帳[/gold]のカードX枚を[gold]廃棄[/gold]することを選ぶと、このカードを[gold]手札[/gold]に加える。"
+}

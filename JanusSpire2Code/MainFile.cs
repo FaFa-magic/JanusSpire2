@@ -124,9 +124,12 @@ public static class MainFile
 		patcher.RegisterPatch<InspirationPileGlowInitPatch>();
 		patcher.RegisterPatch<InspirationPileGlowPatch>();
 		patcher.RegisterPatch<DazzlingTenderPatch>();
+		patcher.RegisterPatch<CentennialPuzzleDelayedFlushPatch>();
+		patcher.RegisterPatch<CentennialPuzzleDrawCapturePatch>();
 		patcher.RegisterPatch<BlackCatSealCreatureClickPatch>();
 		patcher.RegisterPatch<JanusSkinEnumerationPatch>();
 		patcher.RegisterPatch<JanusSharedProgressionLookupPatch>();
+		patcher.RegisterPatch<JanusSkinAncientDialogueLookupPatch>();
 		patcher.RegisterPatch<JanusSharedGameOverProgressionPatch>();
 		patcher.RegisterPatch<JanusSkinSelectPatch>();
 		patcher.RegisterPatch<JanusSkinSelectEmbarkPatch>();

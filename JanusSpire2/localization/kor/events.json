@@ -1,0 +1,14 @@
+{
+  "COLORFUL_PHILOSOPHERS.pages.INITIAL.options.JANUS.title": "하늘색",
+  "COLORFUL_PHILOSOPHERS.pages.INITIAL.options.JANUS.description": "재너스의 카드를 [blue]{Cards}[/blue]장 획득합니다.",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.title": "아기 고양이의 카드놀이",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.description": "[b][color=#3EE6B3]아기 고양이 한 마리가 덱 옆에서 놀고 있습니다. 한참 뒤적이던 고양이는 갑자기 [gold]{RandomCard}[/gold]을 물어 와 자랑스럽게 앞발로 누르고는, 당신의 선택을 기다리는 듯합니다.[/color][/b]",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.COPY.title": "받는다",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.COPY.description": "[gold]{RandomCard}[/gold]을 복사해 [gold]덱[/gold]에 추가합니다.",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.REFRESH.title": "한 번 더 논다",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.REFRESH.description": "[red]{Gold}[/red] [gold]골드[/gold]를 지불하고 고양이가 다른 카드를 찾게 합니다.",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.REFRESH_LOCKED.title": "잠김",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.REFRESH_LOCKED.description": "[blue]{Gold}[/blue] [gold]골드[/gold]가 필요합니다.",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.REFRESH.description": "[b][color=#3EE6B3]고양이는 원래 카드를 덱으로 밀어 넣고 신나게 뒤적이기 시작합니다. 잠시 후 [gold]{RandomCard}[/gold]을 다시 물어 옵니다.[/color][/b]",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.COPY.description": "[b][color=#3EE6B3]고양이가 찾아낸 카드를 받았습니다. 고양이는 만족스럽게 꼬리를 흔들더니 다시 놀이에 뛰어듭니다.[/color][/b]"
+}

@@ -92,7 +92,7 @@ internal static class RecordExtraHandManager
             mapping.Bind(original);
             retainedMappings[original.RecordMappingKey] = mapping;
 
-            // RitsuLib 0.5.18 creates and owns the holder through CardPileCmd's extra-hand
+            // RitsuLib creates and owns the holder through CardPileCmd's extra-hand
             // visual branch. AddInternal here would update state without creating a playable node.
             await CardPileCmd.Add(mapping, MainFile.RecordExtraHand);
         }

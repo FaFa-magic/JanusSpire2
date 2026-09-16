@@ -1,0 +1,9 @@
+{
+  "JANUS_SPIRE2_POTION_PAW_PRINT_POTION.description": "[gold]검은 고양이의 인장[/gold]을 [blue]{BlackCatSealPower}[/blue] 부여합니다.",
+  "JANUS_SPIRE2_POTION_PAW_PRINT_POTION.title": "캣닙 포션",
+  "JANUS_SPIRE2_POTION_SMOKE_POTION.description": "[gold]연막[/gold]을 [blue]{SmokePower}[/blue] 얻습니다.",
+  "JANUS_SPIRE2_POTION_SMOKE_POTION.title": "근거리 연막 지원",
+  "JANUS_SPIRE2_POTION_MIRROR_POTION.description": "손의 카드 1장을 선택합니다. 그 카드의 [gold]복사본[/gold]을 손에 추가하고, 이번 턴 동안 비용을 0으로 만듭니다.",
+  "JANUS_SPIRE2_POTION_MIRROR_POTION.selectionScreenPrompt": "복사할 손의 카드를 선택하세요.",
+  "JANUS_SPIRE2_POTION_MIRROR_POTION.title": "거울 포션"
+}

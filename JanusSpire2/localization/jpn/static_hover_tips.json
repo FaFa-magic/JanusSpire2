@@ -1,0 +1,12 @@
+{
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.title": "日記帳",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.description": "記録カードは[gold]捨て札[/gold]ではなく[gold]日記帳[/gold]に入る。",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.info": "日記帳に入ったすべてのカードがここに保管される。",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.empty": "日記帳は空。",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.back": "戻る",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.previous_page": "前のページ（Page Up）",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.next_page": "次のページ（Page Down）",
+  "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.title": "記録の投影",
+  "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.description": "現在、日記帳からプレイできるカードの投影を表示する。",
+  "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.empty": "現在プレイできる記録カードはない。"
+}

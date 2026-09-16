@@ -62,7 +62,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="STS2.RitsuLib" Version="0.5.20" PrivateAssets="All" GeneratePathProperty="true" />
+        <PackageReference Include="STS2.RitsuLib" Version="0.6.2" PrivateAssets="All" GeneratePathProperty="true" />
         <AdditionalFiles Include="JanusSpire2/localization/**/*.json"/>
     </ItemGroup>
 
@@ -108,15 +108,6 @@
         <Message Text="Copying .dll and manifest to mods folder." Importance="high"/>
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ModsPath)$(MSBuildProjectName)/"/>
         <Copy SourceFiles="JanusSpire2.json" DestinationFolder="$(ModsPath)$(MSBuildProjectName)/"/>
-    </Target>
-
-    <Target Name="DeployRitsuLibToMods" AfterTargets="PostBuildEvent" Condition="'$(RitsuLibDeployDir)' != ''">
-        <ItemGroup>
-            <RitsuLibDll Include="$(PkgSTS2_RitsuLib)\lib\net9.0\STS2-RitsuLib.dll" Condition="Exists('$(PkgSTS2_RitsuLib)\lib\net9.0\STS2-RitsuLib.dll')" />
-            <RitsuLibManifest Include="$(PkgSTS2_RitsuLib)\content\mod_manifest.json" Condition="Exists('$(PkgSTS2_RitsuLib)\content\mod_manifest.json')" />
-        </ItemGroup>
-        <Copy SourceFiles="@(RitsuLibDll)" DestinationFolder="$(RitsuLibDeployDir)" SkipUnchangedFiles="true" />
-        <Copy SourceFiles="@(RitsuLibManifest)" DestinationFolder="$(RitsuLibDeployDir)" SkipUnchangedFiles="true" />
     </Target>
 
     <Target Name="GodotPublish" AfterTargets="Publish" Condition="'$(GodotPath)' != '' and Exists('$(GodotPath)') and '$(IsInnerGodotExport)' != 'true'">

@@ -1,0 +1,18 @@
+{
+  "JANUS_SPIRE2_KEYWORD_PERK.title": "분발",
+  "JANUS_SPIRE2_KEYWORD_PERK.description": "에너지가 부족할 때, 부족한 에너지와 같은 수만큼 [gold]일기장[/gold]의 카드를 소멸시키고 사용할 수 있습니다.",
+  "JANUS_SPIRE2_KEYWORD_COLLECTION.title": "소장",
+  "JANUS_SPIRE2_KEYWORD_COLLECTION.description": "전투 시작 시 이 카드를 [gold]일기장[/gold]에 추가합니다.",
+  "JANUS_SPIRE2_KEYWORD_COUNTERATTACK.title": "반격",
+  "JANUS_SPIRE2_KEYWORD_COUNTERATTACK.description": "피해를 받을 때마다([blue]0[/blue] 피해 포함), 손에 있는 각 [gold]반격[/gold] 카드가 왼쪽부터 차례로 자신의 복사본을 생성하고 사용합니다.\n각 카드는 턴마다 현재 비용과 같은 횟수까지 발동합니다.",
+  "JANUS_SPIRE2_KEYWORD_STICKER.title": "스티커",
+  "JANUS_SPIRE2_KEYWORD_STICKER.description": "제한 없이 강화할 수 있습니다.\n[gold]소멸된 카드 더미[/gold]에 이름과 강화 단계가 같은 [gold]스티커[/gold] 카드가 [blue]4[/blue]장 있을 때마다 그 카드들을 제거하고, 해당 [gold]스티커[/gold] 카드를 한 번 강화해 [gold]일기장[/gold]에 추가합니다.",
+  "JANUS_SPIRE2_KEYWORD_TRANSCRIBE.title": "필사",
+  "JANUS_SPIRE2_KEYWORD_TRANSCRIBE.description": "사용한 후 이 카드의 [gold]복사본[/gold]을 [gold]일기장[/gold]에 추가합니다.\n이 카드가 [gold]일기장[/gold]에 있는 동안 뒤의 효과가 적용됩니다.",
+  "JANUS_SPIRE2_KEYWORD_RECORD.title": "기록",
+  "JANUS_SPIRE2_KEYWORD_RECORD.description": "사용한 후 [gold]소멸[/gold]하지 않았다면 [gold]일기장[/gold]에 추가합니다.",
+  "JANUS_SPIRE2_KEYWORD_RECOLLECTION.title": "회상",
+  "JANUS_SPIRE2_KEYWORD_RECOLLECTION.description": "[gold]일기장[/gold]에 있는 동안 뒤의 조건을 달성하면 투영이 [gold]추가 손[/gold]에 자동으로 나타나 일기장에서 사용할 수 있습니다. 사용한 후 조건이 초기화됩니다.",
+  "JANUS_SPIRE2_KEYWORD_INSPIRATION.title": "영감",
+  "JANUS_SPIRE2_KEYWORD_INSPIRATION.description": "[gold]영감[/gold] X: 이 카드가 [gold]손[/gold]에 없을 때, 우클릭한 뒤 [gold]일기장[/gold]의 카드 X장을 [gold]소멸[/gold]시키는 것을 선택하면 이 카드를 [gold]손[/gold]에 추가합니다."
+}

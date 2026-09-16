@@ -1,0 +1,14 @@
+{
+  "COLORFUL_PHILOSOPHERS.pages.INITIAL.options.JANUS.title": "Azure",
+  "COLORFUL_PHILOSOPHERS.pages.INITIAL.options.JANUS.description": "Obtain [blue]{Cards}[/blue] Janus cards.",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.title": "A Kitten's Card Game",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.description": "[b][color=#3EE6B3]A kitten is playing beside your Deck. After rummaging around, it proudly pulls out [gold]{RandomCard}[/gold] and pins it beneath its paw, as though waiting for you to choose.[/color][/b]",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.COPY.title": "Take It",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.COPY.description": "Copy [gold]{RandomCard}[/gold] and add it to your [gold]Deck[/gold].",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.REFRESH.title": "Play Again",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.REFRESH.description": "Pay [red]{Gold}[/red] [gold]Gold[/gold] to have the kitten find another card.",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.REFRESH_LOCKED.title": "Locked",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.REFRESH_LOCKED.description": "Requires [blue]{Gold}[/blue] [gold]Gold[/gold].",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.REFRESH.description": "[b][color=#3EE6B3]The kitten pushes the first card back into the Deck and eagerly rummages around. A moment later, it pulls out [gold]{RandomCard}[/gold].[/color][/b]",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.COPY.description": "[b][color=#3EE6B3]You take the card the kitten found. It flicks its tail in satisfaction and pounces back into its game.[/color][/b]"
+}

@@ -2,13 +2,13 @@
   "COLORFUL_PHILOSOPHERS.pages.INITIAL.options.JANUS.title": "天蓝色",
   "COLORFUL_PHILOSOPHERS.pages.INITIAL.options.JANUS.description": "获得[blue]{Cards}[/blue]张雅努斯的卡牌。",
   "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.title": "小猫的卡牌游戏",
-  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.description": "一只小猫正趴在你的牌堆旁玩耍。它翻找了一阵，忽然叼出一张[gold]{RandomCard}[/gold]，得意地按在爪下，像是在等你作出选择。",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.description": "[b][color=#3EE6B3]一只小猫正趴在你的牌堆旁玩耍。它翻找了一阵，忽然叼出一张[gold]{RandomCard}[/gold]，得意地按在爪下，像是在等你作出选择。[/color][/b]",
   "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.COPY.title": "收下",
   "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.COPY.description": "复制[gold]{RandomCard}[/gold]并加入你的[gold]牌组[/gold]。",
   "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.REFRESH.title": "再玩一次",
   "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.REFRESH.description": "支付[red]{Gold}[/red][gold]金币[/gold]，让小猫重新翻出一张牌。",
   "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.REFRESH_LOCKED.title": "锁定",
   "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.REFRESH_LOCKED.description": "需要[blue]{Gold}[/blue][gold]金币[/gold]。",
-  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.REFRESH.description": "小猫把原来的牌推回牌堆，兴奋地翻找起来。片刻后，它又叼出一张[gold]{RandomCard}[/gold]。",
-  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.COPY.description": "你收下了小猫找到的牌。小猫满意地甩了甩尾巴，又扑回自己的游戏里。"
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.REFRESH.description": "[b][color=#3EE6B3]小猫把原来的牌推回牌堆，兴奋地翻找起来。片刻后，它又叼出一张[gold]{RandomCard}[/gold]。[/color][/b]",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.COPY.description": "[b][color=#3EE6B3]你收下了小猫找到的牌。小猫满意地甩了甩尾巴，又扑回自己的游戏里。[/color][/b]"
 }

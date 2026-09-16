@@ -1,0 +1,12 @@
+{
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.title": "일기장",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.description": "기록 카드는 [gold]버린 카드 더미[/gold] 대신 [gold]일기장[/gold]으로 갑니다.",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.info": "일기장에 들어온 모든 카드가 이곳에 보관됩니다.",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.empty": "일기장이 비어 있습니다.",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.back": "뒤로",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.previous_page": "이전 페이지(Page Up)",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.next_page": "다음 페이지(Page Down)",
+  "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.title": "기록 투영",
+  "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.description": "현재 일기장에서 사용할 수 있는 카드의 투영을 표시합니다.",
+  "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.empty": "현재 사용할 수 있는 기록 카드가 없습니다."
+}

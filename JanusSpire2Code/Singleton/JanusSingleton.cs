@@ -26,6 +26,7 @@ namespace JanusSpire2.JanusSpire2Code.Singleton;
 public class JanusSingleton : HookedSingletonModel
 {
     private static readonly HashSet<CardModel> CardsWithDiaryPlayResult = [];
+    private static readonly HashSet<CardModel> CardsProtectedFromNextDelayedFlush = [];
     private readonly Dictionary<CardModel, (int TurnNumber, int TriggerCount)> _counterattackTriggerCounts = new();
     private readonly HashSet<Player> _playersRetainingDelayedHand = [];
 
@@ -54,9 +55,15 @@ public class JanusSingleton : HookedSingletonModel
         }
     }
 
+    internal static void ProtectFromNextDelayedFlush(CardModel card)
+    {
+        CardsProtectedFromNextDelayedFlush.Add(card);
+    }
+
     public override async Task BeforeCombatStart()
     {
         CardsWithDiaryPlayResult.Clear();
+        CardsProtectedFromNextDelayedFlush.Clear();
         _counterattackTriggerCounts.Clear();
         _playersRetainingDelayedHand.Clear();
         foreach (Player player in CurrentCombatState?.Players ?? [])
@@ -141,7 +148,9 @@ public class JanusSingleton : HookedSingletonModel
 
         foreach (CardModel card in hand.Cards.ToArray())
         {
-            if (!shouldFlush || card.ShouldRetainThisTurn)
+            bool protectedByCentennialPuzzle =
+                CardsProtectedFromNextDelayedFlush.Remove(card);
+            if (!shouldFlush || card.ShouldRetainThisTurn || protectedByCentennialPuzzle)
             {
                 cardsToRetain.Add(card);
             }
@@ -179,6 +188,11 @@ public class JanusSingleton : HookedSingletonModel
         PileType oldPileType,
         AbstractModel? clonedBy)
     {
+        if (oldPileType == PileType.Hand && card.Pile?.Type != PileType.Hand)
+        {
+            CardsProtectedFromNextDelayedFlush.Remove(card);
+        }
+
         if (card is not JanusRecordMappingCard && card.Owner?.PlayerCombatState != null)
         {
             await RecordExtraHandManager.SyncPlayer(card.Owner);

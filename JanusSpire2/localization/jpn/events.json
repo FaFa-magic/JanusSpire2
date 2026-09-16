@@ -1,0 +1,14 @@
+{
+  "COLORFUL_PHILOSOPHERS.pages.INITIAL.options.JANUS.title": "空色",
+  "COLORFUL_PHILOSOPHERS.pages.INITIAL.options.JANUS.description": "ジェーナスのカードを[blue]{Cards}[/blue]枚獲得する。",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.title": "子猫のカード遊び",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.description": "[b][color=#3EE6B3]一匹の子猫がデッキのそばで遊んでいる。しばらく探し回った後、[gold]{RandomCard}[/gold]をくわえて得意げに前足で押さえ、あなたの選択を待っているようだ。[/color][/b]",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.COPY.title": "受け取る",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.COPY.description": "[gold]{RandomCard}[/gold]をコピーして[gold]デッキ[/gold]に加える。",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.REFRESH.title": "もう一度遊ぶ",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.REFRESH.description": "[red]{Gold}[/red][gold]ゴールド[/gold]を支払い、子猫に別のカードを探してもらう。",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.REFRESH_LOCKED.title": "ロック中",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.INITIAL.options.REFRESH_LOCKED.description": "[blue]{Gold}[/blue][gold]ゴールド[/gold]が必要。",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.REFRESH.description": "[b][color=#3EE6B3]子猫は元のカードをデッキへ押し戻し、嬉しそうに探し始めた。やがて、また[gold]{RandomCard}[/gold]をくわえてきた。[/color][/b]",
+  "JANUS_SPIRE2_EVENT_KITTEN_CARD_GAME.pages.COPY.description": "[b][color=#3EE6B3]子猫が見つけたカードを受け取った。子猫は満足そうに尻尾を振ると、また遊びに夢中になった。[/color][/b]"
+}

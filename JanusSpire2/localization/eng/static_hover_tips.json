@@ -1,0 +1,12 @@
+{
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.title": "Diary",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.description": "Record cards enter the [gold]Diary[/gold] instead of the [gold]Discard Pile[/gold].",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.info": "All cards that enter your Diary are stored here.",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.empty": "Your Diary is empty.",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.back": "Back",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.previous_page": "Previous Page (Page Up)",
+  "JANUS_SPIRE2_CARDPILE_DIARY_PILE.next_page": "Next Page (Page Down)",
+  "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.title": "Record Projections",
+  "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.description": "Displays projections of cards that can currently be played from your Diary.",
+  "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.empty": "There are currently no Record cards you can play."
+}

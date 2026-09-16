@@ -1,6 +1,7 @@
-using System.Reflection.Emit;
 using HarmonyLib;
 using JanusSpire2.JanusSpire2Code.Characters;
+using MegaCrit.Sts2.Core.Entities.Ancients;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Screens.GameOverScreen;
 using MegaCrit.Sts2.Core.Saves;
@@ -69,6 +70,29 @@ public sealed class JanusSharedProgressionLookupPatch : IPatchMethod
 	}
 }
 
+/// <summary>
+/// Skin variants use distinct model IDs for save/load identity, while their gameplay identity remains Janus.
+/// Ancient dialogue lookup is keyed by the exact character entry, so normalize only that lookup to the
+/// base Janus entry. This lets every skin reuse Janus-specific dialogue without duplicating localization keys.
+/// </summary>
+public sealed class JanusSkinAncientDialogueLookupPatch : IPatchMethod
+{
+	public static string PatchId => "janus_skin_ancient_dialogue_lookup";
+	public static string Description => "Use base Janus dialogue for every Janus skin variant";
+	public static bool IsCritical => true;
+	public static ModPatchTarget[] GetTargets() =>
+	[
+		new(typeof(AncientDialogueSet), nameof(AncientDialogueSet.GetValidDialogues),
+			[typeof(ModelId), typeof(int), typeof(int), typeof(bool)])
+	];
+
+	[HarmonyPrefix]
+	public static void Prefix(ref ModelId characterId)
+	{
+		characterId = JanusSharedProgression.GetProgressionId(characterId);
+	}
+}
+
 public sealed class JanusSharedGameOverProgressionPatch : IPatchMethod
 {
 	public static string PatchId => "janus_skin_shared_game_over_progression";
@@ -79,40 +103,57 @@ public sealed class JanusSharedGameOverProgressionPatch : IPatchMethod
 		new(typeof(NGameOverScreen), "SaveBadgesToProgress", null)
 	];
 
-	[HarmonyTranspiler]
-	public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+	/// <summary>
+	/// Temporarily aliases the selected skin ID to Janus's shared CharacterStats entry.
+	/// This lets the complete official badge-saving method (and other mods' patches on it)
+	/// keep running without rewriting its dictionary-indexer IL.
+	/// </summary>
+	[HarmonyPrefix]
+	[HarmonyPriority(Priority.First)]
+	public static void Prefix(Player ____localPlayer, out IDisposable? __state)
 	{
-		var dictionaryIndexer = AccessTools.PropertyGetter(
-			typeof(IReadOnlyDictionary<ModelId, CharacterStats>),
-			"Item");
-		var sharedIndexer = AccessTools.DeclaredMethod(
-			typeof(JanusSharedGameOverProgressionPatch),
-			nameof(GetSharedCharacterStats));
-		var replaced = false;
-
-		foreach (var instruction in instructions)
+		__state = null;
+		ModelId skinId = ____localPlayer.Character.Id;
+		ModelId progressionId = JanusSharedProgression.GetProgressionId(skinId);
+		if (skinId == progressionId)
 		{
-			if (instruction.Calls(dictionaryIndexer))
-			{
-				replaced = true;
-				var replacement = new CodeInstruction(OpCodes.Call, sharedIndexer);
-				replacement.labels.AddRange(instruction.labels);
-				replacement.blocks.AddRange(instruction.blocks);
-				yield return replacement;
-				continue;
-			}
-
-			yield return instruction;
+			return;
 		}
 
-		if (!replaced)
-			MainFile.Logger.Error("Unable to patch the game-over Janus skin progression lookup.");
+		ProgressState progress = SaveManager.Instance.Progress;
+		if (progress.CharacterStats is not IDictionary<ModelId, CharacterStats> characterStats)
+		{
+			throw new InvalidOperationException(
+				"The game-over progression dictionary is not mutable; Janus cannot install its scoped skin alias.");
+		}
+
+		CharacterStats sharedStats = progress.GetOrCreateCharacterStats(progressionId);
+		bool hadPrevious = characterStats.TryGetValue(skinId, out CharacterStats? previous);
+		characterStats[skinId] = sharedStats;
+		__state = new CharacterStatsAliasLease(characterStats, skinId, hadPrevious, previous);
 	}
 
-	private static CharacterStats GetSharedCharacterStats(
-		IReadOnlyDictionary<ModelId, CharacterStats> stats,
-		ModelId characterId)
+	public static void Finalizer(IDisposable? __state)
 	{
-		return stats[JanusSharedProgression.GetProgressionId(characterId)];
+		__state?.Dispose();
+	}
+
+	private sealed class CharacterStatsAliasLease(
+		IDictionary<ModelId, CharacterStats> characterStats,
+		ModelId skinId,
+		bool hadPrevious,
+		CharacterStats? previous) : IDisposable
+	{
+		public void Dispose()
+		{
+			if (hadPrevious)
+			{
+				characterStats[skinId] = previous!;
+			}
+			else
+			{
+				characterStats.Remove(skinId);
+			}
+		}
 	}
 }

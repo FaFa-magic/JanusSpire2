@@ -1,0 +1,9 @@
+{
+  "JANUS_SPIRE2_POTION_PAW_PRINT_POTION.description": "Apply [blue]{BlackCatSealPower}[/blue] [gold]Black Cat's Mark[/gold].",
+  "JANUS_SPIRE2_POTION_PAW_PRINT_POTION.title": "Catnip Potion",
+  "JANUS_SPIRE2_POTION_SMOKE_POTION.description": "Gain [blue]{SmokePower}[/blue] [gold]Smoke[/gold].",
+  "JANUS_SPIRE2_POTION_SMOKE_POTION.title": "Short-Range Smoke Support",
+  "JANUS_SPIRE2_POTION_MIRROR_POTION.description": "Choose a card in your Hand. Add a [gold]copy[/gold] of it to your Hand. It costs 0 this turn.",
+  "JANUS_SPIRE2_POTION_MIRROR_POTION.selectionScreenPrompt": "Choose a card in your Hand to copy.",
+  "JANUS_SPIRE2_POTION_MIRROR_POTION.title": "Mirror Potion"
+}

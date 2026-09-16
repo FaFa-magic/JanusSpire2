@@ -41,7 +41,7 @@ public sealed class CheckForEmptyHandPatch : IPatchMethod
         PlayerChoiceContext choiceContext,
         Player player)
     {
-        // Preserve the official empty-hand hook and RitsuLib 0.5.18's play-enabled extra-hand
+        // Preserve the official empty-hand hook and RitsuLib's play-enabled extra-hand
         // query. Confidence's reduced-hand threshold remains based on the real vanilla hand, so
         // presentation-only Record mappings do not become gameplay card-counting objects.
         await vanillaTask;

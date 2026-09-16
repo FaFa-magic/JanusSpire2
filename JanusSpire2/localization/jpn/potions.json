@@ -1,0 +1,9 @@
+{
+  "JANUS_SPIRE2_POTION_PAW_PRINT_POTION.description": "[gold]黒猫の印[/gold]を[blue]{BlackCatSealPower}[/blue]付与する。",
+  "JANUS_SPIRE2_POTION_PAW_PRINT_POTION.title": "マタタビポーション",
+  "JANUS_SPIRE2_POTION_SMOKE_POTION.description": "[gold]煙幕[/gold]を[blue]{SmokePower}[/blue]得る。",
+  "JANUS_SPIRE2_POTION_SMOKE_POTION.title": "近距離煙幕支援",
+  "JANUS_SPIRE2_POTION_MIRROR_POTION.description": "手札を1枚選び、その[gold]コピー[/gold]を手札に加える。そのカードはこのターン0コスト。",
+  "JANUS_SPIRE2_POTION_MIRROR_POTION.selectionScreenPrompt": "コピーする手札を1枚選択。",
+  "JANUS_SPIRE2_POTION_MIRROR_POTION.title": "ミラーポーション"
+}

@@ -91,7 +91,7 @@ public sealed class RecordMappingPileHookPatch : IPatchMethod
 }
 
 /// <summary>
-/// RitsuLib 0.5.18 keeps an extra-hand card in its source pile while targeting and queued, and
+/// RitsuLib keeps an extra-hand card in its source pile while targeting and queued, and
 /// supplies hand semantics around its own CanPlay evaluation.
 /// Let it play the mapping model normally, but make all playability checks use the Diary original.
 /// </summary>

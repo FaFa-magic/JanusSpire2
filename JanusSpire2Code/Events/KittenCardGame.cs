@@ -21,8 +21,11 @@ public sealed class KittenCardGame : ModEventTemplate
 {
     private const string RandomCardKey = "RandomCard";
     private const int RefreshCost = 30;
+    private const float DefaultCardWeight = 1F;
+    private const float BasicStrikeOrDefendWeight = 0.5F;
 
     private CardModel? _randomCardToCopy;
+    private HashSet<ModelId>? _shownCardIds;
 
     private Player EventOwner => Owner ?? throw new InvalidOperationException(
         $"Event '{Id.Entry}' has not been assigned an owner.");
@@ -35,6 +38,15 @@ public sealed class KittenCardGame : ModEventTemplate
         {
             AssertMutable();
             _randomCardToCopy = value;
+        }
+    }
+
+    private HashSet<ModelId> ShownCardIds
+    {
+        get
+        {
+            AssertMutable();
+            return _shownCardIds ??= [];
         }
     }
 
@@ -51,7 +63,8 @@ public sealed class KittenCardGame : ModEventTemplate
     {
         return JanusConfigPage.KittenCardGameEnabledBinding.Read() &&
                runState.CurrentActIndex is 1 or 2 &&
-               runState.Players.All(player => player.Deck.Cards.Count > 0);
+               runState.Players.All(player =>
+                   player.Gold >= RefreshCost && player.Deck.Cards.Count > 0);
     }
 
     protected override IReadOnlyList<EventOption> GenerateInitialOptions()
@@ -79,22 +92,51 @@ public sealed class KittenCardGame : ModEventTemplate
 
     private void SelectRandomCard()
     {
-        List<CardModel> candidates = EventOwner.Deck.Cards
-            .Where(card => _randomCardToCopy == null || card.GetType() != _randomCardToCopy.GetType())
-            .ToList();
-
-        if (candidates.Count == 0)
-        {
-            candidates = EventOwner.Deck.Cards.ToList();
-        }
-
-        if (candidates.Count == 0)
+        List<CardModel> deckCards = EventOwner.Deck.Cards.ToList();
+        if (deckCards.Count == 0)
         {
             throw new InvalidOperationException($"Event '{Id.Entry}' cannot select a card from an empty deck.");
         }
 
-        RandomCardToCopy = Rng.NextItem(candidates)!;
+        HashSet<ModelId> shownCardIds = ShownCardIds;
+        List<CardModel> candidates = deckCards
+            .Where(card => !shownCardIds.Contains(card.Id))
+            .DistinctBy(card => card.Id)
+            .ToList();
+
+        if (candidates.Count == 0)
+        {
+            shownCardIds.Clear();
+            candidates = deckCards
+                .DistinctBy(card => card.Id)
+                .ToList();
+        }
+
+        List<CardModel> nonStatusOrCurseCandidates = candidates
+            .Where(card => card.Type is not CardType.Status and not CardType.Curse)
+            .ToList();
+        if (nonStatusOrCurseCandidates.Count > 0)
+        {
+            candidates = nonStatusOrCurseCandidates;
+        }
+
+        RandomCardToCopy = Rng.WeightedNextItem(candidates, GetSelectionWeight)
+            ?? throw new InvalidOperationException($"Event '{Id.Entry}' failed to select a card.");
+        shownCardIds.Add(RandomCardToCopy.Id);
         ((StringVar)DynamicVars[RandomCardKey]).StringValue = RandomCardToCopy.Title;
+    }
+
+    private static float GetSelectionWeight(CardModel? card)
+    {
+        if (card == null)
+        {
+            return 0F;
+        }
+
+        bool isBasicStrikeOrDefend = card.Rarity == CardRarity.Basic &&
+                                     (card.Tags.Contains(CardTag.Strike) ||
+                                      card.Tags.Contains(CardTag.Defend));
+        return isBasicStrikeOrDefend ? BasicStrikeOrDefendWeight : DefaultCardWeight;
     }
 
     private async Task Copy()
