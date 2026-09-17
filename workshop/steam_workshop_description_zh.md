@@ -2,7 +2,7 @@
 
 模组现已同时支持《杀戮尖塔 2》正式版与 Beta 版。如果 Steam 提示模组版本与当前游戏版本不匹配，请取消订阅后重新订阅；这通常是 Steam 创意工坊的分发缓存问题。
 
-![Azur Lane Janus Mod for Slay the Spire 2](images/janus_workshop_hero.png)
+![Azur Lane Janus Mod for Slay the Spire 2](https://raw.githubusercontent.com/FaFa-magic/JanusSpire2/main/workshop/images/janus_workshop_hero.png)
 
 # AZUR LANE: JANUS MOD / 碧蓝航线雅努斯模组
 
@@ -10,19 +10,19 @@
 
 本模组需要前置模组 **STS2-RitsuLib 0.6.2 或更高版本**。
 
-![Mod Content](images/janus_workshop_content.png)
+![Mod Content](https://raw.githubusercontent.com/FaFa-magic/JanusSpire2/main/workshop/images/janus_workshop_content.png)
 
 ## MOD CONTENT / 模组内容
 
 - 1 个全新可玩角色：**雅努斯（Janus）**
-- **89 + 14** 张新卡牌：89 张常规及多人卡牌，另有 14 张先古、衍生与状态牌
+- **91 + 14** 张新卡牌：91 张常规及多人卡牌，另有 14 张先古、衍生与状态牌
 - **20** 个新遗物
 - **3** 种新药水
 - 1 位新先古之民：**伊丽莎白女王（Queen Elizabeth）**
 - 1 个新事件：**小猫的卡牌游戏（Kitten's Card Game）**
 - **7** 套可切换角色装束，每套均配有独立的战斗、商店与休息点 Spine 模型
 
-![Diary Mechanics](images/janus_workshop_mechanics.png)
+![Diary Mechanics](https://raw.githubusercontent.com/FaFa-magic/JanusSpire2/main/workshop/images/janus_workshop_mechanics.png)
 
 ## DIARY MECHANICS / 机制讲解
 
@@ -54,7 +54,7 @@
 
 带有**灵感 X（Inspiration X）**的牌不在手牌中时，可以右键该牌并消耗日记本中的 X 张牌，将它加入手牌。
 
-![Extra Features](images/janus_workshop_extras.png)
+![Extra Features](https://raw.githubusercontent.com/FaFa-magic/JanusSpire2/main/workshop/images/janus_workshop_extras.png)
 
 ## EXTRA FEATURES / 额外功能
 

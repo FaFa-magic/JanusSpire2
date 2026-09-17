@@ -1,0 +1,13 @@
+{
+  "config.page.title": "ジェーナス設定",
+  "config.modDisplayName": "ジェーナス",
+  "config.section.general": "一般",
+  "config.modelMode.label": "マルチプレイ用モデル",
+  "config.modelMode.hand": "手のモデル",
+  "config.modelMode.legs": "脚のモデル",
+  "config.cardFrame.label": "カスタムカードフレーム",
+  "config.cardFrame.first": "カードフレーム1",
+  "config.cardFrame.second": "カードフレーム2",
+  "config.queenElizabethEnabled.label": "クイーン・エリザベスを登場させる",
+  "config.kittenCardGameEnabled.label": "イベント「子猫のカード遊び」を有効にする"
+}

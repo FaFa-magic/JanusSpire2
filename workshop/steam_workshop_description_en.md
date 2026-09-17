@@ -2,7 +2,7 @@
 
 This mod supports both the release and Beta versions of *Slay the Spire 2*. If Steam reports that the mod does not match your current game version, unsubscribe and subscribe again. This is usually caused by Steam Workshop distribution caching.
 
-![Azur Lane Janus Mod for Slay the Spire 2](images/janus_workshop_hero.png)
+![Azur Lane Janus Mod for Slay the Spire 2](https://raw.githubusercontent.com/FaFa-magic/JanusSpire2/main/workshop/images/janus_workshop_hero.png)
 
 # AZUR LANE: JANUS CHARACTER MOD
 
@@ -10,19 +10,19 @@ Bring Janus, a J-class destroyer from *Azur Lane*, into the Spire. She must over
 
 This mod requires **STS2-RitsuLib 0.6.2 or later**.
 
-![Mod Content](images/janus_workshop_content.png)
+![Mod Content](https://raw.githubusercontent.com/FaFa-magic/JanusSpire2/main/workshop/images/janus_workshop_content.png)
 
 ## MOD CONTENT
 
 - 1 new playable character: **Janus**
-- **89 + 14** new cards: 89 standard and multiplayer cards, plus 14 Ancient, generated, and Status cards
+- **91 + 14** new cards: 91 standard and multiplayer cards, plus 14 Ancient, generated, and Status cards
 - **20** new relics
 - **3** new potions
 - 1 new Ancient: **Queen Elizabeth**
 - 1 new event: **A Kitten's Card Game**
 - **7** selectable outfits, each with its own combat, merchant, and rest-site Spine model
 
-![Diary Mechanics](images/janus_workshop_mechanics.png)
+![Diary Mechanics](https://raw.githubusercontent.com/FaFa-magic/JanusSpire2/main/workshop/images/janus_workshop_mechanics.png)
 
 ## DIARY MECHANICS
 
@@ -54,7 +54,7 @@ A card with **Keepsake** is added to your Diary at the start of combat.
 
 While a card with **Inspiration X** is not in your Hand, right-click it and choose to Exhaust X cards from your Diary to add that card to your Hand.
 
-![Extra Features](images/janus_workshop_extras.png)
+![Extra Features](https://raw.githubusercontent.com/FaFa-magic/JanusSpire2/main/workshop/images/janus_workshop_extras.png)
 
 ## EXTRA FEATURES
 
@@ -73,4 +73,3 @@ You can also join the general *Slay the Spire 2 × Azur Lane* mod-development QQ
 # THANK YOU FOR YOUR SUPPORT
 
 If you enjoy the mod, please leave a free thumbs-up on Steam Workshop. Your support means a great deal to me. Thank you!
-

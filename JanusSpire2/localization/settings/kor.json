@@ -1,0 +1,13 @@
+{
+  "config.page.title": "재너스 설정",
+  "config.modDisplayName": "재너스",
+  "config.section.general": "일반",
+  "config.modelMode.label": "멀티플레이 모델",
+  "config.modelMode.hand": "손 모델",
+  "config.modelMode.legs": "다리 모델",
+  "config.cardFrame.label": "사용자 지정 카드 프레임",
+  "config.cardFrame.first": "카드 프레임 1",
+  "config.cardFrame.second": "카드 프레임 2",
+  "config.queenElizabethEnabled.label": "퀸 엘리자베스 등장 활성화",
+  "config.kittenCardGameEnabled.label": "이벤트 ‘아기 고양이의 카드놀이’ 활성화"
+}

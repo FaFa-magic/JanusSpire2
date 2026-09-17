@@ -2,7 +2,7 @@
 
 本Modは『Slay the Spire 2』の正式版とBeta版の両方に対応しています。SteamでゲームとModのバージョンが一致しないと表示された場合は、一度サブスクライブを解除してから再度サブスクライブしてください。多くの場合、Steamワークショップの配信キャッシュが原因です。
 
-![Slay the Spire 2 アズールレーン・ジェーナスMod](images/janus_workshop_hero.png)
+![Slay the Spire 2 アズールレーン・ジェーナスMod](https://raw.githubusercontent.com/FaFa-magic/JanusSpire2/main/workshop/images/janus_workshop_hero.png)
 
 # アズールレーン：ジェーナス キャラクターMOD
 
@@ -10,19 +10,19 @@
 
 本Modの導入には **STS2-RitsuLib 0.6.2以降** が必要です。
 
-![Modコンテンツ](images/janus_workshop_content.png)
+![Modコンテンツ](https://raw.githubusercontent.com/FaFa-magic/JanusSpire2/main/workshop/images/janus_workshop_content.png)
 
 ## MOD CONTENT / 収録内容
 
 - 新しいプレイアブルキャラクター：**ジェーナス** 1人
-- 新規カード **89 + 14枚**：通常・マルチプレイカード89枚、エンシェント・生成・状態カード14枚
+- 新規カード **91 + 14枚**：通常・マルチプレイカード91枚、エンシェント・生成・状態カード14枚
 - 新規レリック **20個**
 - 新規ポーション **3種**
 - 新しいエンシェント：**クイーン・エリザベス** 1人
 - 新イベント：**子猫のカード遊び** 1種
 - 切り替え可能な衣装 **7種**。各衣装に専用の戦闘・ショップ・休憩所用Spineモデルを収録
 
-![日記帳システム](images/janus_workshop_mechanics.png)
+![日記帳システム](https://raw.githubusercontent.com/FaFa-magic/JanusSpire2/main/workshop/images/janus_workshop_mechanics.png)
 
 ## DIARY MECHANICS / 日記帳システム
 
@@ -54,7 +54,7 @@
 
 **ひらめきX**を持つカードが手札にない時、そのカードを右クリックし、日記帳のカードX枚を廃棄することで手札に加えられます。
 
-![追加機能](images/janus_workshop_extras.png)
+![追加機能](https://raw.githubusercontent.com/FaFa-magic/JanusSpire2/main/workshop/images/janus_workshop_extras.png)
 
 ## EXTRA FEATURES / 追加機能
 
@@ -73,4 +73,3 @@ QQグループ **1102194309**、またはBilibiliの **六匚最密堆积** ま�
 # ご支援ありがとうございます
 
 本Modを気に入っていただけましたら、Steamワークショップで無料の「いいね」を押していただけると嬉しいです。皆さまの応援が大きな励みになります！
-

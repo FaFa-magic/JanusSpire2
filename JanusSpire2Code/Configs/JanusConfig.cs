@@ -1,6 +1,7 @@
 ﻿using STS2RitsuLib;
 using STS2RitsuLib.Data;
 using STS2RitsuLib.Settings;
+using STS2RitsuLib.Utils;
 using STS2RitsuLib.Utils.Persistence;
 
 namespace JanusSpire2.JanusSpire2Code.Configs;
@@ -28,6 +29,10 @@ public sealed class JanusConfig
 public static class JanusConfigPage
 {
     private const string DataKey = "JanusConfig";
+    private static readonly I18N Localization = RitsuLibFramework.CreateModLocalization(
+        MainFile.ModId,
+        "JanusConfig",
+        pckFolders: ["res://JanusSpire2/localization/settings"]);
 
     public static readonly ModSettingsValueBinding<JanusConfig, FjordMosaicMode> ModelModeBinding = new(
         MainFile.ModId, DataKey, SaveScope.Profile,
@@ -56,33 +61,38 @@ public static class JanusConfigPage
             autoCreateIfMissing: true);
 
         RitsuLibFramework.RegisterModSettings(MainFile.ModId, page => page
-            .WithTitle(ModSettingsText.Literal("Janus Config"))
-            .WithModDisplayName(ModSettingsText.Literal("Janus Mod"))
+            .WithTitle(Text("config.page.title", "Janus Settings"))
+            .WithModDisplayName(Text("config.modDisplayName", "Janus"))
             .WithVisibleOnHostSurfaces(
                 ModSettingsHostSurface.MainMenu | ModSettingsHostSurface.RunPause)
             .AddSection("general", section => section
-                .WithTitle(ModSettingsText.Literal("Janus Config"))
-                .AddChoice("mosaic_mode", ModSettingsText.Literal("多人模式模型选择"),
+                .WithTitle(Text("config.section.general", "General"))
+                .AddChoice("mosaic_mode", Text("config.modelMode.label", "Multiplayer model"),
                     ModelModeBinding,
                     [
-                        new(FjordMosaicMode.手部模型, ModSettingsText.Literal("手部模型")),
-                        new(FjordMosaicMode.腿部模型, ModSettingsText.Literal("腿部模型"))
+                        new(FjordMosaicMode.手部模型, Text("config.modelMode.hand", "Hand model")),
+                        new(FjordMosaicMode.腿部模型, Text("config.modelMode.legs", "Leg model"))
                     ],
                     presentation: ModSettingsChoicePresentation.Dropdown)
-                .AddChoice("card_frame_mode", ModSettingsText.Literal("自定义卡框选择"),
+                .AddChoice("card_frame_mode", Text("config.cardFrame.label", "Custom card frame"),
                     CardFrameBinding,
                     [
-                        new(JanusCardFrameMode.卡框一, ModSettingsText.Literal("卡框一")),
-                        new(JanusCardFrameMode.卡框二, ModSettingsText.Literal("卡框二"))
+                        new(JanusCardFrameMode.卡框一, Text("config.cardFrame.first", "Frame 1")),
+                        new(JanusCardFrameMode.卡框二, Text("config.cardFrame.second", "Frame 2"))
                     ],
                     presentation: ModSettingsChoicePresentation.Dropdown)
                 .AddToggle(
                     "queen_elizabeth_enabled",
-                    ModSettingsText.Literal("会出现先古之民-伊丽莎白女王"),
+                    Text("config.queenElizabethEnabled.label", "Enable Queen Elizabeth"),
                     QueenElizabethEnabledBinding)
                 .AddToggle(
                     "kitten_card_game_enabled",
-                    ModSettingsText.Literal("会出现事件-小猫的卡牌游戏"),
+                    Text("config.kittenCardGameEnabled.label", "Enable A Kitten's Card Game"),
                     KittenCardGameEnabledBinding)));
+    }
+
+    private static ModSettingsText Text(string key, string fallback)
+    {
+        return ModSettingsText.I18N(Localization, key, fallback);
     }
 }

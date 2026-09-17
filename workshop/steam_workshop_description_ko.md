@@ -2,7 +2,7 @@
 
 이 모드는 『Slay the Spire 2』 정식 버전과 Beta 버전을 모두 지원합니다. Steam에서 모드 버전이 현재 게임 버전과 맞지 않는다고 표시되면 구독을 취소한 뒤 다시 구독해 주세요. 대부분 Steam 창작마당의 배포 캐시로 인해 발생하는 문제입니다.
 
-![Slay the Spire 2 벽람항로 재너스 모드](images/janus_workshop_hero.png)
+![Slay the Spire 2 벽람항로 재너스 모드](https://raw.githubusercontent.com/FaFa-magic/JanusSpire2/main/workshop/images/janus_workshop_hero.png)
 
 # 벽람항로: 재너스 캐릭터 모드
 
@@ -10,19 +10,19 @@
 
 이 모드를 사용하려면 **STS2-RitsuLib 0.6.2 이상**이 필요합니다.
 
-![모드 콘텐츠](images/janus_workshop_content.png)
+![모드 콘텐츠](https://raw.githubusercontent.com/FaFa-magic/JanusSpire2/main/workshop/images/janus_workshop_content.png)
 
 ## MOD CONTENT / 모드 콘텐츠
 
 - 새로운 플레이어블 캐릭터 **재너스** 1명
-- 새로운 카드 **89 + 14장**: 일반·멀티플레이 카드 89장과 고대·생성·상태 카드 14장
+- 새로운 카드 **91 + 14장**: 일반·멀티플레이 카드 91장과 고대·생성·상태 카드 14장
 - 새로운 유물 **20개**
 - 새로운 포션 **3종**
 - 새로운 고대의 존재 **퀸 엘리자베스** 1명
 - 새로운 이벤트 **아기 고양이의 카드놀이** 1종
 - 전환 가능한 의상 **7종**. 각 의상마다 전투·상점·휴식 장소용 Spine 모델 제공
 
-![일기장 시스템](images/janus_workshop_mechanics.png)
+![일기장 시스템](https://raw.githubusercontent.com/FaFa-magic/JanusSpire2/main/workshop/images/janus_workshop_mechanics.png)
 
 ## DIARY MECHANICS / 일기장 시스템
 
@@ -54,7 +54,7 @@
 
 **영감 X** 카드가 손에 없을 때 해당 카드를 우클릭하고, 일기장의 카드 X장을 소멸시키는 것을 선택하면 그 카드를 손에 추가할 수 있습니다.
 
-![추가 기능](images/janus_workshop_extras.png)
+![추가 기능](https://raw.githubusercontent.com/FaFa-magic/JanusSpire2/main/workshop/images/janus_workshop_extras.png)
 
 ## EXTRA FEATURES / 추가 기능
 

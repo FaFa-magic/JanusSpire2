@@ -1,0 +1,13 @@
+{
+  "config.page.title": "Janus Settings",
+  "config.modDisplayName": "Janus",
+  "config.section.general": "General",
+  "config.modelMode.label": "Multiplayer model",
+  "config.modelMode.hand": "Hand model",
+  "config.modelMode.legs": "Leg model",
+  "config.cardFrame.label": "Custom card frame",
+  "config.cardFrame.first": "Frame 1",
+  "config.cardFrame.second": "Frame 2",
+  "config.queenElizabethEnabled.label": "Enable Queen Elizabeth",
+  "config.kittenCardGameEnabled.label": "Enable A Kitten's Card Game"
+}

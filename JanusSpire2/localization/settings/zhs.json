@@ -1,0 +1,13 @@
+{
+  "config.page.title": "雅努斯设置",
+  "config.modDisplayName": "雅努斯",
+  "config.section.general": "通用",
+  "config.modelMode.label": "多人模式模型",
+  "config.modelMode.hand": "手部模型",
+  "config.modelMode.legs": "腿部模型",
+  "config.cardFrame.label": "自定义卡框",
+  "config.cardFrame.first": "卡框一",
+  "config.cardFrame.second": "卡框二",
+  "config.queenElizabethEnabled.label": "会出现先古之民——伊丽莎白女王",
+  "config.kittenCardGameEnabled.label": "会出现事件——小猫的卡牌游戏"
+}
