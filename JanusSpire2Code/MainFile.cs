@@ -1,4 +1,5 @@
 using System.Reflection;
+using JanusSpire2.JanusSpire2Code.Audio;
 using JanusSpire2.JanusSpire2Code.Cards;
 using JanusSpire2.JanusSpire2Code.Cards.Ancient;
 using JanusSpire2.JanusSpire2Code.Cards.Basic;
@@ -40,6 +41,7 @@ public static class MainFile
 		Logger = RitsuLibFramework.CreateLogger(ModId);
 		ModTypeDiscoveryHub.RegisterModAssembly(ModId, assembly);
 		RitsuLibFramework.EnsureGodotScriptsRegistered(assembly, Logger);
+		JanusAudio.Register();
 		JanusKeywords.RegisterPersistence();
 		MagicGlovesTransformReward.Register();
 

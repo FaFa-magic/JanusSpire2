@@ -1,4 +1,5 @@
 using Godot;
+using JanusSpire2.JanusSpire2Code.Audio;
 using JanusSpire2.JanusSpire2Code.Configs;
 using MegaCrit.Sts2.Core.Animation;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
@@ -69,16 +70,11 @@ public class JanusCharacter : ModCharacterTemplate<JanusCardPool, JanusRelicPool
 	            CombatSkeletonDataPath: CurrentSkinDefinition.SpineSkeletonDataPath
 	        ),
             Audio: new(
-                // // 攻击音效
-                // AttackSfx: "res://JanusSpire2/sfx/Janus_attacksfx.mp3",
-                // // 施法音效
-                // CastSfx: "res://JanusSpire2/sfx/Janus_castsfx.mp3",
-                // // 死亡音效
-                // DeathSfx: "res://JanusSpire2/sfx/Janus_deathsfx.mp3",
-                // // 角色选择音效
-                // CharacterSelectSfx: "res://JanusSpire2/sfx/Janus_character_select.mp3",
-                // // 过渡音效
-                // CharacterTransitionSfx: "res://JanusSpire2/sfx/Janus_character_transition.mp3"
+                AttackSfx: JanusAudio.AttackEvent,
+                CastSfx: JanusAudio.CastEvent,
+                DeathSfx: JanusAudio.DeathEvent,
+                CharacterSelectSfx: JanusAudio.CharacterSelectEvent,
+                CharacterTransitionSfx: JanusAudio.CharacterTransitionEvent
             ),
             Multiplayer: new(
 	            // 多人模式-手指。
