@@ -5,7 +5,7 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Ancient;
 
-public sealed class DawnOath() : JanusCardModel(2, CardType.Skill, CardRarity.Ancient, TargetType.Self)
+public sealed class DawnOath() : JanusCardModel(3, CardType.Skill, CardRarity.Ancient, TargetType.Self)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Retain];
     
