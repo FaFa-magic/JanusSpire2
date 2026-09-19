@@ -1,4 +1,5 @@
 ﻿using JanusSpire2.JanusSpire2Code.Cards.Token;
+using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -16,6 +17,14 @@ public sealed class IanvsForm() : JanusCardModel(3, CardType.Power, CardRarity.R
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(CombatState);
+        await PowerCmd.Apply<IanvsFormVfxPower>(
+            choiceContext,
+            Owner.Creature,
+            1m,
+            Owner.Creature,
+            this,
+            silent: true);
+
         CardModel card = base.CombatState.CreateCard<FlowersInTheMirror>(base.Owner);
         CardCmd.PreviewCardPileAdd(await CardPileCmd.AddGeneratedCardToCombat(card, MainFile.Diary, base.Owner), 0.2f);
         if (card is JanusRecordCardModel recordCard)

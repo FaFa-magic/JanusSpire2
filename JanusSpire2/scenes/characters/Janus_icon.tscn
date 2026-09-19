@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://w2ydb1e154jt"]
 
-[ext_resource type="Texture2D" uid="uid://bq483glfi1ekk" path="res://JanusSpire2/images/characters/character_icon_janus_outline.png" id="1_2akst"]
+[ext_resource type="Texture2D" uid="uid://byai4i5p0wyon" path="res://JanusSpire2/images/characters/character_icon_janus_outline.png" id="1_2akst"]
 
 [node name="JanusIcon" type="TextureRect"]
 anchors_preset = 15
