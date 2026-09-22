@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xnl5xeqwefg"
-path="res://.godot/imported/collection.png-02ad50feb2277a4909cbc5f06d00b595.ctex"
+uid="uid://gkfcjj15aqs8"
+path="res://.godot/imported/white_feathers.png-fd1cea984d53dae6b81c34549a76a92f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://JanusSpire2/images/combatui/collection.png"
-dest_files=["res://.godot/imported/collection.png-02ad50feb2277a4909cbc5f06d00b595.ctex"]
+source_file="res://workshop/animation_assets/white_feathers.png"
+dest_files=["res://.godot/imported/white_feathers.png-fd1cea984d53dae6b81c34549a76a92f.ctex"]
 
 [params]
 

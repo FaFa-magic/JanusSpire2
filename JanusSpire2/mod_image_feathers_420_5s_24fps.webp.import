@@ -2,16 +2,12 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpc3cyj1q4gvd"
-path="res://.godot/imported/Janus.png-6bd66499ee0dd5c0fcb8ef256f214f0c.ctex"
-metadata={
-"vram_texture": false
-}
+uid="uid://c3imhpuebn4eq"
+valid=false
 
 [deps]
 
-source_file="res://JanusSpire2/images/characters/Janus.png"
-dest_files=["res://.godot/imported/Janus.png-6bd66499ee0dd5c0fcb8ef256f214f0c.ctex"]
+source_file="res://JanusSpire2/mod_image_feathers_420_5s_24fps.webp"
 
 [params]
 

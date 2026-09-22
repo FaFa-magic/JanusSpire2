@@ -137,6 +137,8 @@ public static class MainFile
 		patcher.RegisterPatch<JanusSkinSelectEmbarkPatch>();
 		patcher.RegisterPatch<JanusSkinSelectUnreadyPatch>();
 		patcher.RegisterPatch<JanusCombatSpineIdleBootstrapPatch>();
+		patcher.RegisterPatch<JanusAttackAudioContextPatch>();
+		patcher.RegisterPatch<JanusAttackAudioPlaybackPatch>();
 
 		if (!patcher.PatchAll())
 			throw new InvalidOperationException("Critical patches failed.");
