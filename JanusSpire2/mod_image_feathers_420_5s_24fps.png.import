@@ -2,12 +2,12 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3imhpuebn4eq"
+uid="uid://c2ku2biyd52t"
 valid=false
 
 [deps]
 
-source_file="res://JanusSpire2/mod_image_feathers_420_5s_24fps.webp"
+source_file="res://JanusSpire2/mod_image_feathers_420_5s_24fps.png"
 
 [params]
 
