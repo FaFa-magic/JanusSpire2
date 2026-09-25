@@ -1,5 +1,6 @@
 ﻿using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Combat;
 using JanusSpire2.JanusSpire2Code.Keywords;
 using JanusSpire2.JanusSpire2Code.Relics;
 using MegaCrit.Sts2.Core.Commands;
@@ -34,7 +35,12 @@ public sealed class BlackDress() : JanusCardModel(1, CardType.Attack, CardRarity
 
     public override Task AfterCombatEnd(CombatRoom room)
     {
-        if (Pile?.Type == MainFile.Diary)
+        bool isInDiary = Pile?.Type == MainFile.Diary;
+        bool isFinishingPlayIntoDiary = Pile?.Type == PileType.Play &&
+            CombatManager.Instance.History.CardPlaysStarted
+                .LastOrDefault(entry => ReferenceEquals(entry.CardPlay.Card, this))?
+                .CardPlay.ResultPile == MainFile.Diary;
+        if (isInDiary || isFinishingPlayIntoDiary)
         {
             RelicModel fragment = ModelDb.Relic<RelicFragment>().ToMutable();
             room.AddExtraReward(Owner, new RelicReward(fragment, Owner));

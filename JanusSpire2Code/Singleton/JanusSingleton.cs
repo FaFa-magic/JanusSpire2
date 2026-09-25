@@ -55,6 +55,8 @@ public class JanusSingleton : HookedSingletonModel
         }
     }
 
+    internal static bool HasDiaryPlayResult(CardModel card) => CardsWithDiaryPlayResult.Contains(card);
+
     internal static void ProtectFromNextDelayedFlush(CardModel card)
     {
         CardsProtectedFromNextDelayedFlush.Add(card);

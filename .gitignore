@@ -7,9 +7,10 @@ obj/
 /*cache/
 
 # godot 屏蔽
-.godot/editor/
-.godot/imported/
-.godot/shader_cache/
+.godot/
+
+# FMOD 插件运行库保留；仅忽略编辑器产生的临时文件
+/addons/fmod/libs/windows/~*.TMP
 
 # --- IDE ---
 .idea/

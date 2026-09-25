@@ -52,6 +52,7 @@ public static class MainFile
 		RitsuLibFramework.RegisterTouchOfOrobasRefinementMapping<Coronet, ShiningCrown>();
 		BlackCatSealPower.RegisterSynchronizedBloom();
 		InspirationKeyword.RegisterSynchronizedRightClick();
+		Incense.RegisterSynchronizedRightClick();
 		StickerMergeAction.Register();
 		
 		var registry = ModCardPileRegistry.For(ModId);
@@ -104,6 +105,7 @@ public static class MainFile
 		patcher.RegisterPatch<DiarySpendResourcesPatch>();
 		patcher.RegisterPatch<PlayerPopulateCombatStatePatch>();
 		patcher.RegisterPatch<DiaryOnPlayWrapperPatch>();
+		patcher.RegisterPatch<DiaryUnplayableAutoPlayResultPatch>();
 		patcher.RegisterPatch<PerkDiarySelectionRightClickPatch>();
 		patcher.RegisterPatch<PreventSingleCardGenerationPatch>();
 		patcher.RegisterPatch<PreventMultipleCardGenerationPatch>();

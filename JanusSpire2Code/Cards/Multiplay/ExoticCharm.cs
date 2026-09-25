@@ -10,7 +10,7 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Multiplay;
 
-public sealed class ExoticCharm() : JanusCardModel(1, CardType.Skill, CardRarity.Uncommon, TargetType.AnyAlly)
+public sealed class ExoticCharm() : JanusCardModel(0, CardType.Skill, CardRarity.Uncommon, TargetType.AnyAlly)
 {
     public override CardMultiplayerConstraint MultiplayerConstraint => CardMultiplayerConstraint.MultiplayerOnly;
 
