@@ -118,8 +118,23 @@ public class JanusCharacter : ModCharacterTemplate<JanusCardPool, JanusRelicPool
 	 // 如果你的人物不需要时间线小故事，加上这句。
 	 public override bool RequiresEpochAndTimeline => false;
 
-	 // 自动转换人物场景，让你不需要手动挂脚本。
-	 protected override NCreatureVisuals? TryCreateCreatureVisuals() => RitsuGodotNodeFactories.CreateFromScenePath<NCreatureVisuals>(AssetProfile.Scenes!.VisualsPath!);
+	 // 结算画面会直接创建视觉节点，不经过 NCreature._Ready 的战斗骨骼替换。
+	 protected override NCreatureVisuals? TryCreateCreatureVisuals()
+	 {
+		 var visuals = RitsuGodotNodeFactories.CreateFromScenePath<NCreatureVisuals>(AssetProfile.Scenes!.VisualsPath!);
+		 if (visuals is null || CurrentSkin == JanusSkin.Default)
+			 return visuals;
+
+		 var spineNode = visuals.GetNodeOrNull<Node2D>("%Visuals");
+		 if (!GodotObject.IsInstanceValid(spineNode) || spineNode.GetClass() != MegaSprite.spineClassName)
+			 return visuals;
+
+		 var skeletonData = ResourceLoader.Load<Resource>(CurrentSkinDefinition.SpineSkeletonDataPath);
+		 if (skeletonData is not null)
+			 new MegaSprite((Variant)(GodotObject)spineNode).SetSkeletonDataRes(new MegaSkeletonDataResource(skeletonData));
+
+		 return visuals;
+	 }
 
 	 // 将游戏的通用角色动作映射到这批 Spine 文件中的实际动画名。
 	 protected override CreatureAnimator? SetupCustomCreatureAnimator(MegaSprite controller) =>

@@ -35,7 +35,7 @@
   "JANUS_SPIRE2_RELIC_OLD_DIARY.description": "[gold]타격[/gold]과 [gold]수비[/gold]가 [gold]기록[/gold]을 얻습니다.",
   "JANUS_SPIRE2_RELIC_OLD_DIARY.flavor": "빛바랜 장마다 출격의 기록과 지휘관님께 직접 전하지 못한 말들이 적혀 있다.",
   "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.title": "유물 조각",
-  "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.description": "[gold]전투 보상[/gold]에서 획득할 때 유물 조각을 [blue]3[/blue]개 이상 보유 중이라면, 모든 유물 조각을 제거하고 무작위 유물을 하나 얻습니다.",
+  "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.description": "획득 시 유물 조각을 [blue]3[/blue]개 이상 보유 중이라면, 모든 유물 조각을 제거하고 무작위 유물을 하나 얻습니다.",
   "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.flavor": "조각마다 서로 다른 바다의 빛이 비친다. 모두 모으면 함대의 보물이 될지도 모른다.",
   "JANUS_SPIRE2_RELIC_MAGIC_MIRROR.title": "마법 거울",
   "JANUS_SPIRE2_RELIC_MAGIC_MIRROR.description": "카드를 최대 [blue]{Cards}[/blue]장 [purple]환영[/purple]으로 [gold]인챈트[/gold]합니다.",

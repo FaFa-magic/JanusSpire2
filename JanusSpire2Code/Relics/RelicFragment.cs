@@ -1,9 +1,7 @@
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.Factories;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Rewards;
 
 namespace JanusSpire2.JanusSpire2Code.Relics;
 
@@ -15,15 +13,8 @@ public sealed class RelicFragment : JanusRelicModel
 
     public override bool HasUponPickupEffect => true;
 
-    public override async Task AfterRewardTaken(Player player, Reward reward)
+    public override async Task AfterObtained()
     {
-        if (player != Owner ||
-            reward is not RelicReward relicReward ||
-            !ReferenceEquals(relicReward.ClaimedRelic, this))
-        {
-            return;
-        }
-
         List<RelicFragment> fragments = Owner.Relics
             .OfType<RelicFragment>()
             .ToList();

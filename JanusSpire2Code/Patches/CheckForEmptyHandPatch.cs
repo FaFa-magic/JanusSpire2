@@ -70,7 +70,7 @@ public sealed class CheckForEmptyHandPatch : IPatchMethod
             }
         }
 
-        if (threshold > 0 && handCount < threshold)
+        if (threshold > 0 && handCount < Math.Min(threshold, CardPile.MaxCardsInHand))
         {
             foreach (var customHook in customHooks)
             {

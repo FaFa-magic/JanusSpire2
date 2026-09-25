@@ -35,7 +35,7 @@
   "JANUS_SPIRE2_RELIC_OLD_DIARY.description": "[gold]Strikes[/gold] and [gold]Defends[/gold] gain [gold]Record[/gold].",
   "JANUS_SPIRE2_RELIC_OLD_DIARY.flavor": "Its yellowed pages record every sortie—and many words Janus could not bring herself to tell the Commander.",
   "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.title": "Relic Fragment",
-  "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.description": "When taken from a [gold]combat reward[/gold], if you have at least [blue]3[/blue] Relic Fragments, remove all Relic Fragments and obtain a random Relic.",
+  "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.description": "When obtained, if you have at least [blue]3[/blue] Relic Fragments, remove all Relic Fragments and obtain a random Relic.",
   "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.flavor": "Each shard reflects a different sea. Gathered together, they may form a treasure of the fleet.",
   "JANUS_SPIRE2_RELIC_MAGIC_MIRROR.title": "Magic Mirror",
   "JANUS_SPIRE2_RELIC_MAGIC_MIRROR.description": "[gold]Enchant[/gold] up to [blue]{Cards}[/blue] cards with [purple]Hallucination[/purple].",

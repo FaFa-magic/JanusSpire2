@@ -35,7 +35,7 @@
   "JANUS_SPIRE2_RELIC_OLD_DIARY.description": "[gold]ストライク[/gold]と[gold]防御[/gold]が[gold]記録[/gold]を得る。",
   "JANUS_SPIRE2_RELIC_OLD_DIARY.flavor": "色あせたページには出撃の記録と、指揮官に直接伝えられなかった言葉が綴られている。",
   "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.title": "レリックの欠片",
-  "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.description": "[gold]戦闘報酬[/gold]から獲得した時、レリックの欠片を[blue]3[/blue]個以上所持している場合、すべてのレリックの欠片を取り除き、ランダムなレリックを1つ獲得する。",
+  "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.description": "獲得時、レリックの欠片を[blue]3[/blue]個以上所持している場合、すべてのレリックの欠片を取り除き、ランダムなレリックを1つ獲得する。",
   "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.flavor": "欠片ごとに違う海の光が映る。集めれば、艦隊の宝物になるかもしれない。",
   "JANUS_SPIRE2_RELIC_MAGIC_MIRROR.title": "魔法の鏡",
   "JANUS_SPIRE2_RELIC_MAGIC_MIRROR.description": "最大[blue]{Cards}[/blue]枚のカードを[gold]エンチャント[/gold]：[purple]幻影[/purple]。",

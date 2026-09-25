@@ -1,6 +1,7 @@
 ﻿using JanusSpire2.JanusSpire2Code.Patches;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
@@ -39,7 +40,8 @@ public sealed class ConfidencePower : JanusPowerModel, IAfterHandReducedHook
 
     private async Task TriggerDrawLogic(PlayerChoiceContext choiceContext, Player player)
     {
-        while (player.PlayerCombatState != null && player.PlayerCombatState.Hand.Cards.Count < this.Amount)
+        int targetHandSize = Math.Min(Amount, CardPile.MaxCardsInHand);
+        while (player.PlayerCombatState != null && player.PlayerCombatState.Hand.Cards.Count < targetHandSize)
         {
             if (player.PlayerCombatState.DrawPile.Cards.Count == 0 && 
                 player.PlayerCombatState.DiscardPile.Cards.Count == 0)
@@ -47,9 +49,14 @@ public sealed class ConfidencePower : JanusPowerModel, IAfterHandReducedHook
                 break;
             }
 
+            int handCountBeforeDraw = player.PlayerCombatState.Hand.Cards.Count;
+            var drawnCard = await CardPileCmd.Draw(choiceContext, player);
+            if (drawnCard == null)
+                break;
+
             Flash();
-            await CardPileCmd.Draw(choiceContext, player); 
-            await Task.Yield();
+            if (player.PlayerCombatState == null || player.PlayerCombatState.Hand.Cards.Count <= handCountBeforeDraw)
+                break;
         }
     }
 

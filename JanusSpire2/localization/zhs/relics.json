@@ -35,7 +35,7 @@
   "JANUS_SPIRE2_RELIC_OLD_DIARY.description": "[gold]打击[/gold]和[gold]防御[/gold]获得[gold]记录[/gold]。",
   "JANUS_SPIRE2_RELIC_OLD_DIARY.flavor": "泛黄的纸页记着每次出航，也夹着许多没能当面说给指挥官的话。",
   "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.title": "遗物碎片",
-  "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.description": "从[gold]战斗奖励[/gold]中拾起时，如果你拥有至少[blue]3[/blue]份遗物碎片，移除所有遗物碎片并获得一件随机遗物。",
+  "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.description": "拾起时，若你拥有至少[blue]3[/blue]份遗物碎片，移除所有遗物碎片并获得一件随机遗物。",
   "JANUS_SPIRE2_RELIC_RELIC_FRAGMENT.flavor": "碎片映着不同海域的光；集齐时，或许会拼出一件来自舰队的珍宝。",
   "JANUS_SPIRE2_RELIC_MAGIC_MIRROR.title": "魔镜",
   "JANUS_SPIRE2_RELIC_MAGIC_MIRROR.description": "将至多[blue]{Cards}[/blue]张牌[gold]附魔[/gold]:[purple]幻化[/purple]。",
