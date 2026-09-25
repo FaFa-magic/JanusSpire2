@@ -1,6 +1,5 @@
 using Godot;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
@@ -87,7 +86,6 @@ public partial class JanusSkinSelectPanel : Control
 		var skin = Skins[_currentIndex];
 		_selectScreen.Lobby.SetLocalCharacter(skin);
 		RenderSkinVisuals(skin);
-		SfxCmd.Play(skin.CharacterSelectSfx);
 	}
 
 	private void RenderSkinVisuals(JanusCharacter skin)

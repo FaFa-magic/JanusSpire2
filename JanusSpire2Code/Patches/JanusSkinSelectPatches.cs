@@ -1,10 +1,13 @@
 using Godot;
 using HarmonyLib;
+using JanusSpire2.JanusSpire2Code.Audio;
 using JanusSpire2.JanusSpire2Code.Characters;
 using JanusSpire2.JanusSpire2Code.Nodes;
-using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Nodes.Audio;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect;
+using MegaCrit.Sts2.Core.TestSupport;
+using MegaCrit.Sts2.Core.Helpers;
 using STS2RitsuLib.Patching.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Patches;
@@ -71,17 +74,53 @@ public sealed class JanusSkinSelectPatch : IPatchMethod
 	{
 		JanusSkinSelectPanelController.OnCharacterSelected(__instance, characterModel);
 	}
+
+	[HarmonyPrefix]
+	public static void Prefix() => JanusAudio.StopCharacterSelectVoice();
+}
+
+public sealed class JanusCharacterSelectVoicePatch : IPatchMethod
+{
+	public static string PatchId => "janus_character_select_voice_lifecycle";
+	public static string Description => "Keep Janus's character-select voice stoppable across selection and transition";
+	public static bool IsCritical => false;
+	public static ModPatchTarget[] GetTargets() =>
+	[
+		new(typeof(NAudioManager), nameof(NAudioManager.PlayOneShot),
+			[typeof(string), typeof(Dictionary<string, float>), typeof(float)])
+	];
+
+	[HarmonyPrefix]
+	[HarmonyPriority(Priority.First)]
+	public static bool Prefix(string path, float volume)
+	{
+		if (path == JanusAudio.CharacterTransitionEvent)
+			JanusAudio.StopCharacterSelectVoice();
+
+		if (path != JanusAudio.CharacterSelectEvent || TestMode.IsOn)
+			return true;
+
+		JanusAudio.PlayCharacterSelectVoice(volume);
+		return false;
+	}
 }
 
 public sealed class JanusSkinSelectEmbarkPatch : IPatchMethod
 {
 	public static string PatchId => "janus_skin_select_panel_embark";
-	public static string Description => "Lock the Janus skin selector while embarking";
+	public static string Description => "Stop the character-select voice on embark or when leaving the screen";
 	public static bool IsCritical => false;
-	public static ModPatchTarget[] GetTargets() => [new(typeof(NCharacterSelectScreen), "OnEmbarkPressed", null)];
+	public static ModPatchTarget[] GetTargets() =>
+	[
+		new(typeof(NCharacterSelectScreen), "OnEmbarkPressed", null),
+		new(typeof(NCharacterSelectScreen), nameof(NCharacterSelectScreen.OnSubmenuClosed), [])
+	];
 
 	[HarmonyPostfix]
 	public static void Postfix() => JanusSkinSelectPanelController.SetInteractable(false);
+
+	[HarmonyPrefix]
+	public static void Prefix() => JanusAudio.StopCharacterSelectVoice();
 }
 
 public sealed class JanusSkinSelectUnreadyPatch : IPatchMethod
