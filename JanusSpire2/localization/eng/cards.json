@@ -20,7 +20,7 @@
   "JANUS_SPIRE2_CARD_DETERMINATION.title": "Determination",
   "JANUS_SPIRE2_CARD_DETERMINATION.description": "Deal {Damage:diff()} damage to ALL enemies.\nAt the end of your turn, if this card is in your [b][gold]Diary[/gold][/b], play it.",
   "JANUS_SPIRE2_CARD_EIGHT_BALL.title": "Black 🎱",
-  "JANUS_SPIRE2_CARD_EIGHT_BALL.description": "Deal {Damage:diff()} damage.\nEvery time you play {Cards:diff()} Attacks, play this card automatically.{InCombat:\n([blue]{AttacksPlayed}[/blue] Attacks played)|}",
+  "JANUS_SPIRE2_CARD_EIGHT_BALL.description": "Deal {Damage:diff()} damage.\nEvery time you play {Cards:diff()} Attacks other than [b][color=#3EE6B3]Black 🎱[/color][/b], play this card automatically.{InCombat:\n([blue]{AttacksPlayed}[/blue] Attacks played)|}",
   "JANUS_SPIRE2_CARD_FROLIC.title": "Frolic",
   "JANUS_SPIRE2_CARD_FROLIC.description": "Deal {Damage:diff()} damage.\nIncrease this card's damage by {Increase:diff()} for this combat.\n[gold]Inspiration[/gold] {Inspiration:diff()}.",
   "JANUS_SPIRE2_CARD_GLEANINGS.title": "Gleanings",

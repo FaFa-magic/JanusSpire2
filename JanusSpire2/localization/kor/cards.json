@@ -20,7 +20,7 @@
   "JANUS_SPIRE2_CARD_DETERMINATION.title": "결의",
   "JANUS_SPIRE2_CARD_DETERMINATION.description": "모든 적에게 {Damage:diff()}의 피해를 줍니다.\n턴 종료 시 이 카드가 [b][gold]일기장[/gold][/b]에 있다면 사용합니다.",
   "JANUS_SPIRE2_CARD_EIGHT_BALL.title": "검은 🎱",
-  "JANUS_SPIRE2_CARD_EIGHT_BALL.description": "{Damage:diff()}의 피해를 줍니다.\n공격 카드를 {Cards:diff()}장 사용할 때마다 이 카드를 자동으로 사용합니다.{InCombat:\n(공격 카드를 [blue]{AttacksPlayed}[/blue]장 사용함)|}",
+  "JANUS_SPIRE2_CARD_EIGHT_BALL.description": "{Damage:diff()}의 피해를 줍니다.\n[b][color=#3EE6B3]검은 🎱[/color][/b]이 아닌 공격 카드를 {Cards:diff()}장 사용할 때마다 이 카드를 자동으로 사용합니다.{InCombat:\n(공격 카드를 [blue]{AttacksPlayed}[/blue]장 사용함)|}",
   "JANUS_SPIRE2_CARD_FROLIC.title": "장난",
   "JANUS_SPIRE2_CARD_FROLIC.description": "{Damage:diff()}의 피해를 줍니다.\n이번 전투 동안 이 카드의 피해가 {Increase:diff()} 증가합니다.\n[gold]영감[/gold] {Inspiration:diff()}.",
   "JANUS_SPIRE2_CARD_GLEANINGS.title": "유실물",

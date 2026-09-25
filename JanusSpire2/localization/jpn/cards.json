@@ -20,7 +20,7 @@
   "JANUS_SPIRE2_CARD_DETERMINATION.title": "決意",
   "JANUS_SPIRE2_CARD_DETERMINATION.description": "敵全体に{Damage:diff()}ダメージを与える。\n自分のターン終了時、このカードが[b][gold]日記帳[/gold][/b]にある場合、プレイする。",
   "JANUS_SPIRE2_CARD_EIGHT_BALL.title": "黒い🎱",
-  "JANUS_SPIRE2_CARD_EIGHT_BALL.description": "{Damage:diff()}ダメージを与える。\nアタックを{Cards:diff()}枚プレイするたび、このカードを自動的にプレイする。{InCombat:\n（アタックを[blue]{AttacksPlayed}[/blue]枚プレイ済み）|}",
+  "JANUS_SPIRE2_CARD_EIGHT_BALL.description": "{Damage:diff()}ダメージを与える。\n[b][color=#3EE6B3]黒い🎱[/color][/b]以外のアタックを{Cards:diff()}枚プレイするたび、このカードを自動的にプレイする。{InCombat:\n（アタックを[blue]{AttacksPlayed}[/blue]枚プレイ済み）|}",
   "JANUS_SPIRE2_CARD_FROLIC.title": "戯れ",
   "JANUS_SPIRE2_CARD_FROLIC.description": "{Damage:diff()}ダメージを与える。\nこの戦闘中、このカードのダメージが{Increase:diff()}増加する。\n[gold]ひらめき[/gold]{Inspiration:diff()}。",
   "JANUS_SPIRE2_CARD_GLEANINGS.title": "拾遺",

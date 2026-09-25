@@ -20,7 +20,7 @@
   "JANUS_SPIRE2_CARD_DETERMINATION.title": "决心",
   "JANUS_SPIRE2_CARD_DETERMINATION.description": "对所有敌人造成{Damage:diff()}点伤害。\n在你的回合结束时，如果此牌在[b][gold]日记本[/gold][/b]中，则将其打出。",
   "JANUS_SPIRE2_CARD_EIGHT_BALL.title": "黑🎱",
-  "JANUS_SPIRE2_CARD_EIGHT_BALL.description": "造成{Damage:diff()}点伤害。\n你每打出{Cards:diff()}张攻击牌，此牌自动打出。{InCombat:\n（已打出[blue]{AttacksPlayed}[/blue]张攻击牌）|}",
+  "JANUS_SPIRE2_CARD_EIGHT_BALL.description": "造成{Damage:diff()}点伤害。\n你每打出{Cards:diff()}张不是[b][color=#3EE6B3]黑🎱[/color][/b]的攻击牌，此牌自动打出。{InCombat:\n（已打出[blue]{AttacksPlayed}[/blue]张攻击牌）|}",
   "JANUS_SPIRE2_CARD_FROLIC.title": "嬉戏",
   "JANUS_SPIRE2_CARD_FROLIC.description": "造成{Damage:diff()}点伤害。\n将这张牌在本场战斗中的伤害增加{Increase:diff()}。\n[gold]灵感[/gold]{Inspiration:diff()}。",
   "JANUS_SPIRE2_CARD_GLEANINGS.title": "拾遗",

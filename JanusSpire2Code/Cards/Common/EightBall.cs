@@ -52,7 +52,9 @@ public sealed class EightBall() : JanusCardModel(8, CardType.Attack, CardRarity.
 
     public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        if (cardPlay.Player != Owner || cardPlay.Card.Type != CardType.Attack)
+        if (cardPlay.Player != Owner ||
+            cardPlay.Card.Type != CardType.Attack ||
+            cardPlay.Card is EightBall)
         {
             return;
         }
