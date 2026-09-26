@@ -14,10 +14,6 @@ config/name="JanusSpire2"
 config/features=PackedStringArray("4.5", "C#", "Mobile")
 config/icon="res://JanusSpire2/mod_image.png"
 
-[autoload]
-
-FmodManager="*res://addons/fmod/FmodManager.gd"
-
 [display]
 
 window/size/viewport_width=1920
@@ -30,10 +26,6 @@ project/assembly_name="JanusSpire2"
 [editor]
 
 export/convert_text_resources_to_binary=false
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/fmod/plugin.cfg")
 
 [rendering]
 

@@ -5,28 +5,34 @@ namespace JanusSpire2.JanusSpire2Code.Audio;
 public static class JanusAudio
 {
 	private const string CharacterSelectVoiceChannel = "janus_character_select_voice";
-	private const string CharacterSelectVoiceResource = "res://JanusSpire2/sfx/Janus_character_select.mp3";
+	private const string BankResource = "res://JanusSpire2/sfx/Janus.bank";
+	private const string GuidResource = "res://JanusSpire2/sfx/Janus.guids.txt";
 	private static IAudioHandle? _characterSelectVoice;
+	private static bool _registered;
+	private static bool _warnedPlaybackFailure;
+	private static bool _warnedReleaseFailure;
 
-	public const string AttackEvent = "event:/JanusSpire2/sfx/attack";
-	public const string CastEvent = "event:/JanusSpire2/sfx/cast";
-	public const string DeathEvent = "event:/JanusSpire2/sfx/death";
-	public const string CharacterSelectEvent = "event:/JanusSpire2/sfx/character_select";
-	public const string CharacterTransitionEvent = "event:/JanusSpire2/sfx/character_transition";
+	public const string AttackEvent = "event:/sfx/janus/attack";
+	public const string CastEvent = "event:/sfx/janus/cast";
+	public const string DeathEvent = "event:/sfx/janus/death";
+	public const string CharacterSelectEvent = "event:/sfx/janus/character_select";
+	public const string CharacterTransitionEvent = "event:/sfx/janus/character_transition";
 
 	public static void PlayCharacterSelectVoice(float volume)
 	{
 		StopCharacterSelectVoice();
-
-		if (FmodStudioServer.TryCheckBusPath(FmodStudioRouting.SfxBus) == true)
-			volume *= Math.Max(0f, FmodStudioBusAccess.TryGetVolume(FmodStudioRouting.SfxBus));
+		// Do not lose a handle whose native release needs another cleanup attempt.
+		if (_characterSelectVoice is not null)
+			return;
 
 		var playback = GameFmod.Playback.PlayOneShot(
-			AudioSource.ResourceFile(CharacterSelectVoiceResource),
+			AudioSource.Event(CharacterSelectEvent),
 			new AudioPlaybackOptions
 			{
 				Volume = volume,
+				UseVanillaRouting = false,
 				Scope = AudioLifecycleScope.Screen,
+				AllowFadeOutOnStop = false,
 				Routing = new AudioRoutingOptions
 				{
 					Channel = CharacterSelectVoiceChannel,
@@ -35,27 +41,36 @@ public static class JanusAudio
 				}
 			});
 		_characterSelectVoice = playback.Handle;
-		if (!playback.Succeeded || _characterSelectVoice is null)
+		if ((!playback.Succeeded || _characterSelectVoice is null) && !_warnedPlaybackFailure)
+		{
+			_warnedPlaybackFailure = true;
 			Godot.GD.PushWarning($"[JanusSpire2] Character-select voice failed: {playback.Status} {playback.Message}");
+		}
 	}
 
 	public static void StopCharacterSelectVoice()
 	{
-		_characterSelectVoice?.TryStop(allowFadeOut: false);
-		_characterSelectVoice?.Dispose();
-		_characterSelectVoice = null;
-		GameFmod.Playback.StopChannel(CharacterSelectVoiceChannel, allowFadeOut: false);
+		if (_characterSelectVoice is null)
+			return;
+		_characterSelectVoice.Dispose();
+		if (_characterSelectVoice.IsReleased)
+		{
+			_characterSelectVoice = null;
+			_warnedReleaseFailure = false;
+		}
+		else if (!_warnedReleaseFailure)
+		{
+			_warnedReleaseFailure = true;
+			Godot.GD.PushWarning("[JanusSpire2] Character-select voice release failed; retaining the handle for cleanup retry.");
+		}
 	}
 
 	public static void Register()
 	{
-		VirtualFmodEventRegistry.RegisterOneShots(new Dictionary<string, string>
-		{
-			[AttackEvent] = "res://JanusSpire2/sfx/Janus_attacksfx.mp3",
-			[CastEvent] = "res://JanusSpire2/sfx/Janus_castsfx.mp3",
-			[DeathEvent] = "res://JanusSpire2/sfx/Janus_deathsfx.mp3",
-			[CharacterSelectEvent] = CharacterSelectVoiceResource,
-			[CharacterTransitionEvent] = "res://JanusSpire2/sfx/Janus_character_transition.mp3",
-		}, FmodStudioRouting.SfxBus);
+		if (_registered)
+			return;
+		FmodStudioDeferredBankRegistration.RegisterBank(BankResource);
+		FmodStudioDeferredBankRegistration.RegisterStudioGuidMappings(GuidResource);
+		_registered = true;
 	}
 }

@@ -16,9 +16,23 @@ internal static class JanusSkinSelectPanelController
 {
 	private const string ScenePath = "res://JanusSpire2/scenes/ui/janus_skin_select_panel.tscn";
 	private static JanusSkinSelectPanel? _panelInstance;
+	private static NCharacterSelectScreen? _audioOwnerScreen;
 
 	public static void OnCharacterSelected(NCharacterSelectScreen screen, CharacterModel character)
 	{
+		if (!ReferenceEquals(_audioOwnerScreen, screen))
+		{
+			_audioOwnerScreen = screen;
+			// Screen scope is explicit in RitsuLib 0.6.2. Ignore stale exits from
+			// an older screen so they cannot stop a newer screen's voice.
+			screen.TreeExiting += () =>
+			{
+				if (!ReferenceEquals(_audioOwnerScreen, screen))
+					return;
+				JanusAudio.StopCharacterSelectVoice();
+				_audioOwnerScreen = null;
+			};
+		}
 		if (character is not JanusCharacter janusSkin)
 		{
 			if (GodotObject.IsInstanceValid(_panelInstance))

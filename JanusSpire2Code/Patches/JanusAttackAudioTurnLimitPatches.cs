@@ -41,9 +41,9 @@ public sealed class JanusAttackAudioContextPatch : IPatchMethod
         __state = JanusAttackAudioTurnGate.TryEnter(creature, triggerName);
     }
 
-    [HarmonyPostfix]
+    [HarmonyFinalizer]
     [HarmonyPriority(Priority.Last)]
-    public static void Postfix(bool __state)
+    public static void Finalizer(bool __state)
     {
         if (__state)
         {

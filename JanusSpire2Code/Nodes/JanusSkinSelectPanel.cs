@@ -103,24 +103,38 @@ public partial class JanusSkinSelectPanel : Control
 			_currentVisualNode = null;
 		}
 
+		GD.Print($"[JanusSpire2] Skin preview loading: {skin.Id}");
 		var scene = ResourceLoader.Load<PackedScene>(skin.CustomVisualsPath);
 		if (scene is null)
 			return;
 
-		_currentVisualNode = scene.Instantiate<Node2D>(PackedScene.GenEditState.Disabled);
-		_visualContainer.AddChild(_currentVisualNode);
-		_currentVisualNode.Position = new Vector2(150f, 270f);
-
-		var spineNode = _currentVisualNode.GetNodeOrNull<Node2D>("%Visuals");
+		var visualNode = scene.Instantiate<Node2D>(PackedScene.GenEditState.Disabled);
+		var spineNode = visualNode.GetNodeOrNull<Node2D>("%Visuals");
 		if (!GodotObject.IsInstanceValid(spineNode) || spineNode.GetClass() != MegaSprite.spineClassName)
+		{
+			visualNode.Free();
 			return;
-
-		var skeletonData = ResourceLoader.Load<Resource>(skin.CurrentSkinDefinition.SpineSkeletonDataPath);
-		if (skeletonData is null)
-			return;
+		}
 
 		var sprite = new MegaSprite((Variant)(GodotObject)spineNode);
-		sprite.SetSkeletonDataRes(new MegaSkeletonDataResource(skeletonData));
-		this.RunWhenSpineReady(sprite, animationState => animationState.SetAnimation("normal"));
+		// The scene already contains the default skeleton. For variants, change it
+		// before AddChild starts the SpineSprite's native initialization.
+		if (skin.CurrentSkin != JanusSkin.Default)
+		{
+			var skeletonData = ResourceLoader.Load<Resource>(skin.CurrentSkinDefinition.SpineSkeletonDataPath);
+			if (skeletonData is null)
+			{
+				visualNode.Free();
+				return;
+			}
+
+			sprite.SetSkeletonDataRes(new MegaSkeletonDataResource(skeletonData));
+		}
+
+		_currentVisualNode = visualNode;
+		_visualContainer.AddChild(visualNode);
+		visualNode.Position = new Vector2(150f, 270f);
+		visualNode.RunWhenSpineReady(sprite, animationState => animationState.SetAnimation("normal"));
+		GD.Print($"[JanusSpire2] Skin preview attached: {skin.Id}");
 	}
 }

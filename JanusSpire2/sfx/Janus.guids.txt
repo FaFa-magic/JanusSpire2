@@ -1,0 +1,6 @@
+{15802131-dbd8-41ce-9587-de09e2e83bc0} bank:/Janus
+{8f54e182-e3cc-4d28-92fd-bad7d7a505f2} event:/sfx/janus/attack
+{544254eb-dd19-4801-81f4-e70c5fce9e04} event:/sfx/janus/cast
+{5854df5f-205e-4ea1-9f24-eda3420a732e} event:/sfx/janus/character_select
+{0912bcf6-d7be-46cd-b742-896ed2239097} event:/sfx/janus/character_transition
+{8468d978-2dfb-4540-8801-ce9e5b68ede4} event:/sfx/janus/death

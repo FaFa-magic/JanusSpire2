@@ -2,6 +2,7 @@
 bin/
 
 # 缓存屏蔽
+# 本地验证脚本、导出包、日志与旧插件/模组备份统一放在 temp。
 /temp/
 obj/
 /*cache/
@@ -9,8 +10,14 @@ obj/
 # godot 屏蔽
 .godot/
 
-# FMOD 插件运行库保留；仅忽略编辑器产生的临时文件
-/addons/fmod/libs/windows/~*.TMP
+# FMOD authoring caches/build output are not mod runtime resources.
+/FMOD/.cache/
+/FMOD/.user/
+/FMOD/.unsaved/
+/FMOD/Build/
+/FMOD/Logs/
+# FMOD 素材由 Studio 读取，不需要 Godot 自动生成的导入描述。
+/FMOD/Assets/**/*.import
 
 # --- IDE ---
 .idea/
