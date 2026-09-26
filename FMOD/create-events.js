@@ -23,8 +23,8 @@ for (var i = 0; i < files.length; ++i) {
     event.folder = folder;
     event.relationships.banks.add(bank);
     event.mixerInput.output = studio.project.lookup("bus:/master/sfx");
-    // FMOD authoring volume is in dB: 20 * log10(0.9).
-    event.mixer.masterBus.volume = -0.9151498112135024;
+    // Unity gain; the game's SFX/master buses control playback volume.
+    event.mixer.masterBus.volume = 0;
     var track = event.addGroupTrack("Voice");
     var sound = track.addSound(event.timeline, "SingleSound", 0, asset.length);
     sound.audioFile = asset;
