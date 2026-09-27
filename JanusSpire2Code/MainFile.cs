@@ -136,6 +136,7 @@ public static class MainFile
 		patcher.RegisterPatch<JanusSkinAncientDialogueLookupPatch>();
 		patcher.RegisterPatch<JanusSharedGameOverProgressionPatch>();
 		patcher.RegisterPatch<JanusSkinSelectPatch>();
+		patcher.RegisterPatch<JanusDiaryTransitionPatch>();
 		patcher.RegisterPatch<JanusCharacterSelectVoicePatch>();
 		patcher.RegisterPatch<JanusSkinSelectEmbarkPatch>();
 		patcher.RegisterPatch<JanusSkinSelectUnreadyPatch>();
