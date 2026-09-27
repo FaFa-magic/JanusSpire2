@@ -9,7 +9,6 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Saves.Runs;
 using STS2RitsuLib.Models.Capabilities;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
@@ -29,7 +28,7 @@ public sealed class GloveBox() : JanusCardModel(2, CardType.Power, CardRarity.Un
             AssertMutable();
             _stickersPlayed = Math.Clamp(value, 0, StickerThreshold - 1);
             DynamicVars[StickersPlayedKey].BaseValue = _stickersPlayed;
-            this.RequestVisualReload();
+            this.RequestTextRefresh();
         }
     }
 

@@ -8,7 +8,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
@@ -38,7 +37,7 @@ public sealed class LonelyNight() : JanusCardModel(2, CardType.Attack, CardRarit
     {
         if (creator == Owner && CombatState != null)
         {
-            this.RequestVisualReload();
+            this.RequestTextRefresh();
         }
 
         return Task.CompletedTask;

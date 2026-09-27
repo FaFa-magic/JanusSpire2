@@ -7,7 +7,6 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Saves.Runs;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Common;
 
@@ -27,7 +26,7 @@ public sealed class EightBall() : JanusCardModel(8, CardType.Attack, CardRarity.
             AssertMutable();
             _attacksPlayed = Math.Clamp(value, 0, AttackThreshold - 1);
             DynamicVars[AttacksPlayedKey].BaseValue = _attacksPlayed;
-            this.RequestVisualReload();
+            this.RequestTextRefresh();
         }
     }
 

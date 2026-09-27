@@ -72,7 +72,8 @@ public sealed class JanusRecordMappingCard : JanusCardModel,
 
     internal void Bind(JanusRecordCardModel original)
     {
-        if (!ReferenceEquals(Original, original))
+        bool originalChanged = !ReferenceEquals(Original, original);
+        if (originalChanged)
         {
             UnsubscribeFromOriginal();
             Original = original;
@@ -83,16 +84,26 @@ public sealed class JanusRecordMappingCard : JanusCardModel,
         // Keep the presentation card's own cost in step with the Diary card as well.
         // Extra-hand UI and targeting can inspect the model's base cost before RitsuLib's
         // contributor is applied, so only delegating ModifyEnergyCost is not sufficient.
-        EnergyCost.SetCustomBaseCost(original.EnergyCost.GetWithModifiers(CostModifiers.Local));
-        this.RequestVisualReload();
+        int cost = original.EnergyCost.GetWithModifiers(CostModifiers.Local);
+        if (EnergyCost.GetWithModifiers(CostModifiers.None) != cost)
+        {
+            EnergyCost.SetCustomBaseCost(cost);
+            this.RequestTextRefresh();
+        }
+
+        if (originalChanged)
+            this.RequestInstanceAssetReload();
     }
 
     internal void Unbind()
     {
+        if (Original == null && OriginalRecordMappingKey == 0)
+            return;
+
         UnsubscribeFromOriginal();
         Original = null;
         OriginalRecordMappingKey = 0;
-        this.RequestVisualReload();
+        this.RequestInstanceAssetReload();
     }
 
     private void SubscribeToOriginal()
@@ -141,22 +152,22 @@ public sealed class JanusRecordMappingCard : JanusCardModel,
     private void OnOriginalEnchantmentChanged()
     {
         ObserveOriginalEnchantment();
-        this.RequestVisualReload();
+        this.RequestTextRefresh();
     }
 
     private void OnOriginalEnchantmentStatusChanged()
     {
-        this.RequestVisualReload();
+        this.RequestTextRefresh();
     }
 
     private void OnOriginalAfflictionChanged()
     {
-        this.RequestVisualReload();
+        this.RequestInstanceAssetReload();
     }
 
     private void OnOriginalUpgraded()
     {
-        this.RequestVisualReload();
+        this.RequestInstanceAssetReload();
     }
 
     public int ModifyEnergyCost(CardModel card, int currentCost, CostModifiers modifiers)

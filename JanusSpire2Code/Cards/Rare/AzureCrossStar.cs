@@ -6,7 +6,6 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
@@ -27,7 +26,7 @@ public sealed class AzureCrossStar() : JanusCardModel(0, CardType.Attack, CardRa
             }
 
             _copiedThisTurn = value;
-            this.RequestVisualReload();
+            this.RequestTextRefresh();
         }
     }
     

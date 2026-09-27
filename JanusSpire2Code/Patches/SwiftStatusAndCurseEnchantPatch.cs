@@ -1,11 +1,11 @@
 using HarmonyLib;
+using JanusSpire2.JanusSpire2Code.Cards;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Enchantments;
 using STS2RitsuLib.Patching.Models;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Patches;
 
@@ -87,7 +87,7 @@ public sealed class SwiftCombatStackVisualRefreshPatch : IPatchMethod
             card.CombatState != null &&
             CombatManager.Instance.IsInProgress)
         {
-            card.RequestVisualReload();
+            card.RequestTextRefresh();
         }
     }
 }

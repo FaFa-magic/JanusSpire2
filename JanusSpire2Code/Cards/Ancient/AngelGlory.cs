@@ -12,7 +12,6 @@ using MegaCrit.Sts2.Core.Models.CardPools;
 using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Interop.AutoRegistration;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Ancient;
 
@@ -37,7 +36,7 @@ public sealed class AngelGlory() : JanusRecordCardModel(0, CardType.Skill, CardR
             AssertMutable();
             _blockGainedThisCombat = Math.Max(0, value);
             DynamicVars[BlockGainedKey].BaseValue = _blockGainedThisCombat;
-            this.RequestVisualReload();
+            this.RequestTextRefresh();
         }
     }
 

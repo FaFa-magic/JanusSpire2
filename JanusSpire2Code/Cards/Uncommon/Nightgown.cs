@@ -11,7 +11,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Models.Capabilities;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
@@ -46,7 +45,7 @@ public sealed class Nightgown() : JanusCardModel(2, CardType.Power, CardRarity.U
     {
         if (Pile?.Type == MainFile.Diary && card.Owner == Owner)
         {
-            this.RequestVisualReload();
+            this.RequestTextRefresh();
         }
 
         return Task.CompletedTask;

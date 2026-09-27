@@ -9,7 +9,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.CardPools;
 using MegaCrit.Sts2.Core.Saves.Runs;
 using STS2RitsuLib.Interop.AutoRegistration;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Ancient;
 
@@ -34,7 +33,7 @@ public sealed class AngelRest() : JanusRecordCardModel(0, CardType.Skill, CardRa
             AssertMutable();
             _cardsGeneratedThisCombat = Math.Max(0, value);
             DynamicVars[CardsGeneratedKey].BaseValue = _cardsGeneratedThisCombat;
-            this.RequestVisualReload();
+            this.RequestTextRefresh();
         }
     }
 

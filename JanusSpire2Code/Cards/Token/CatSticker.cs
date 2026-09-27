@@ -14,7 +14,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.CardPools;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Interop.AutoRegistration;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Token;
 
@@ -94,7 +93,7 @@ public sealed class CatSticker() : JanusRecordCardModel(0, CardType.Attack, Card
             card is ConcealGatherings &&
             (oldPileType == MainFile.Diary || card.Pile?.Type == MainFile.Diary))
         {
-            this.RequestVisualReload();
+            this.RequestTextRefresh();
         }
 
         return Task.CompletedTask;
