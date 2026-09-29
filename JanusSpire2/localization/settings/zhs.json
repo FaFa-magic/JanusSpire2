@@ -9,5 +9,6 @@
   "config.cardFrame.first": "卡框一",
   "config.cardFrame.second": "卡框二",
   "config.queenElizabethEnabled.label": "会出现先古之民——伊丽莎白女王",
-  "config.kittenCardGameEnabled.label": "会出现事件——小猫的卡牌游戏"
+  "config.kittenCardGameEnabled.label": "会出现事件——小猫的卡牌游戏",
+  "config.restrictRandomGeneration.label": "指定的雅努斯卡牌仅随机生成原版角色或雅努斯的卡牌（下一局生效）"
 }

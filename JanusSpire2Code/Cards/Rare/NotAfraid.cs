@@ -15,10 +15,16 @@ public sealed class NotAfraid() : JanusCardModel(2, CardType.Skill, CardRarity.R
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        IEnumerable<CardModel> candidates = Owner.UnlockState.CharacterCardPools
-            .SelectMany(pool => pool.GetUnlockedCards(
-                Owner.UnlockState,
-                Owner.RunState.CardMultiplayerConstraint));
+        IEnumerable<CardModel> candidates = JanusRandomGenerationPool.Filter(
+            Owner.UnlockState.CharacterCardPools
+                .SelectMany(pool => pool.GetUnlockedCards(
+                    Owner.UnlockState,
+                    Owner.RunState.CardMultiplayerConstraint)),
+            Owner.RunState);
+        if (!CardFactory.FilterForCombat(candidates).Any())
+        {
+            return;
+        }
         List<CardModel> cardsToPlay = CardFactory.GetForCombat(
             Owner,
             candidates,

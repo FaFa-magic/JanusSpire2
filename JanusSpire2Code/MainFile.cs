@@ -53,7 +53,6 @@ public static class MainFile
 		BlackCatSealPower.RegisterSynchronizedBloom();
 		InspirationKeyword.RegisterSynchronizedRightClick();
 		Incense.RegisterSynchronizedRightClick();
-		StickerMergeAction.Register();
 		
 		var registry = ModCardPileRegistry.For(ModId);
 		Diary = registry.RegisterOwned("diary_pile", new ModCardPileSpec
@@ -107,6 +106,7 @@ public static class MainFile
 		patcher.RegisterPatch<DiaryOnPlayWrapperPatch>();
 		patcher.RegisterPatch<DiaryUnplayableAutoPlayResultPatch>();
 		patcher.RegisterPatch<PerkDiarySelectionRightClickPatch>();
+		patcher.RegisterPatch<CardSelectionExtraTurnReadyPatch>();
 		patcher.RegisterPatch<PreventSingleCardGenerationPatch>();
 		patcher.RegisterPatch<PreventMultipleCardGenerationPatch>();
 		patcher.RegisterPatch<SwiftStatusAndCurseEnchantPatch>();

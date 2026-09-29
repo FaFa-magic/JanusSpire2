@@ -18,7 +18,7 @@ public sealed class CarefullySelected() : JanusCardModel(1, CardType.Skill, Card
             choiceContext,
             PileType.Draw.GetPile(Owner),
             Owner,
-            new CardSelectorPrefs(SelectionScreenPrompt, DynamicVars.Cards.IntValue));
+            new CardSelectorPrefs(SelectionScreenPrompt, 0, DynamicVars.Cards.IntValue));
 
         await CardPileCmd.Add(selectedCards, MainFile.Diary);
     }

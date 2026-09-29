@@ -64,9 +64,9 @@ public sealed class DiaryOnPlayWrapperPatch : IPatchMethod
                     BeginPerkDiarySelection(diaryPile);
                     try
                     {
-                        selected = (await CardSelectCmd.FromCombatPile(
+                        selected = (await CardSelectCmd.FromSimpleGrid(
                             choiceContext,
-                            diaryPile,
+                            diaryPile.Cards.ToList(),
                             card.Owner!,
                             new CardSelectorPrefs(CardSelectorPrefs.ExhaustSelectionPrompt, need))).ToList();
                     }
@@ -75,7 +75,7 @@ public sealed class DiaryOnPlayWrapperPatch : IPatchMethod
                         EndPerkDiarySelection(diaryPile);
                     }
                     
-                    foreach (var item in selected)
+                    foreach (var item in selected.Where(item => ReferenceEquals(item.Pile, diaryPile)))
                     {
                         await CardCmd.Exhaust(choiceContext, item);
                     }

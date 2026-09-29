@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 
@@ -13,16 +14,21 @@ public sealed class Rest() : JanusCardModel(1, CardType.Skill, CardRarity.Rare, 
 {
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        List<CardModel> cardsToRest = PileType.Hand.GetPile(Owner).Cards.ToList();
+        if (CombatState == null || CombatManager.Instance.IsOverOrEnding)
+            return;
+
+        List<CardModel> cardsToRest = PileType.Hand.GetPile(Owner).Cards
+            .Where(card => card != this && card is not JanusRecordMappingCard).ToList();
         if (cardsToRest.Count == 0)
         {
             return;
         }
 
-        foreach (CardModel card in cardsToRest)
-        {
-            await CardPileCmd.Add(card, MainFile.Diary);
-        }
+        // Move the whole snapshot before animations and pile-change hooks run.
+        var results = await CardPileCmd.Add(cardsToRest, MainFile.Diary);
+        cardsToRest = results.Where(result => result.success).Select(result => result.cardAdded).ToList();
+        if (cardsToRest.Count == 0 || CombatManager.Instance.IsOverOrEnding)
+            return;
 
         RestPower? power = await PowerCmd.Apply<RestPower>(
             choiceContext,

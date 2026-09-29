@@ -158,7 +158,8 @@ public static class InspirationKeyword
         // Exhaust hooks can end combat or remove a card entirely. Do not restore a card
         // after combat cleanup; selecting the Inspiration card itself as payment is valid.
         if (!CombatManager.Instance.IsInProgress || CombatManager.Instance.IsOverOrEnding ||
-            card.Pile is not { IsCombatPile: true })
+            card.Pile is not { } currentPile ||
+            (currentPile.Type != MainFile.Diary && !currentPile.IsCombatPile))
         {
             return;
         }

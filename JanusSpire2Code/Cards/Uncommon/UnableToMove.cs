@@ -25,10 +25,11 @@ public sealed class UnableToMove() : JanusCardModel(2, CardType.Skill, CardRarit
             cardPools.Remove(Owner.Character.CardPool);
         }
 
-        IEnumerable<CardModel> candidates = cardPools
-            .SelectMany(pool => pool.GetUnlockedCards(
-                Owner.UnlockState,
-                Owner.RunState.CardMultiplayerConstraint))
+        IEnumerable<CardModel> candidates = JanusRandomGenerationPool.Filter(
+                cardPools.SelectMany(pool => pool.GetUnlockedCards(
+                    Owner.UnlockState,
+                    Owner.RunState.CardMultiplayerConstraint)),
+                Owner.RunState)
             .Where(card => card.Type == CardType.Attack);
 
         CardModel? generatedCard = CardFactory.GetDistinctForCombat(

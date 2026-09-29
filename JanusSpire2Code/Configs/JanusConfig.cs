@@ -3,6 +3,8 @@ using STS2RitsuLib.Data;
 using STS2RitsuLib.Settings;
 using STS2RitsuLib.Utils;
 using STS2RitsuLib.Utils.Persistence;
+using MegaCrit.Sts2.Core.Runs;
+using STS2RitsuLib.RunData;
 
 namespace JanusSpire2.JanusSpire2Code.Configs;
 
@@ -24,6 +26,12 @@ public sealed class JanusConfig
     public JanusCardFrameMode 选用哪种卡框 { get; set; } = JanusCardFrameMode.卡框一;
     public bool 会出现先古之民伊丽莎白女王 { get; set; } = true;
     public bool 会出现小猫的卡牌游戏事件 { get; set; } = true;
+    public bool 随机生成仅限原版角色和雅努斯卡牌 { get; set; } = true;
+}
+
+public sealed class JanusGenerationRunSettings
+{
+    public bool OnlyBaseCharactersAndJanus { get; set; } = true;
 }
 
 public static class JanusConfigPage
@@ -33,6 +41,7 @@ public static class JanusConfigPage
         MainFile.ModId,
         "JanusConfig",
         pckFolders: ["res://JanusSpire2/localization/settings"]);
+    private static RunSavedData<JanusGenerationRunSettings> _generationRunSettings = null!;
 
     public static readonly ModSettingsValueBinding<JanusConfig, FjordMosaicMode> ModelModeBinding = new(
         MainFile.ModId, DataKey, SaveScope.Profile,
@@ -50,6 +59,15 @@ public static class JanusConfigPage
         MainFile.ModId, DataKey, SaveScope.Profile,
         static s => s.会出现小猫的卡牌游戏事件,
         static (s, v) => s.会出现小猫的卡牌游戏事件 = v);
+    public static readonly ModSettingsValueBinding<JanusConfig, bool> RestrictRandomGenerationBinding = new(
+        MainFile.ModId, DataKey, SaveScope.Profile,
+        static s => s.随机生成仅限原版角色和雅努斯卡牌,
+        static (s, v) => s.随机生成仅限原版角色和雅努斯卡牌 = v);
+
+    public static bool RestrictRandomGeneration(IRunState runState) =>
+        runState is not RunState liveRun ||
+        !_generationRunSettings.TryGet(liveRun, out JanusGenerationRunSettings settings) ||
+        settings.OnlyBaseCharactersAndJanus;
 
     public static void Register()
     {
@@ -59,6 +77,25 @@ public static class JanusConfigPage
             scope: SaveScope.Profile,
             defaultFactory: () => new JanusConfig(),
             autoCreateIfMissing: true);
+
+        using (RitsuLibFramework.BeginModDataRegistration(MainFile.ModId))
+        {
+            _generationRunSettings = RitsuLibFramework.GetRunSavedDataStore(MainFile.ModId)
+                .Register("random_generation_pool", () => new JanusGenerationRunSettings());
+        }
+        RitsuLibFramework.SubscribeLifecycle<RunSavedDataLobbyStagingEvent>(evt =>
+        {
+            if (evt.Reason != RunSavedDataLobbyStagingReason.Committing ||
+                (evt.IsMultiplayer && !evt.IsHost))
+            {
+                return;
+            }
+
+            _generationRunSettings.Lobby.Set(evt.Lobby, new JanusGenerationRunSettings
+            {
+                OnlyBaseCharactersAndJanus = RestrictRandomGenerationBinding.Read()
+            });
+        }, replayCurrentState: false);
 
         RitsuLibFramework.RegisterModSettings(MainFile.ModId, page => page
             .WithTitle(Text("config.page.title", "Janus Settings"))
@@ -88,7 +125,11 @@ public static class JanusConfigPage
                 .AddToggle(
                     "kitten_card_game_enabled",
                     Text("config.kittenCardGameEnabled.label", "Enable A Kitten's Card Game"),
-                    KittenCardGameEnabledBinding)));
+                    KittenCardGameEnabledBinding)
+                .AddToggle(
+                    "restrict_random_generation",
+                    Text("config.restrictRandomGeneration.label", "Limit four Janus cards to base-game and Janus cards (next run)"),
+                    RestrictRandomGenerationBinding)));
     }
 
     private static ModSettingsText Text(string key, string fallback)

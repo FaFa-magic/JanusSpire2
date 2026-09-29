@@ -9,5 +9,6 @@
   "config.cardFrame.first": "카드 프레임 1",
   "config.cardFrame.second": "카드 프레임 2",
   "config.queenElizabethEnabled.label": "퀸 엘리자베스 등장 활성화",
-  "config.kittenCardGameEnabled.label": "이벤트 ‘아기 고양이의 카드놀이’ 활성화"
+  "config.kittenCardGameEnabled.label": "이벤트 ‘아기 고양이의 카드놀이’ 활성화",
+  "config.restrictRandomGeneration.label": "지정된 재너스 카드의 무작위 생성을 기본 캐릭터와 재너스 카드로 제한 (다음 플레이부터)"
 }

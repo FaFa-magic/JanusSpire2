@@ -1,4 +1,5 @@
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.Nodes.Screens.CardSelection;
 using STS2RitsuLib.Patching.Models;
 
@@ -10,7 +11,7 @@ public sealed class PerkDiarySelectionRightClickPatch : IPatchMethod
 
     public static bool IsCritical => false;
 
-    public static string Description => "Disable card inspection while selecting Diary cards to pay a Perk cost";
+    public static string Description => "Guard Perk cost selection and use displayed combat-pile cards for inspection";
 
     public static ModPatchTarget[] GetTargets()
     {
@@ -23,8 +24,21 @@ public sealed class PerkDiarySelectionRightClickPatch : IPatchMethod
         ];
     }
 
-    public static bool Prefix(CardModel card)
+    public static bool Prefix(NCardGridSelectionScreen __instance, CardModel card,
+        NCardGrid ____grid, ref IReadOnlyList<CardModel> ____cards)
     {
-        return !DiaryOnPlayWrapperPatch.IsSelectingPerkCostFromDiary(card);
+        if (DiaryOnPlayWrapperPatch.IsSelectingPerkCostFromDiary(card))
+            return false;
+
+        if (__instance is NCombatPileCardSelectScreen)
+        {
+            // The combat-pile screen updates its grid, but leaves the base _cards
+            // array empty. Use the actually displayed (filtered/sorted) cards.
+            ____cards = ____grid.CurrentlyDisplayedCards.ToList();
+            if (!____cards.Contains(card))
+                return false;
+        }
+
+        return true;
     }
 }

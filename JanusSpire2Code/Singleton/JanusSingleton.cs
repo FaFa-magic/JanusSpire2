@@ -256,6 +256,19 @@ public class JanusSingleton : HookedSingletonModel
 
         foreach (CardModel card in counterattackCards)
         {
+            // Earlier counterattacks can move another candidate during their hooks
+            // or choices. Preserve snapshot order, but recheck current eligibility.
+            PileType? sourcePile = card.Pile?.Type;
+            if (CombatManager.Instance.IsOverOrEnding || player.Creature.IsDead)
+                break;
+            if (sourcePile == null || sourcePile == PileType.None || sourcePile == PileType.Play ||
+                sourcePile == PileType.Exhaust || card.Owner != player ||
+                !card.Keywords.Contains(JanusKeywords.Counterattack) ||
+                !(sourcePile == PileType.Hand ||
+                  sourcePile == MainFile.Diary && diary.Cards.Any(candidate => candidate is AfternoonTea) ||
+                  card is BlackCatUnleash))
+                continue;
+
             int currentCost = card.EnergyCost.GetAmountToSpend();
             int turnNumber = playerCombatState.TurnNumber;
             (int TurnNumber, int TriggerCount) triggerState =
@@ -297,8 +310,7 @@ public class JanusSingleton : HookedSingletonModel
             return Task.CompletedTask;
         }
 
-        StickerMergeAction.Request(card);
-        return Task.CompletedTask;
+        return StickerMergeAction.Merge(card);
     }
 
     public override CardLocation ModifyCardPlayResultLocation(

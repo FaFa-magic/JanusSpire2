@@ -34,7 +34,10 @@ public sealed class ConfidencePower : JanusPowerModel, IAfterHandReducedHook
     {
         if (side == CombatSide.Enemy && base.Owner.Player != null)
         {
-            await TriggerDrawLogic(choiceContext, base.Owner.Player);
+            // A shuffle can request a choice (e.g. Stratagem). Unlike player-turn
+            // hooks, this draw must finish before enemies act: letting the hook
+            // detach would interleave its continuation with damage/counterattacks.
+            await TriggerDrawLogic(new BlockingPlayerChoiceContext(), base.Owner.Player);
         }
     }
 

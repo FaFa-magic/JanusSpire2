@@ -8,7 +8,7 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-public sealed class AfternoonTea() : JanusCardModel(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+public sealed class AfternoonTea() : JanusCardModel(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Transcribe];
 

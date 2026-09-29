@@ -100,6 +100,13 @@ internal static class RecordExtraHandManager
 
     internal static JanusRecordCardModel? ResolveOriginal(JanusRecordMappingCard mapping)
     {
+        // Multiplayer UI may briefly render the canonical model when a queued card ID
+        // has not been registered locally. Canonicals have no Owner or combat binding.
+        if (!mapping.IsMutable)
+        {
+            return null;
+        }
+
         if (mapping.Original is { } bound &&
             bound.RecordMappingKey == mapping.OriginalRecordMappingKey &&
             ReferenceEquals(bound.Owner, mapping.Owner))

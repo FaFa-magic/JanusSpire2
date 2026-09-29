@@ -9,5 +9,6 @@
   "config.cardFrame.first": "カードフレーム1",
   "config.cardFrame.second": "カードフレーム2",
   "config.queenElizabethEnabled.label": "クイーン・エリザベスを登場させる",
-  "config.kittenCardGameEnabled.label": "イベント「子猫のカード遊び」を有効にする"
+  "config.kittenCardGameEnabled.label": "イベント「子猫のカード遊び」を有効にする",
+  "config.restrictRandomGeneration.label": "対象のジェーナスカードが生成するカードを原作キャラとジェーナスに限定（次のプレイから）"
 }
