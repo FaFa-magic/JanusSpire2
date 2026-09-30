@@ -1,4 +1,5 @@
 ﻿using JanusSpire2.JanusSpire2Code.Cards.Status;
+using JanusSpire2.JanusSpire2Code.Powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -41,14 +42,17 @@ public sealed class RipplingBlueWaves() : JanusCardModel(2, CardType.Attack, Car
             waves.Add(CombatState.CreateCard<Wave>(Owner));
         }
 
-        await CardPileCmd.AddGeneratedCardsToCombat(waves, PileType.Hand, Owner);
+        if (waves.Count > 0)
+            await CardPileCmd.AddGeneratedCardsToCombat(waves, PileType.Hand, Owner);
         
         List<CardModel> statuses = GetStatuses(Owner).ToList();
-        int hitCount = (int)((CalculatedVar)DynamicVars[CalculatedHitsKey])
-            .Calculate(cardPlay.Target);
+        int hitCount = 0;
         foreach (CardModel status in statuses)
         {
-            await CardCmd.Exhaust(choiceContext, status);
+            if ((await CardCmd.Exhaust(choiceContext, status))?.success == true)
+            {
+                hitCount++;
+            }
         }
 
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
@@ -70,7 +74,9 @@ public sealed class RipplingBlueWaves() : JanusCardModel(2, CardType.Attack, Car
 
     private static int CalculateExpectedHits(CardModel card)
     {
-        int wavesToGenerate = GetEmptyHandSlots(card.Owner, card);
+        int wavesToGenerate = card.Owner.Creature.GetPower<MidsummerHolidayPower>() == null
+            ? GetEmptyHandSlots(card.Owner, card)
+            : 0;
         return GetStatuses(card.Owner).Count() + wavesToGenerate;
     }
 

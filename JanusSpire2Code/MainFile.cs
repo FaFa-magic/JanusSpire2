@@ -107,8 +107,8 @@ public static class MainFile
 		patcher.RegisterPatch<DiaryUnplayableAutoPlayResultPatch>();
 		patcher.RegisterPatch<PerkDiarySelectionRightClickPatch>();
 		patcher.RegisterPatch<CardSelectionExtraTurnReadyPatch>();
-		patcher.RegisterPatch<PreventSingleCardGenerationPatch>();
 		patcher.RegisterPatch<PreventMultipleCardGenerationPatch>();
+		patcher.RegisterPatch<PreventRejectedGeneratedCardAutoPlayPatch>();
 		patcher.RegisterPatch<SwiftStatusAndCurseEnchantPatch>();
 		patcher.RegisterPatch<SwiftCombatStackVisualRefreshPatch>();
 		patcher.RegisterPatch<RemovedRelicRewardAnimationPatch>();
@@ -132,6 +132,7 @@ public static class MainFile
 		patcher.RegisterPatch<CentennialPuzzleDrawCapturePatch>();
 		patcher.RegisterPatch<BlackCatSealCreatureClickPatch>();
 		patcher.RegisterPatch<JanusSkinEnumerationPatch>();
+		patcher.RegisterPatch<JanusSkinCardLibrarySelectionPatch>();
 		patcher.RegisterPatch<JanusSharedProgressionLookupPatch>();
 		patcher.RegisterPatch<JanusSkinAncientDialogueLookupPatch>();
 		patcher.RegisterPatch<JanusSharedGameOverProgressionPatch>();

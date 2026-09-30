@@ -1,9 +1,12 @@
 using HarmonyLib;
 using JanusSpire2.JanusSpire2Code.Characters;
+using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Ancients;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary;
 using MegaCrit.Sts2.Core.Nodes.Screens.GameOverScreen;
+using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
 using STS2RitsuLib;
 using STS2RitsuLib.Patching.Models;
@@ -31,6 +34,39 @@ public sealed class JanusSkinEnumerationPatch : IPatchMethod
 	{
 		__result = __result.Where(character =>
 			character is not JanusCharacter janus || janus.CurrentSkin == JanusSkin.Default);
+	}
+}
+
+public sealed class JanusSkinCardLibrarySelectionPatch : IPatchMethod
+{
+	public static string PatchId => "janus_skin_card_library_selection";
+	public static string Description => "Use the Janus card-pool filter for the active skin variant";
+	public static bool IsCritical => true;
+	public static ModPatchTarget[] GetTargets() =>
+	[
+		new(typeof(NCardLibrary), nameof(NCardLibrary.OnSubmenuOpened))
+	];
+
+	[HarmonyPrefix]
+	public static void Prefix(
+		IRunState? ____runState,
+		Dictionary<CharacterModel, NCardPoolFilter> ____cardPoolFilters,
+		NCardPoolFilter ____ironcladFilter)
+	{
+		CharacterModel? character = LocalContext.GetMe(____runState)?.Character;
+		if (character is not JanusSkinVariant || ____cardPoolFilters.ContainsKey(character))
+			return;
+
+		ModelId baseId = ModelDb.GetId<JanusCharacter>();
+		NCardPoolFilter? filter = ____cardPoolFilters
+			.FirstOrDefault(entry => entry.Key.Id == baseId).Value;
+		if (filter == null)
+		{
+			MainFile.Logger.Warn("[CardLibrary] Janus pool filter is unavailable; selecting the vanilla fallback for this skin.");
+			filter = ____ironcladFilter;
+		}
+
+		____cardPoolFilters[character] = filter;
 	}
 }
 

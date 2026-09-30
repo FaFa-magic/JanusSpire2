@@ -6,6 +6,7 @@ using JanusSpire2.JanusSpire2Code.Cards;
 using JanusSpire2.JanusSpire2Code.Keywords;
 using JanusSpire2.JanusSpire2Code.Patches;
 using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Combat.History.Entries;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -53,6 +54,25 @@ public class JanusSingleton : HookedSingletonModel
                 CardsWithDiaryPlayResult.Remove(card);
             }
         }
+    }
+
+    internal static async Task AutoPlayGeneratedCardAndExhaust(
+        PlayerChoiceContext choiceContext,
+        CardModel card)
+    {
+        card.ExhaustOnNextPlay = true;
+        await CardCmd.AutoPlay(choiceContext, card, null);
+
+        if (CombatManager.Instance.IsOverOrEnding || card.Owner.Creature.IsDead ||
+            card.Pile is not { } pile || !pile.Type.IsCombatPile() ||
+            pile.Type == PileType.Exhaust ||
+            CombatManager.Instance.History.Entries.OfType<CardExhaustedEntry>()
+                .Any(entry => ReferenceEquals(entry.Card, card)))
+        {
+            return;
+        }
+
+        await CardCmd.Exhaust(choiceContext, card);
     }
 
     internal static bool HasDiaryPlayResult(CardModel card) => CardsWithDiaryPlayResult.Contains(card);
@@ -284,11 +304,12 @@ public class JanusSingleton : HookedSingletonModel
             _counterattackTriggerCounts[card] = (turnNumber, triggerCount + 1);
             CardModel copy = card.CreateClone();
             copy.ExhaustOnNextPlay = true;
-            await CardPileCmd.AddGeneratedCardToCombat(
+            CardPileAddResult addResult = await CardPileCmd.AddGeneratedCardToCombat(
                 copy,
                 PileType.Play,
                 player);
-            await CardCmd.AutoPlay(choiceContext, copy, null);
+            if (addResult.success)
+                await AutoPlayGeneratedCardAndExhaust(choiceContext, addResult.cardAdded);
 
             if (CombatManager.Instance.IsOverOrEnding || player.Creature.IsDead)
             {

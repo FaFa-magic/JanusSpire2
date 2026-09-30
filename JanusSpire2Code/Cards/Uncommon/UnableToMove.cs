@@ -1,4 +1,5 @@
 using JanusSpire2.JanusSpire2Code.Keywords;
+using JanusSpire2.JanusSpire2Code.Singleton;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Factories;
@@ -49,7 +50,9 @@ public sealed class UnableToMove() : JanusCardModel(2, CardType.Skill, CardRarit
         }
 
         generatedCard.ExhaustOnNextPlay = true;
-        await CardPileCmd.AddGeneratedCardToCombat(generatedCard, PileType.Play, Owner);
-        await CardCmd.AutoPlay(choiceContext, generatedCard, null);
+        CardPileAddResult result = await CardPileCmd.AddGeneratedCardToCombat(
+            generatedCard, PileType.Play, Owner);
+        if (result.success)
+            await JanusSingleton.AutoPlayGeneratedCardAndExhaust(choiceContext, result.cardAdded);
     }
 }

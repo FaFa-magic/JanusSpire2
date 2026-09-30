@@ -1,4 +1,6 @@
 ﻿using MegaCrit.Sts2.Core.Commands;
+using JanusSpire2.JanusSpire2Code.Singleton;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Extensions;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -32,6 +34,9 @@ public sealed class RandomStrike() : JanusCardModel(2, CardType.Attack, CardRari
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
 
+        if (CombatManager.Instance.IsOverOrEnding || Owner.Creature.IsDead)
+            return;
+
         var combatState = CombatState
             ?? throw new InvalidOperationException("RandomStrike must be played during combat.");
         CardMultiplayerConstraint runConstraint = Owner.RunState.CardMultiplayerConstraint;
@@ -50,29 +55,23 @@ public sealed class RandomStrike() : JanusCardModel(2, CardType.Attack, CardRari
             .Select(card => combatState.CreateCard(card, Owner))
             .ToList();
 
-        if (cardsToPlay.Count > 0)
+        if (IsUpgraded)
         {
-            if (IsUpgraded)
+            foreach (CardModel card in cardsToPlay)
             {
-                foreach (CardModel card in cardsToPlay)
-                {
-                    CardCmd.Upgrade(card);
-                }
+                CardCmd.Upgrade(card);
             }
-            await CardPileCmd.AddGeneratedCardsToCombat(cardsToPlay, PileType.Play, Owner);
         }
 
-        foreach (CardModel card in cardsToPlay)
+        IReadOnlyList<CardPileAddResult> generated = await CardPileCmd.AddGeneratedCardsToCombat(
+            cardsToPlay, PileType.Play, Owner);
+        foreach (CardPileAddResult result in generated)
         {
-            if (!Owner.Creature.IsDead)
-            {
-                card.ExhaustOnNextPlay = true;
-                await CardCmd.AutoPlay(choiceContext, card, null);
-            }
-            else
-            {
+            if (Owner.Creature.IsDead)
                 break;
-            }
+
+            if (result.success)
+                await JanusSingleton.AutoPlayGeneratedCardAndExhaust(choiceContext, result.cardAdded);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 public sealed class AzureCrossStar() : JanusCardModel(0, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
 {
     private bool _copiedThisTurn;
+    private bool _copyInProgress;
 
     [SavedProperty]
     public bool CopiedThisTurn
@@ -50,6 +51,7 @@ public sealed class AzureCrossStar() : JanusCardModel(0, CardType.Attack, CardRa
     public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         if (CopiedThisTurn
+            || _copyInProgress
             || Pile?.Type != PileType.Hand
             || cardPlay.Player != Owner
             || cardPlay.Card is AzureCrossStar)
@@ -57,17 +59,28 @@ public sealed class AzureCrossStar() : JanusCardModel(0, CardType.Attack, CardRa
             return;
         }
 
-        CopiedThisTurn = true;
-        CardModel copy = CreateClone();
-        CardCmd.PreviewCardPileAdd(
-            await CardPileCmd.AddGeneratedCardToCombat(copy, PileType.Hand, Owner),
-            0.2F);
+        _copyInProgress = true;
+        try
+        {
+            CardModel copy = CreateClone();
+            CardPileAddResult result = await CardPileCmd.AddGeneratedCardToCombat(copy, PileType.Hand, Owner);
+            if (result.success)
+            {
+                CopiedThisTurn = true;
+                CardCmd.PreviewCardPileAdd(result, 0.2F);
+            }
+        }
+        finally
+        {
+            _copyInProgress = false;
+        }
     }
 
     protected override void AfterCloned()
     {
         base.AfterCloned();
         _copiedThisTurn = false;
+        _copyInProgress = false;
     }
 
     protected override void AddExtraArgsToDescription(LocString description)

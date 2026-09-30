@@ -37,8 +37,10 @@ public sealed class SmokeGenerator() : JanusCardModel(2, CardType.Power, CardRar
         ICombatState combatState = CombatState
             ?? throw new InvalidOperationException("SmokeGenerator must be in combat to play SmokeEmitter.");
         CardModel smokeEmitter = combatState.CreateCard<SmokeEmitter>(Owner);
-        await CardPileCmd.AddGeneratedCardToCombat(smokeEmitter, PileType.Play, Owner);
-        await CardCmd.AutoPlay(choiceContext, smokeEmitter, Owner.Creature);
+        CardPileAddResult result = await CardPileCmd.AddGeneratedCardToCombat(
+            smokeEmitter, PileType.Play, Owner);
+        if (result.success)
+            await CardCmd.AutoPlay(choiceContext, result.cardAdded, Owner.Creature);
     }
 
     protected override void OnUpgrade() => EnergyCost.UpgradeBy(-1);

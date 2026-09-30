@@ -35,16 +35,18 @@ public sealed class NotAfraid() : JanusCardModel(2, CardType.Skill, CardRarity.R
             return;
         }
         
-        await CardPileCmd.AddGeneratedCardsToCombat(cardsToPlay, PileType.Play, Owner);
+        IReadOnlyList<CardPileAddResult> generated = await CardPileCmd.AddGeneratedCardsToCombat(
+            cardsToPlay, PileType.Play, Owner);
 
-        foreach (CardModel card in cardsToPlay)
+        foreach (CardPileAddResult result in generated)
         {
             if (CombatManager.Instance.IsOverOrEnding || Owner.Creature.IsDead)
             {
                 break;
             }
 
-            await JanusSingleton.AutoPlayWithDiaryResult(choiceContext, card);
+            if (result.success)
+                await JanusSingleton.AutoPlayWithDiaryResult(choiceContext, result.cardAdded);
         }
     }
 

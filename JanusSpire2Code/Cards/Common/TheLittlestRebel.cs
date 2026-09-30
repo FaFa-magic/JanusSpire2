@@ -1,5 +1,6 @@
 ﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using JanusSpire2.JanusSpire2Code.Singleton;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -37,8 +38,10 @@ public sealed class TheLittlestRebel() : JanusCardModel(2, CardType.Attack, Card
         {
             CardModel copy = cardToCopy.CreateClone();
             copy.ExhaustOnNextPlay = true;
-            await CardPileCmd.AddGeneratedCardToCombat(copy, PileType.Play, Owner);
-            await CardCmd.AutoPlay(choiceContext, copy, null);
+            CardPileAddResult result = await CardPileCmd.AddGeneratedCardToCombat(
+                copy, PileType.Play, Owner);
+            if (result.success)
+                await JanusSingleton.AutoPlayGeneratedCardAndExhaust(choiceContext, result.cardAdded);
         }
     }
 

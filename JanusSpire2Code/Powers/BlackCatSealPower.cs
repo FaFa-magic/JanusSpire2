@@ -1,4 +1,5 @@
 using JanusSpire2.JanusSpire2Code.Cards.Uncommon;
+using Godot;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -7,17 +8,22 @@ using MegaCrit.Sts2.Core.Entities.Multiplayer;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Multiplayer.Serialization;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Networking.ManagedActions;
+using STS2RitsuLib.Combat.HealthBars;
 
 namespace JanusSpire2.JanusSpire2Code.Powers;
 
-public sealed class BlackCatSealPower : JanusPowerModel
+public sealed class BlackCatSealPower : JanusPowerModel, IHealthBarForecastSource
 {
+    private static readonly Color ForecastTextColor = new("C5C8CE");
+    private static readonly Color ForecastBarColor = new("505158");
+
     private static readonly RitsuLibManagedNetActionDescriptor<BloomRequest> BloomDescriptor = new(
         MainFile.ModId,
         "black_cat_seal_bloom_by_creature_click_v2",
@@ -76,6 +82,27 @@ public sealed class BlackCatSealPower : JanusPowerModel
         DynamicVars[FinalDmgKey].BaseValue = Math.Floor(calculatedDmg);
 
         InvokeDisplayAmountChanged();
+    }
+
+    public IEnumerable<HealthBarForecastSegment> GetHealthBarForecastSegments(HealthBarForecastContext context)
+    {
+        if (!ReferenceEquals(context.Creature, Owner) || !Owner.IsAlive || Amount <= 0 ||
+            context.CombatState is not { } combatState)
+            return [];
+
+        const ValueProp props = ValueProp.Unpowered;
+        decimal damage = Hook.ModifyDamage(
+            combatState.RunState, combatState, Owner, Owner, Amount * 2m, props,
+            null, null, ModifyDamageHookType.All, CardPreviewMode.None, out _);
+        decimal unblocked = Math.Max(0m, damage - Owner.Block);
+        decimal hpLoss = Hook.ModifyHpLost(
+            combatState.RunState, combatState, Owner, unblocked, props,
+            Owner, null, HpLossHookPhase.All, out _);
+
+        int forecast = (int)Math.Clamp(hpLoss, 0m, Owner.CurrentHp);
+        return HealthBarForecasts.Single(
+            forecast, ForecastTextColor, HealthBarForecastGrowthDirection.FromRight,
+            order: 0, overlayMaterial: null, overlaySelfModulate: ForecastBarColor);
     }
     
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource, CardPlay? cardPlay)
