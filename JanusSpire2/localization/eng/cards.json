@@ -55,7 +55,7 @@
   "JANUS_SPIRE2_CARD_AFTERNOON_TEA.title": "Afternoon Tea",
   "JANUS_SPIRE2_CARD_AFTERNOON_TEA.description": "Add a [b][color=#3EE6B3]Tea Party Time[/color][/b] to your [b][gold]Diary[/gold][/b].\n[gold]Transcribe[/gold]: Counterattack cards in your [b][gold]Diary[/gold][/b] can also trigger [gold]Counterattack[/gold].",
   "JANUS_SPIRE2_CARD_AWKWARDNESS.title": "Momentary Clumsiness",
-  "JANUS_SPIRE2_CARD_AWKWARDNESS.description": "Draw {Cards:diff()} cards.\nTake [blue]3[/blue] damage from yourself.",
+  "JANUS_SPIRE2_CARD_AWKWARDNESS.description": "Draw {Cards:diff()} cards.\nTake {Damage:diff()} damage from yourself.",
   "JANUS_SPIRE2_CARD_BAD_INTENTIONS.title": "Bad Intentions",
   "JANUS_SPIRE2_CARD_BAD_INTENTIONS.description": "[gold]Transcribe[/gold]: Whenever you create a card, apply {BadIntentions:diff()} [gold]Black Cat's Mark[/gold] to a random enemy.",
   "JANUS_SPIRE2_CARD_BEDSIDE_HEARTBEAT.title": "Bedside Heartbeat",

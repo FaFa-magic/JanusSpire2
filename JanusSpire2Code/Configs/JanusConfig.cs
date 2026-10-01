@@ -40,7 +40,7 @@ public static class JanusConfigPage
     private static readonly I18N Localization = RitsuLibFramework.CreateModLocalization(
         MainFile.ModId,
         "JanusConfig",
-        pckFolders: ["res://JanusSpire2/localization/settings"]);
+        resourceFolders: ["JanusSpire2.Settings"]);
     private static RunSavedData<JanusGenerationRunSettings> _generationRunSettings = null!;
 
     public static readonly ModSettingsValueBinding<JanusConfig, FjordMosaicMode> ModelModeBinding = new(

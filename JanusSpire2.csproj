@@ -88,6 +88,13 @@
     </ItemGroup>
 
     <ItemGroup>
+        <EmbeddedResource Include="JanusSpire2/localization/eng/setting.json" LogicalName="JanusSpire2.Settings.eng.json" />
+        <EmbeddedResource Include="JanusSpire2/localization/zhs/setting.json" LogicalName="JanusSpire2.Settings.zhs.json" />
+        <EmbeddedResource Include="JanusSpire2/localization/jpn/setting.json" LogicalName="JanusSpire2.Settings.jpn.json" />
+        <EmbeddedResource Include="JanusSpire2/localization/kor/setting.json" LogicalName="JanusSpire2.Settings.kor.json" />
+    </ItemGroup>
+
+    <ItemGroup>
         <Folder Include="JanusSpire2\images\card_portraits\big\"/>
         <Folder Include="JanusSpire2\images\packed\sprite_fonts\" />
         <Folder Include="JanusSpire2\images\powers\big\"/>
