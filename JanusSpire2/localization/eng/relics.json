@@ -23,7 +23,7 @@
   "JANUS_SPIRE2_RELIC_PHOTOGRAPH.description": "Attacks deal additional damage equal to the number of [gold]Keywords[/gold] they have.",
   "JANUS_SPIRE2_RELIC_PHOTOGRAPH.flavor": "In the photograph, Janus smiles from behind her friends. On the back: ‘Memories with the Commander.’",
   "JANUS_SPIRE2_RELIC_CAMERA.title": "Camera",
-  "JANUS_SPIRE2_RELIC_CAMERA.description": "In each card reward, a random card gains the [gold]Keepsake[/gold] [gold]Keyword[/gold].",
+  "JANUS_SPIRE2_RELIC_CAMERA.description": "Each card reward offers 1 additional card with the [gold]Keepsake[/gold] keyword.",
   "JANUS_SPIRE2_RELIC_CAMERA.flavor": "With one click of the shutter, a timid smile becomes another treasured memory of the port.",
   "JANUS_SPIRE2_RELIC_INCENSE.title": "Incense",
   "JANUS_SPIRE2_RELIC_INCENSE.description": "Once per combat, right-click this relic to shuffle all cards in your [gold]Hand[/gold] into your Draw Pile, then draw the same number of cards.",

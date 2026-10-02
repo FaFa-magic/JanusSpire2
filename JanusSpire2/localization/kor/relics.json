@@ -23,7 +23,7 @@
   "JANUS_SPIRE2_RELIC_PHOTOGRAPH.description": "공격 카드가 가진 [gold]키워드[/gold] 수만큼 추가 피해를 줍니다.",
   "JANUS_SPIRE2_RELIC_PHOTOGRAPH.flavor": "사진 속 재너스는 동료 뒤에서 미소 짓고 있다. 뒷면에는 ‘지휘관님과의 추억’이라고 적혀 있다.",
   "JANUS_SPIRE2_RELIC_CAMERA.title": "카메라",
-  "JANUS_SPIRE2_RELIC_CAMERA.description": "카드 보상마다 무작위 카드 한 장에 [gold]소장[/gold] [gold]키워드[/gold]가 추가됩니다.",
+  "JANUS_SPIRE2_RELIC_CAMERA.description": "카드 보상마다 [gold]소장[/gold] 키워드가 있는 카드 1장이 추가됩니다.",
   "JANUS_SPIRE2_RELIC_CAMERA.flavor": "셔터가 울리는 순간, 수줍은 미소도 모항의 소중한 추억이 되었다.",
   "JANUS_SPIRE2_RELIC_INCENSE.title": "향",
   "JANUS_SPIRE2_RELIC_INCENSE.description": "전투당 한 번, 이 유물을 오른쪽 클릭하여 [gold]손[/gold]의 모든 카드를 덱에 섞고 뽑을 카드 더미를 섞은 뒤 같은 수만큼 카드를 뽑을 수 있습니다.",

@@ -23,7 +23,7 @@
   "JANUS_SPIRE2_RELIC_PHOTOGRAPH.description": "アタックは、そのカードが持つ[gold]キーワード[/gold]の数だけ追加ダメージを与える。",
   "JANUS_SPIRE2_RELIC_PHOTOGRAPH.flavor": "写真の中では、ジェーナスが仲間の後ろで微笑んでいる。裏には『指揮官との思い出』。",
   "JANUS_SPIRE2_RELIC_CAMERA.title": "カメラ",
-  "JANUS_SPIRE2_RELIC_CAMERA.description": "各カード報酬で、ランダムなカード1枚に[gold]キーワード[/gold]「[gold]秘蔵[/gold]」が追加される。",
+  "JANUS_SPIRE2_RELIC_CAMERA.description": "各カード報酬に、[gold]秘蔵[/gold]を持つカードが1枚追加される。",
   "JANUS_SPIRE2_RELIC_CAMERA.flavor": "シャッターが鳴った瞬間、はにかんだ笑顔も母港の大切な思い出になった。",
   "JANUS_SPIRE2_RELIC_INCENSE.title": "香炉",
   "JANUS_SPIRE2_RELIC_INCENSE.description": "各戦闘1回のみ、このレリックを右クリックして[gold]手札[/gold]をすべて山札に戻してシャッフルし、同じ枚数のカードを引ける。",

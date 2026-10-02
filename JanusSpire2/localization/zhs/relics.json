@@ -23,7 +23,7 @@
   "JANUS_SPIRE2_RELIC_PHOTOGRAPH.description": "攻击牌额外造成其带有[gold]关键词[/gold]数量的伤害。",
   "JANUS_SPIRE2_RELIC_PHOTOGRAPH.flavor": "照片里，雅努斯躲在伙伴身后微笑；背面小心写着“与指挥官的回忆”。",
   "JANUS_SPIRE2_RELIC_CAMERA.title": "相机",
-  "JANUS_SPIRE2_RELIC_CAMERA.description": "每次卡牌奖励中，都会有随机一张牌被添加[gold]关键词[/gold]:[gold]珍藏[/gold]。",
+  "JANUS_SPIRE2_RELIC_CAMERA.description": "每次卡牌奖励额外出现1张带有[gold]珍藏[/gold]关键词的牌。",
   "JANUS_SPIRE2_RELIC_CAMERA.flavor": "快门响起的一刻，怯生生的笑容也成了值得珍藏的港区记忆。",
   "JANUS_SPIRE2_RELIC_INCENSE.title": "熏香",
   "JANUS_SPIRE2_RELIC_INCENSE.description": "每场战斗仅一次，你可以右键此遗物，将所有[gold]手牌[/gold]洗回牌组打乱抽牌堆，然后抽取相同数量的牌。",
