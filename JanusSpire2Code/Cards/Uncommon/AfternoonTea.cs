@@ -1,35 +1,30 @@
 ﻿using JanusSpire2.JanusSpire2Code.Cards.Token;
-using JanusSpire2.JanusSpire2Code.Keywords;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
-using MegaCrit.Sts2.Core.Models;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 
-public sealed class AfternoonTea() : JanusCardModel(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+public sealed class AfternoonTea() : JanusCardModel(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
 {
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [JanusKeywords.Transcribe];
-
-    protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
-    [
-        HoverTipFactory.FromCard<TeaPartyTime>(),
-        HoverTipFactory.FromKeyword(JanusKeywords.Counterattack)
-    ];
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<TeaPartyTime>()];
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(CombatState);
-        CardModel teaPartyTime = CombatState.CreateCard<TeaPartyTime>(Owner);
-        CardCmd.PreviewCardPileAdd(
-            await CardPileCmd.AddGeneratedCardToCombat(teaPartyTime, MainFile.Diary, Owner),
-            0.2f);
+        TeaPartyTime teaPartyTime = CombatState.CreateCard<TeaPartyTime>(Owner);
+        IReadOnlyList<CardPileAddResult> results = await CardPileCmd.AddGeneratedCardsToCombat(
+            [teaPartyTime], MainFile.Diary, Owner);
+        foreach (CardPileAddResult result in results)
+        {
+            if (result.success && result.cardAdded is TeaPartyTime generatedCard)
+            {
+                await generatedCard.EnableTake();
+            }
+        }
 
-        CardModel copy = CreateClone();
-        CardCmd.PreviewCardPileAdd(
-            await CardPileCmd.AddGeneratedCardToCombat(copy, MainFile.Diary, Owner),
-            0.2f);
+        CardCmd.PreviewCardPileAdd(results, 0.2f);
     }
     
     protected override void OnUpgrade()

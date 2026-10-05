@@ -1,7 +1,6 @@
 using JanusSpire2.JanusSpire2Code.Cards.Ancient;
 using JanusSpire2.JanusSpire2Code.Cards.Common;
 using JanusSpire2.JanusSpire2Code.Cards.Rare;
-using JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 using JanusSpire2.JanusSpire2Code.Cards;
 using JanusSpire2.JanusSpire2Code.Keywords;
 using JanusSpire2.JanusSpire2Code.Patches;
@@ -254,16 +253,8 @@ public class JanusSingleton : HookedSingletonModel
             .Where(card => card.Keywords.Contains(JanusKeywords.Counterattack))
             .ToList();
 
-        CardPile diary = MainFile.Diary.GetPile(player);
-        if (diary.Cards.Any(card => card is AfternoonTea))
-        {
-            counterattackCards.AddRange(diary.Cards.Where(card =>
-                card.Keywords.Contains(JanusKeywords.Counterattack)));
-        }
-
-        // Afternoon Tea explicitly enables Diary sources. Black Cat Unleash remains the
-        // general exception outside the hand, but never while exhausted, playing, or unpiled.
-        // Resolve it last to preserve hand-first and then Diary pile ordering.
+        // Black Cat Unleash can also counterattack outside the hand, but never while
+        // exhausted, playing, or unpiled. Resolve these sources after the hand.
         counterattackCards.AddRange(playerCombatState.AllCards.Where(card =>
             card is BlackCatUnleash &&
             card.Pile != null &&
@@ -284,19 +275,17 @@ public class JanusSingleton : HookedSingletonModel
             if (sourcePile == null || sourcePile == PileType.None || sourcePile == PileType.Play ||
                 sourcePile == PileType.Exhaust || card.Owner != player ||
                 !card.Keywords.Contains(JanusKeywords.Counterattack) ||
-                !(sourcePile == PileType.Hand ||
-                  sourcePile == MainFile.Diary && diary.Cards.Any(candidate => candidate is AfternoonTea) ||
-                  card is BlackCatUnleash))
+                !(sourcePile == PileType.Hand || card is BlackCatUnleash))
                 continue;
 
-            int currentCost = card.EnergyCost.GetAmountToSpend();
+            int triggerLimit = card.EnergyCost.CostsX ? 1 : card.EnergyCost.GetAmountToSpend();
             int turnNumber = playerCombatState.TurnNumber;
             (int TurnNumber, int TriggerCount) triggerState =
                 _counterattackTriggerCounts.GetValueOrDefault(card);
             int triggerCount = triggerState.TurnNumber == turnNumber
                 ? triggerState.TriggerCount
                 : 0;
-            if (triggerCount >= currentCost)
+            if (triggerCount >= triggerLimit)
             {
                 continue;
             }

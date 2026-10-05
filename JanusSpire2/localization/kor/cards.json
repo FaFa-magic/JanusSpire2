@@ -53,7 +53,7 @@
   "JANUS_SPIRE2_CARD_WARM_WAVES.title": "따뜻한 물결",
   "JANUS_SPIRE2_CARD_WARM_WAVES.description": "{Damage:diff()}의 피해를 {Repeat:diff()}번 줍니다.\n[b][color=#3EE6B3]물보라[/color][/b]를 {Cards:diff()}장 손에 추가합니다.",
   "JANUS_SPIRE2_CARD_AFTERNOON_TEA.title": "애프터눈 티",
-  "JANUS_SPIRE2_CARD_AFTERNOON_TEA.description": "[b][color=#3EE6B3]티 파티 시간[/color][/b]을 한 장 [b][gold]일기장[/gold][/b]에 추가합니다.\n[gold]필사[/gold]: [b][gold]일기장[/gold][/b]에 있는 반격 카드도 [gold]반격[/gold]할 수 있습니다.",
+  "JANUS_SPIRE2_CARD_AFTERNOON_TEA.description": "[b][color=#3EE6B3]티 파티 시간[/color][/b]을 한 장 [b][gold]일기장[/gold][/b]에 추가합니다.",
   "JANUS_SPIRE2_CARD_AWKWARDNESS.title": "순간의 서투름",
   "JANUS_SPIRE2_CARD_AWKWARDNESS.description": "카드를 {Cards:diff()}장 뽑습니다.\n자신이 가하는 {Damage:diff()}의 피해를 받습니다.",
   "JANUS_SPIRE2_CARD_BAD_INTENTIONS.title": "나쁜 마음",

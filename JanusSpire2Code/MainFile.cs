@@ -109,6 +109,7 @@ public static class MainFile
 		patcher.RegisterPatch<CardSelectionExtraTurnReadyPatch>();
 		patcher.RegisterPatch<PreventMultipleCardGenerationPatch>();
 		patcher.RegisterPatch<PreventRejectedGeneratedCardAutoPlayPatch>();
+		patcher.RegisterPatch<PreventForgeCardGenerationPatch>();
 		patcher.RegisterPatch<SwiftStatusAndCurseEnchantPatch>();
 		patcher.RegisterPatch<SwiftCombatStackVisualRefreshPatch>();
 		patcher.RegisterPatch<RemovedRelicRewardAnimationPatch>();

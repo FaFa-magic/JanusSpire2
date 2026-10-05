@@ -1,11 +1,15 @@
 ﻿using HarmonyLib;
 using JanusSpire2.JanusSpire2Code.Powers;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Cards;
+using STS2RitsuLib.Patching;
 using STS2RitsuLib.Patching.Models;
 using System.Runtime.CompilerServices;
 
@@ -132,5 +136,64 @@ public sealed class PreventRejectedGeneratedCardAutoPlayPatch : IPatchMethod
             return true;
         __result = Task.CompletedTask;
         return false;
+    }
+}
+
+public sealed class PreventForgeCardGenerationPatch : IPatchMethod
+{
+    private static readonly Func<Player, bool, IEnumerable<SovereignBlade>> GetSovereignBlades =
+        PrivateAccess.DeclaredMethodDelegate<Func<Player, bool, IEnumerable<SovereignBlade>>>(
+            typeof(ForgeCmd), "GetSovereignBlades", typeof(Player), typeof(bool));
+
+    private static readonly Action<decimal, Player> IncreaseSovereignBladeDamage =
+        PrivateAccess.DeclaredMethodDelegate<Action<decimal, Player>>(
+            typeof(ForgeCmd), "IncreaseSovereignBladeDamage", typeof(decimal), typeof(Player));
+
+    public static string PatchId => "PreventForgeCardGenerationPatch";
+    public static string Description => "Forge existing blades without generating a blocked Sovereign Blade";
+    public static bool IsCritical => true;
+
+    public static ModPatchTarget[] GetTargets()
+    {
+        // Validate the vanilla helpers during patch registration, rather than the first forge.
+        _ = GetSovereignBlades;
+        _ = IncreaseSovereignBladeDamage;
+        return
+        [
+            new(typeof(ForgeCmd), nameof(ForgeCmd.Forge), [typeof(decimal), typeof(Player), typeof(AbstractModel)])
+        ];
+    }
+
+    [HarmonyPrefix]
+    internal static bool Prefix(decimal amount, Player player, AbstractModel? source,
+        ref Task<IEnumerable<SovereignBlade>> __result)
+    {
+        if (CombatManager.Instance.IsOverOrEnding ||
+            !player.Creature.HasPower<MidsummerHolidayPower>() ||
+            GetSovereignBlades(player, false).Any())
+        {
+            return true;
+        }
+
+        __result = ForgeWithoutGeneration(amount, player, source);
+        return false;
+    }
+
+    private static async Task<IEnumerable<SovereignBlade>> ForgeWithoutGeneration(
+        decimal amount, Player player, AbstractModel? source)
+    {
+        if (player.Creature.CombatState is not { } combatState)
+        {
+            return Array.Empty<SovereignBlade>();
+        }
+
+        // Vanilla also strengthens exhausted blades. Its preview requires a nonempty list.
+        if (GetSovereignBlades(player, true).Any())
+        {
+            IncreaseSovereignBladeDamage(amount, player);
+        }
+
+        await Hook.AfterForge(combatState, amount, player, source);
+        return Array.Empty<SovereignBlade>();
     }
 }

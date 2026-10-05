@@ -36,5 +36,5 @@ public sealed class Shy() : JanusCardModel(1, CardType.Power, CardRarity.Uncommo
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars["Shy"].BaseValue, ValueProp.Unpowered, null);
     }
     
-    protected override void OnUpgrade() => DynamicVars["Shy"].UpgradeValueBy(1M);
+    protected override void OnUpgrade() => DynamicVars["Shy"].UpgradeValueBy(2M);
 }

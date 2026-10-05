@@ -53,7 +53,7 @@
   "JANUS_SPIRE2_CARD_WARM_WAVES.title": "温かな波",
   "JANUS_SPIRE2_CARD_WARM_WAVES.description": "{Damage:diff()}ダメージを{Repeat:diff()}回与える。\n[b][color=#3EE6B3]波しぶき[/color][/b]を{Cards:diff()}枚手札に加える。",
   "JANUS_SPIRE2_CARD_AFTERNOON_TEA.title": "アフタヌーンティー",
-  "JANUS_SPIRE2_CARD_AFTERNOON_TEA.description": "[b][color=#3EE6B3]ティーパーティーの時間[/color][/b]を1枚[b][gold]日記帳[/gold][/b]に加える。\n[gold]転記[/gold]：[b][gold]日記帳[/gold][/b]の反撃カードも[gold]反撃[/gold]を発動できる。",
+  "JANUS_SPIRE2_CARD_AFTERNOON_TEA.description": "[b][color=#3EE6B3]ティーパーティーの時間[/color][/b]を1枚[b][gold]日記帳[/gold][/b]に加える。",
   "JANUS_SPIRE2_CARD_AWKWARDNESS.title": "一時の不器用",
   "JANUS_SPIRE2_CARD_AWKWARDNESS.description": "カードを{Cards:diff()}枚引く。\n自分から{Damage:diff()}ダメージを受ける。",
   "JANUS_SPIRE2_CARD_BAD_INTENTIONS.title": "悪だくみ",

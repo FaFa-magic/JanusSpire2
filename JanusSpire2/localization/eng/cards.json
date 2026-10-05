@@ -53,7 +53,7 @@
   "JANUS_SPIRE2_CARD_WARM_WAVES.title": "Warm Waves",
   "JANUS_SPIRE2_CARD_WARM_WAVES.description": "Deal {Damage:diff()} damage {Repeat:diff()} times.\nAdd {Cards:diff()} [b][color=#3EE6B3]Waves[/color][/b] to your Hand.",
   "JANUS_SPIRE2_CARD_AFTERNOON_TEA.title": "Afternoon Tea",
-  "JANUS_SPIRE2_CARD_AFTERNOON_TEA.description": "Add a [b][color=#3EE6B3]Tea Party Time[/color][/b] to your [b][gold]Diary[/gold][/b].\n[gold]Transcribe[/gold]: Counterattack cards in your [b][gold]Diary[/gold][/b] can also trigger [gold]Counterattack[/gold].",
+  "JANUS_SPIRE2_CARD_AFTERNOON_TEA.description": "Add a [b][color=#3EE6B3]Tea Party Time[/color][/b] to your [b][gold]Diary[/gold][/b].",
   "JANUS_SPIRE2_CARD_AWKWARDNESS.title": "Momentary Clumsiness",
   "JANUS_SPIRE2_CARD_AWKWARDNESS.description": "Draw {Cards:diff()} cards.\nTake {Damage:diff()} damage from yourself.",
   "JANUS_SPIRE2_CARD_BAD_INTENTIONS.title": "Bad Intentions",
