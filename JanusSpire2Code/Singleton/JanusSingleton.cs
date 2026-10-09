@@ -329,6 +329,13 @@ public class JanusSingleton : HookedSingletonModel
         ResourceInfo resources,
         CardLocation cardLocation)
     {
+        // Return-to-hand effects (e.g. Feral) take priority over Diary redirects.
+        // Preserve their recipient and position as well as the destination pile.
+        if (cardLocation.pileType == PileType.Hand)
+        {
+            return cardLocation;
+        }
+
         if (CardsWithDiaryPlayResult.Contains(card) &&
             cardLocation.pileType.IsCombatPile() &&
             cardLocation.pileType != PileType.Play)
