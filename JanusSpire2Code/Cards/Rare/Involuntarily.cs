@@ -44,6 +44,7 @@ public sealed class Involuntarily() : JanusCardModel(1, CardType.Power, CardRari
         CardModel? cardSource)
     {
         if (Pile?.Type != MainFile.Diary ||
+            dealer != Owner.Creature ||
             cardSource?.Owner != Owner ||
             cardSource.Pile?.Type != PileType.Play ||
             target.Side != CombatSide.Enemy ||

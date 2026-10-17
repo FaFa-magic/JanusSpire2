@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://y7gnon7owxr"]
+[gd_scene load_steps=12 format=3 uid="uid://y7gnon7owxr"]
 
 [ext_resource type="PackedScene" uid="uid://crf8mm5qvppu0" path="res://JanusSpire2/scenes/vfx/JanusEnergyVfxBack.tscn" id="1_jluy8"]
 [ext_resource type="Texture2D" uid="uid://dmpeh22ggiogb" path="res://JanusSpire2/images/combatui/energy_counter/Layer_bottom_Janus.png" id="2_jluy8"]
@@ -8,6 +8,12 @@
 [ext_resource type="PackedScene" uid="uid://crw8oin1yk5ym" path="res://JanusSpire2/scenes/vfx/JanusEnergyVfxFront.tscn" id="7_2deyc"]
 [ext_resource type="Texture2D" uid="uid://clm800joq8est" path="res://JanusSpire2/images/combatui/energy_counter/Layer5.png" id="7_o2if5"]
 [ext_resource type="FontFile" uid="uid://df5rj1oegsvgx" path="res://JanusSpire2/fonts/kreon_bold.ttf" id="9_wij7b"]
+[ext_resource type="Script" path="res://JanusSpire2Code/Nodes/JanusLiquidEnergyOrb.cs" id="10_liquid_script"]
+[ext_resource type="Shader" path="res://JanusSpire2/shaders/ui/janus_liquid_energy.gdshader" id="11_liquid_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_liquid"]
+resource_local_to_scene = true
+shader = ExtResource("11_liquid_shader")
 
 [node name="JanusEnergyCounter" type="Control"]
 layout_mode = 3
@@ -17,6 +23,7 @@ offset_bottom = 128.0
 pivot_offset = Vector2(64, 64)
 
 [node name="EnergyVfxBack" parent="." instance=ExtResource("1_jluy8")]
+visible = false
 
 [node name="Layers" type="Control" parent="."]
 unique_name_in_owner = true
@@ -28,15 +35,18 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Layer1" type="TextureRect" parent="Layers"]
+material = SubResource("ShaderMaterial_liquid")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("2_jluy8")
 expand_mode = 1
 stretch_mode = 5
+script = ExtResource("10_liquid_script")
 
 [node name="RotationLayers" type="Control" parent="Layers"]
 unique_name_in_owner = true
@@ -48,6 +58,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Layer2" type="TextureRect" parent="Layers/RotationLayers"]
+self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -59,6 +70,7 @@ texture = ExtResource("3_e0jbg")
 expand_mode = 1
 
 [node name="Layer3" type="TextureRect" parent="Layers/RotationLayers"]
+self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -69,7 +81,7 @@ pivot_offset = Vector2(64, 64)
 texture = ExtResource("4_76wkg")
 expand_mode = 1
 
-[node name="Layer4" type="TextureRect" parent="Layers"]
+[node name="Layer4" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -97,6 +109,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="EnergyVfxFront" parent="." instance=ExtResource("7_2deyc")]
+visible = false
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1

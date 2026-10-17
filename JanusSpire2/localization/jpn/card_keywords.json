@@ -1,18 +1,18 @@
 {
   "JANUS_SPIRE2_KEYWORD_PERK.title": "奮起",
-  "JANUS_SPIRE2_KEYWORD_PERK.description": "エナジーが足りない場合、不足分と同じ枚数のカードを[gold]日記帳[/gold]から廃棄してプレイできる。",
+  "JANUS_SPIRE2_KEYWORD_PERK.description": "エナジーが足りない場合、不足分と同じ枚数のカードを[gold]日記帳[/gold]から[gold]廃棄[/gold]してプレイできる。",
   "JANUS_SPIRE2_KEYWORD_COLLECTION.title": "秘蔵",
   "JANUS_SPIRE2_KEYWORD_COLLECTION.description": "戦闘開始時、このカードを[gold]日記帳[/gold]に加える。",
   "JANUS_SPIRE2_KEYWORD_COUNTERATTACK.title": "反撃",
-  "JANUS_SPIRE2_KEYWORD_COUNTERATTACK.description": "ダメージを受けるたび（[blue]0[/blue]ダメージでも）、手札の各[gold]反撃[/gold]カードが左から順に自身のコピーを作成してプレイする。\n各ターン、現在のコストと同じ回数まで発動する。",
+  "JANUS_SPIRE2_KEYWORD_COUNTERATTACK.description": "ダメージを受けた時（[blue]0[/blue]でも）、手札の[gold]反撃[/gold]カードのコピーを左から順に作成してプレイし、コピーを[gold]廃棄[/gold]する。\n各カードは現在のコストと同じ回数まで発動し、自分のターン開始時に回数をリセットする。",
   "JANUS_SPIRE2_KEYWORD_STICKER.title": "ステッカー",
-  "JANUS_SPIRE2_KEYWORD_STICKER.description": "何度でもアップグレードできる。\n[gold]廃棄札[/gold]にカード名とアップグレード段階が同じ[gold]ステッカー[/gold]カードが[blue]4[/blue]枚あるたび、それらを取り除き、その[gold]ステッカー[/gold]カードを1段階アップグレードして[gold]日記帳[/gold]に加える。",
+  "JANUS_SPIRE2_KEYWORD_STICKER.description": "何度でも[gold]アップグレード[/gold]できる。\n[gold]廃棄札[/gold]にカード名とアップグレード段階が同じ[gold]ステッカー[/gold]カードが[blue]4[/blue]枚あるたび、それらを取り除き、同名でアップグレード段階が1つ高い新たな[gold]ステッカー[/gold]カードを[gold]日記帳[/gold]に加える。",
   "JANUS_SPIRE2_KEYWORD_TRANSCRIBE.title": "転記",
-  "JANUS_SPIRE2_KEYWORD_TRANSCRIBE.description": "プレイ後、このカードの[gold]コピー[/gold]を[gold]日記帳[/gold]に加える。\nこのカードが[gold]日記帳[/gold]にある間、以降の効果が有効になる。",
+  "JANUS_SPIRE2_KEYWORD_TRANSCRIBE.description": "プレイ後、このカードの[gold]コピー[/gold]を[gold]日記帳[/gold]に加える。\nこのカードが[gold]日記帳[/gold]にある間、以下の効果が有効になる。",
   "JANUS_SPIRE2_KEYWORD_RECORD.title": "記録",
-  "JANUS_SPIRE2_KEYWORD_RECORD.description": "プレイ後、[gold]廃棄[/gold]されない場合は[gold]日記帳[/gold]に加える。",
+  "JANUS_SPIRE2_KEYWORD_RECORD.description": "プレイ後に[gold]捨て札[/gold]へ移動する場合、代わりに[gold]日記帳[/gold]に加える。",
   "JANUS_SPIRE2_KEYWORD_RECOLLECTION.title": "回想",
-  "JANUS_SPIRE2_KEYWORD_RECOLLECTION.description": "[gold]日記帳[/gold]にある間、以降の条件を満たすと、その投影が[gold]追加手札[/gold]に自動的に現れ、日記帳からプレイできる。プレイ後、条件はリセットされる。",
+  "JANUS_SPIRE2_KEYWORD_RECOLLECTION.description": "[gold]日記帳[/gold]にある間、以下の条件を満たすと[gold]追加手札[/gold]からこのカードをプレイできる。再びこの方法でプレイするには、[gold]回想[/gold]を再発動する必要がある。",
   "JANUS_SPIRE2_KEYWORD_INSPIRATION.title": "ひらめき",
-  "JANUS_SPIRE2_KEYWORD_INSPIRATION.description": "[gold]ひらめき[/gold]X：このカードが[gold]手札[/gold]にない時、右クリックして[gold]日記帳[/gold]のカードX枚を[gold]廃棄[/gold]することを選ぶと、このカードを[gold]手札[/gold]に加える。"
+  "JANUS_SPIRE2_KEYWORD_INSPIRATION.description": "[gold]ひらめき[/gold]X：自分のターン中、[gold]手札[/gold]に空きがある場合、手札以外の場所にあるこのカードを右クリックし、[gold]日記帳[/gold]のカードX枚を[gold]廃棄[/gold]して、このカードを[gold]手札[/gold]に加える。"
 }

@@ -139,10 +139,12 @@ public static class MainFile
 		patcher.RegisterPatch<JanusSharedGameOverProgressionPatch>();
 		patcher.RegisterPatch<JanusSkinSelectPatch>();
 		patcher.RegisterPatch<JanusDiaryTransitionPatch>();
+		patcher.RegisterPatch<JanusLiquidEnergyCounterPatch>();
 		patcher.RegisterPatch<JanusCharacterSelectVoicePatch>();
 		patcher.RegisterPatch<JanusSkinSelectEmbarkPatch>();
 		patcher.RegisterPatch<JanusSkinSelectUnreadyPatch>();
 		patcher.RegisterPatch<JanusCombatSpineIdleBootstrapPatch>();
+		patcher.RegisterPatch<JanusDeathAnimationCuePatch>();
 		patcher.RegisterPatch<JanusAttackAudioContextPatch>();
 		patcher.RegisterPatch<JanusAttackAudioPlaybackPatch>();
 
