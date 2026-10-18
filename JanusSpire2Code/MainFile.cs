@@ -1,4 +1,5 @@
 using System.Reflection;
+using JanusSpire2.JanusSpire2Code.Ancients;
 using JanusSpire2.JanusSpire2Code.Audio;
 using JanusSpire2.JanusSpire2Code.Cards;
 using JanusSpire2.JanusSpire2Code.Cards.Ancient;
@@ -46,6 +47,7 @@ public static class MainFile
 		MagicGlovesTransformReward.Register();
 
 		JanusConfigPage.Register();
+		QueenElizabethSpawnRules.Register();
 		JanusTelemetry.Register();
 		
 		RitsuLibFramework.RegisterArchaicToothTranscendenceMapping<BlackCatAssault, BlackCatUnleash>();

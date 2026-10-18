@@ -1,6 +1,8 @@
 ﻿<Project Sdk="Godot.NET.Sdk/4.5.1" InitialTargets="CheckDependencyPaths">
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
+        <!-- This DLL is loaded by the host game on Windows, macOS and Linux. -->
+        <PlatformTarget>AnyCPU</PlatformTarget>
         <ImplicitUsings>true</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -62,7 +64,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="STS2.RitsuLib" Version="0.6.2" PrivateAssets="All" GeneratePathProperty="true" />
+        <PackageReference Include="STS2.RitsuLib" Version="0.6.7" PrivateAssets="All" GeneratePathProperty="true" />
         <AdditionalFiles Include="JanusSpire2/localization/**/*.json"/>
     </ItemGroup>
 

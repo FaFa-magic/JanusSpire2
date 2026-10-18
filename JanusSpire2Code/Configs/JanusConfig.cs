@@ -120,7 +120,7 @@ public static class JanusConfigPage
                     presentation: ModSettingsChoicePresentation.Dropdown)
                 .AddToggle(
                     "queen_elizabeth_enabled",
-                    Text("config.queenElizabethEnabled.label", "Enable Queen Elizabeth"),
+                    Text("config.queenElizabethEnabled.label", "Enable Queen Elizabeth (host setting; next run)"),
                     QueenElizabethEnabledBinding)
                 .AddToggle(
                     "kitten_card_game_enabled",

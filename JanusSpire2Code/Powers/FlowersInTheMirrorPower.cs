@@ -38,7 +38,7 @@ public sealed class FlowersInTheMirrorPower : JanusPowerModel
         }
 
         List<CardModel> copies = generatedCards
-            .Select(card => card.CreateClone())
+            .Select(card => card.CreateCloneForPlayer(Owner.Player))
             .ToList();
 
         CardCmd.PreviewCardPileAdd(

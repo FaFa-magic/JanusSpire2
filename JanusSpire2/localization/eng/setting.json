@@ -8,7 +8,7 @@
   "config.cardFrame.label": "Custom card frame",
   "config.cardFrame.first": "Frame 1",
   "config.cardFrame.second": "Frame 2",
-  "config.queenElizabethEnabled.label": "Enable Queen Elizabeth",
+  "config.queenElizabethEnabled.label": "Enable Queen Elizabeth (host setting; next run)",
   "config.kittenCardGameEnabled.label": "Enable A Kitten's Card Game",
   "config.restrictRandomGeneration.label": "Limit four Janus cards to base-game characters and Janus (next run)"
 }

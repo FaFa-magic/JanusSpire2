@@ -1,5 +1,4 @@
 using Godot;
-using JanusSpire2.JanusSpire2Code.Configs;
 using JanusSpire2.JanusSpire2Code.Relics;
 using MegaCrit.Sts2.Core.Events;
 using MegaCrit.Sts2.Core.Models;
@@ -9,7 +8,8 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace JanusSpire2.JanusSpire2Code.Ancients;
 
-[RegisterSharedAncient]
+[RegisterActAncient(typeof(Hive))]
+[RegisterActAncient(typeof(Glory))]
 public sealed class QueenElizabeth : ModAncientEventTemplate
 {
     public override Color ButtonColor => new(0.12f, 0.2f, 0.8f, 0.5f);
@@ -63,7 +63,6 @@ public sealed class QueenElizabeth : ModAncientEventTemplate
 
     public override bool IsValidForAct(ActModel act)
     {
-        return JanusConfigPage.QueenElizabethEnabledBinding.Read() &&
-               act is Hive or Glory;
+        return QueenElizabethSpawnRules.IsValidForAct(act, Id);
     }
 }
