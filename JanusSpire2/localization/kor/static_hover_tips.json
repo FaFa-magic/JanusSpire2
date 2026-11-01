@@ -8,5 +8,6 @@
   "JANUS_SPIRE2_CARDPILE_DIARY_PILE.next_page": "다음 페이지(Page Down)",
   "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.title": "기록 투영",
   "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.description": "현재 일기장에서 사용할 수 있는 카드의 투영을 표시합니다.",
-  "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.empty": "현재 사용할 수 있는 기록 카드가 없습니다."
+  "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.empty": "현재 사용할 수 있는 기록 카드가 없습니다.",
+  "JANUS_SPIRE2_WORKSHOP_VOTE.title": "[gold]재너스[/gold] 추천"
 }

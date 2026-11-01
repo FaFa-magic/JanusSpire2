@@ -3,6 +3,7 @@ using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Rewards;
 using STS2RitsuLib.Combat.Rewards;
 
@@ -47,7 +48,8 @@ public sealed class MagicGlovesTransformReward(Player player) : ModCustomReward(
         Player.GetRelic<MagicGloves>()?.Flash();
         foreach (CardModel card in selectedCards)
         {
-            await CardCmd.TransformToRandom(card, Player.RunState.Rng.Niche);
+            // The combat preview container is below the rewards overlay; use the global preview.
+            await CardCmd.TransformToRandom(card, Player.RunState.Rng.Niche, CardPreviewStyle.GridLayout);
         }
 
         return true;

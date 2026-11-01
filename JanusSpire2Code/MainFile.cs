@@ -12,6 +12,7 @@ using JanusSpire2.JanusSpire2Code.Patches;
 using JanusSpire2.JanusSpire2Code.Powers;
 using JanusSpire2.JanusSpire2Code.Relics;
 using JanusSpire2.JanusSpire2Code.Rewards;
+using JanusSpire2.JanusSpire2Code.Workshop;
 using JanusSpire2.Scripts.Telemetry;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Modding;
@@ -149,6 +150,8 @@ public static class MainFile
 		patcher.RegisterPatch<JanusDeathAnimationCuePatch>();
 		patcher.RegisterPatch<JanusAttackAudioContextPatch>();
 		patcher.RegisterPatch<JanusAttackAudioPlaybackPatch>();
+
+		JanusWorkshopVoteUi.Register(patcher);
 
 		if (!patcher.PatchAll())
 			throw new InvalidOperationException("Critical patches failed.");

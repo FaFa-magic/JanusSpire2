@@ -8,5 +8,6 @@
   "JANUS_SPIRE2_CARDPILE_DIARY_PILE.next_page": "Next Page (Page Down)",
   "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.title": "Record Projections",
   "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.description": "Displays projections of cards that can currently be played from your Diary.",
-  "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.empty": "There are currently no Record cards you can play."
+  "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.empty": "There are currently no Record cards you can play.",
+  "JANUS_SPIRE2_WORKSHOP_VOTE.title": "Like [gold]Janus[/gold]"
 }

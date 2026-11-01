@@ -8,5 +8,6 @@
   "JANUS_SPIRE2_CARDPILE_DIARY_PILE.next_page": "次のページ（Page Down）",
   "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.title": "記録の投影",
   "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.description": "現在、日記帳からプレイできるカードの投影を表示する。",
-  "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.empty": "現在プレイできる記録カードはない。"
+  "JANUS_SPIRE2_CARDPILE_RECORD_EXTRA_HAND.empty": "現在プレイできる記録カードはない。",
+  "JANUS_SPIRE2_WORKSHOP_VOTE.title": "[gold]ジェーナス[/gold]を高評価"
 }

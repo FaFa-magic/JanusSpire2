@@ -6,7 +6,7 @@
         <ImplicitUsings>true</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <DefaultItemExcludes>packages/**</DefaultItemExcludes>
+        <DefaultItemExcludes>$(DefaultItemExcludes);packages/**;temp/**</DefaultItemExcludes>
         <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
         <PathMap>$(AppOutputBase)=.\</PathMap>
     </PropertyGroup>
@@ -52,6 +52,10 @@
         <NoWarn>$(NoWarn);MSB3270</NoWarn>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(DisableSteamworks)' == 'true'">
+        <DefineConstants>$(DefineConstants);DISABLESTEAMWORKS</DefineConstants>
+    </PropertyGroup>
+
     <ItemGroup Condition="Exists('$(Sts2DataDir)')">
         <Reference Include="0Harmony">
             <HintPath>$(Sts2DataDir)/0Harmony.dll</HintPath>
@@ -59,6 +63,10 @@
         </Reference>
         <Reference Include="sts2">
             <HintPath>$(Sts2DataDir)/sts2.dll</HintPath>
+            <Private>false</Private>
+        </Reference>
+        <Reference Include="Steamworks.NET" Condition="'$(DisableSteamworks)' != 'true' and Exists('$(Sts2DataDir)/Steamworks.NET.dll')">
+            <HintPath>$(Sts2DataDir)/Steamworks.NET.dll</HintPath>
             <Private>false</Private>
         </Reference>
     </ItemGroup>
