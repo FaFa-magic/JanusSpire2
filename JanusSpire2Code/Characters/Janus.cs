@@ -1,6 +1,7 @@
 using Godot;
 using JanusSpire2.JanusSpire2Code.Audio;
 using JanusSpire2.JanusSpire2Code.Configs;
+using JanusSpire2.JanusSpire2Code.Nodes;
 using JanusSpire2.JanusSpire2Code.Nodes.UI;
 using MegaCrit.Sts2.Core.Animation;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
@@ -143,8 +144,9 @@ public class JanusCharacter : ModCharacterTemplate<JanusCardPool, JanusRelicPool
 	 }
 
 	 // 将游戏的通用角色动作映射到这批 Spine 文件中的实际动画名。
-	 protected override CreatureAnimator? SetupCustomCreatureAnimator(MegaSprite controller) =>
-		 ModAnimStateMachines.Standard(
+	 protected override CreatureAnimator? SetupCustomCreatureAnimator(MegaSprite controller)
+	 {
+		 var animator = ModAnimStateMachines.Standard(
 			 controller,
 			 idleName: "normal",
 			 deadName: "dead",
@@ -152,6 +154,13 @@ public class JanusCharacter : ModCharacterTemplate<JanusCardPool, JanusRelicPool
 			 attackName: "attack",
 			 castName: "attack_left",
 			 relaxedName: "sleep");
+		 // Register both names even before RitsuLib swaps in the selected skeleton.
+		 // The scene-owned idle controller filters against that final skin's animations.
+		 foreach (string animation in NJanusIdleAnimation.AnimationNames)
+			 animator.AddAnyState(NJanusIdleAnimation.TriggerPrefix + animation,
+				 new AnimState(animation) { NextState = new AnimState("normal", true) });
+		 return animator;
+	 }
 	 
 	 public override List<string> GetArchitectAttackVfx() => [
 		 "vfx/vfx_attack_blunt",

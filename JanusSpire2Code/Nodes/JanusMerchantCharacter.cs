@@ -1,6 +1,5 @@
 using Godot;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Screens.Shops;
 
 namespace JanusSpire2.JanusSpire2Code.Nodes;
@@ -15,6 +14,6 @@ public partial class JanusMerchantCharacter : NMerchantCharacter
 			return;
 
 		var sprite = new MegaSprite((Variant)(GodotObject)spineNode);
-		this.RunWhenSpineReady(sprite, _ => PlayAnimation("normal", true));
+		NJanusIdleAnimation.AttachMerchant(this, sprite);
 	}
 }

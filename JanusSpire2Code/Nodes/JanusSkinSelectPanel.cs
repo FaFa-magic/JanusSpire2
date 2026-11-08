@@ -1,6 +1,5 @@
 using Godot;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect;
@@ -30,6 +29,8 @@ public partial class JanusSkinSelectPanel : Control
 	private Node2D? _currentVisualNode;
 	private ModelId? _renderedSkinId;
 	private int _currentIndex;
+	private bool _interactable = true;
+	private NJanusIdleAnimation? _idleAnimation;
 
 	public override void _Ready()
 	{
@@ -40,10 +41,13 @@ public partial class JanusSkinSelectPanel : Control
 
 		_leftArrow.Pressed += OnLeftPressed;
 		_rightArrow.Pressed += OnRightPressed;
+		VisibilityChanged += ResetIdleAnimation;
 	}
 
 	public void SetInteractable(bool interactable)
 	{
+		_interactable = interactable;
+		ResetIdleAnimation();
 		if (GodotObject.IsInstanceValid(_leftArrow))
 		{
 			_leftArrow.Visible = interactable;
@@ -90,6 +94,7 @@ public partial class JanusSkinSelectPanel : Control
 
 	private void RenderSkinVisuals(JanusCharacter skin)
 	{
+		ResetIdleAnimation();
 		_skinNameLabel.Text = new LocString("characters", $"{skin.Id.Entry}.skinName").GetFormattedText();
 
 		if (_renderedSkinId == skin.Id && GodotObject.IsInstanceValid(_currentVisualNode))
@@ -101,6 +106,7 @@ public partial class JanusSkinSelectPanel : Control
 			_visualContainer.RemoveChild(_currentVisualNode);
 			_currentVisualNode.QueueFree();
 			_currentVisualNode = null;
+			_idleAnimation = null;
 		}
 
 		GD.Print($"[JanusSpire2] Skin preview loading: {skin.Id}");
@@ -134,7 +140,13 @@ public partial class JanusSkinSelectPanel : Control
 		_currentVisualNode = visualNode;
 		_visualContainer.AddChild(visualNode);
 		visualNode.Position = new Vector2(150f, 270f);
-		visualNode.RunWhenSpineReady(sprite, animationState => animationState.SetAnimation("normal"));
+		_idleAnimation = NJanusIdleAnimation.AttachPreview(visualNode, sprite, this, () => _interactable);
 		GD.Print($"[JanusSpire2] Skin preview attached: {skin.Id}");
+	}
+
+	private void ResetIdleAnimation()
+	{
+		if (GodotObject.IsInstanceValid(_idleAnimation))
+			_idleAnimation!.ResetActivity();
 	}
 }

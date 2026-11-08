@@ -1,6 +1,7 @@
 using Godot;
 using HarmonyLib;
 using JanusSpire2.JanusSpire2Code.Characters;
+using JanusSpire2.JanusSpire2Code.Nodes;
 using MegaCrit.Sts2.Core.Animation;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
@@ -55,6 +56,7 @@ public sealed class JanusCombatSpineIdleBootstrapPatch : IPatchMethod
 				    !__instance.Entity.IsDead)
 				{
 					__instance.SetAnimationTrigger(CreatureAnimator.idleTrigger);
+					NJanusIdleAnimation.AttachCombat(__instance);
 				}
 			});
 		}).CallDeferred();

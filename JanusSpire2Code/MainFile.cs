@@ -148,6 +148,8 @@ public static class MainFile
 		patcher.RegisterPatch<JanusSkinSelectEmbarkPatch>();
 		patcher.RegisterPatch<JanusSkinSelectUnreadyPatch>();
 		patcher.RegisterPatch<JanusCombatSpineIdleBootstrapPatch>();
+		patcher.RegisterPatch<JanusIdleCardActivityPatch>();
+		patcher.RegisterPatch<JanusIdlePotionActivityPatch>();
 		patcher.RegisterPatch<JanusDeathAnimationCuePatch>();
 		patcher.RegisterPatch<JanusAttackAudioContextPatch>();
 		patcher.RegisterPatch<JanusAttackAudioPlaybackPatch>();
