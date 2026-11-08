@@ -5,7 +5,6 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace JanusSpire2.JanusSpire2Code.Powers;
 
@@ -17,7 +16,8 @@ public sealed class BreakAndRunPower : JanusPowerModel
 
     public override PowerStackType StackType => PowerStackType.Counter;
 
-    [SavedProperty]
+    // Combat-local once-per-turn guard, copied by the normal model clone path.
+    // PowerModel does not participate in [SavedProperty] run persistence.
     public int LastTriggeredTurn
     {
         get => _lastTriggeredTurn;

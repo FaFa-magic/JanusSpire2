@@ -5,7 +5,6 @@ using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +19,8 @@ public sealed class AngelPrayerPower : JanusPowerModel
 
     public override PowerStackType StackType => PowerStackType.Counter;
 
-    [SavedProperty]
+    // Combat-local state. Powers are rebuilt when a combat is replayed on load;
+    // [SavedProperty] is not a supported persistence mechanism for PowerModel.
     public bool IsTakingGrantedExtraTurn
     {
         get => _isTakingGrantedExtraTurn;

@@ -125,6 +125,7 @@ public static class MainFile
 		patcher.RegisterPatch<RecordMappingCanPlayPatch>();
 		patcher.RegisterPatch<RecordMappingSpendResourcesPatch>();
 		patcher.RegisterPatch<RecordMappingPlayBridgePatch>();
+		patcher.RegisterPatch<RecordExtraHandLayoutPatch>();
 		patcher.RegisterPatch<RecordMappingDescriptionPatch>();
 		patcher.RegisterPatch<RecordMappingDynamicVarPreviewPatch>();
 		patcher.RegisterPatch<RecordMappingDynamicVarPreviewResetPatch>();
