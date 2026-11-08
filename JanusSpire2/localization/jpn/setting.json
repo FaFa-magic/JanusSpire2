@@ -10,5 +10,7 @@
   "config.cardFrame.second": "カードフレーム2",
   "config.queenElizabethEnabled.label": "クイーン・エリザベスを登場させる（ホストの設定を使用・次のランから適用）",
   "config.kittenCardGameEnabled.label": "イベント「子猫のカード遊び」を有効にする",
-  "config.restrictRandomGeneration.label": "対象のジェーナスカードが生成するカードを原作キャラとジェーナスに限定（次のプレイから）"
+  "config.restrictRandomGeneration.label": "対象のジェーナスカードが生成するカードを原作キャラとジェーナスに限定（次のプレイから）",
+  "config.customBattleRewards.label": "ジェーナス専用の戦闘報酬画面を有効にする",
+  "config.customBattleRewards.description": "自分の画面表示のみに適用。無効にすると通常の報酬画面を使用します。次に作成される報酬画面から反映されます。"
 }

@@ -1,13 +1,12 @@
 using System.Reflection;
 using JanusSpire2.JanusSpire2Code.Ancients;
 using JanusSpire2.JanusSpire2Code.Audio;
-using JanusSpire2.JanusSpire2Code.Cards;
 using JanusSpire2.JanusSpire2Code.Cards.Ancient;
 using JanusSpire2.JanusSpire2Code.Cards.Basic;
-using JanusSpire2.JanusSpire2Code.Cards.Uncommon;
 using JanusSpire2.JanusSpire2Code.Configs;
 using JanusSpire2.JanusSpire2Code.Keywords;
 using JanusSpire2.JanusSpire2Code.Nodes;
+using JanusSpire2.JanusSpire2Code.Nodes.UI;
 using JanusSpire2.JanusSpire2Code.Patches;
 using JanusSpire2.JanusSpire2Code.Powers;
 using JanusSpire2.JanusSpire2Code.Relics;
@@ -29,6 +28,7 @@ namespace JanusSpire2.JanusSpire2Code;
 public static class MainFile
 {
 	public const string ModId = "JanusSpire2";
+	public static readonly bool EnableWorkshopVote = false;
 
 	public static Logger Logger { get; private set; } = null!;
 		
@@ -48,6 +48,7 @@ public static class MainFile
 		MagicGlovesTransformReward.Register();
 
 		JanusConfigPage.Register();
+		NJanusBattleRewardsController.Register();
 		QueenElizabethSpawnRules.Register();
 		JanusTelemetry.Register();
 		
@@ -150,6 +151,10 @@ public static class MainFile
 		patcher.RegisterPatch<JanusDeathAnimationCuePatch>();
 		patcher.RegisterPatch<JanusAttackAudioContextPatch>();
 		patcher.RegisterPatch<JanusAttackAudioPlaybackPatch>();
+		patcher.RegisterPatch<JanusBattleRewardsShownPatch>();
+		patcher.RegisterPatch<JanusBattleRewardsHiddenPatch>();
+		patcher.RegisterPatch<JanusBattleRewardsProceedShowPatch>();
+		patcher.RegisterPatch<JanusBattleRewardsProceedHidePatch>();
 
 		JanusWorkshopVoteUi.Register(patcher);
 

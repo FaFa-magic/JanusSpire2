@@ -10,5 +10,7 @@
   "config.cardFrame.second": "Frame 2",
   "config.queenElizabethEnabled.label": "Enable Queen Elizabeth (host setting; next run)",
   "config.kittenCardGameEnabled.label": "Enable A Kitten's Card Game",
-  "config.restrictRandomGeneration.label": "Limit four Janus cards to base-game characters and Janus (next run)"
+  "config.restrictRandomGeneration.label": "Limit four Janus cards to base-game characters and Janus (next run)",
+  "config.customBattleRewards.label": "Enable Janus battle results screen",
+  "config.customBattleRewards.description": "Local visual setting only. Disable to use the original rewards screen. Applies when the next rewards screen is created."
 }

@@ -10,5 +10,7 @@
   "config.cardFrame.second": "카드 프레임 2",
   "config.queenElizabethEnabled.label": "퀸 엘리자베스 등장 활성화 (방장 설정 적용, 다음 게임부터)",
   "config.kittenCardGameEnabled.label": "이벤트 ‘아기 고양이의 카드놀이’ 활성화",
-  "config.restrictRandomGeneration.label": "지정된 재너스 카드의 무작위 생성을 기본 캐릭터와 재너스 카드로 제한 (다음 플레이부터)"
+  "config.restrictRandomGeneration.label": "지정된 재너스 카드의 무작위 생성을 기본 캐릭터와 재너스 카드로 제한 (다음 플레이부터)",
+  "config.customBattleRewards.label": "재너스 전용 전투 보상 화면 활성화",
+  "config.customBattleRewards.description": "내 화면 표시에만 적용됩니다. 끄면 기본 보상 화면을 사용합니다. 다음 보상 화면이 생성될 때 적용됩니다."
 }

@@ -24,6 +24,7 @@ public sealed class JanusConfig
 {
     public FjordMosaicMode 多人模式使用哪种模型 { get; set; } = FjordMosaicMode.手部模型;
     public JanusCardFrameMode 选用哪种卡框 { get; set; } = JanusCardFrameMode.卡框一;
+    public bool 启用特殊战斗奖励界面 { get; set; } = true;
     public bool 会出现先古之民伊丽莎白女王 { get; set; } = true;
     public bool 会出现小猫的卡牌游戏事件 { get; set; } = true;
     public bool 随机生成仅限原版角色和雅努斯卡牌 { get; set; } = true;
@@ -55,6 +56,10 @@ public static class JanusConfigPage
         MainFile.ModId, DataKey, SaveScope.Profile,
         static s => s.会出现先古之民伊丽莎白女王,
         static (s, v) => s.会出现先古之民伊丽莎白女王 = v);
+    public static readonly ModSettingsValueBinding<JanusConfig, bool> CustomBattleRewardsBinding = new(
+        MainFile.ModId, DataKey, SaveScope.Profile,
+        static s => s.启用特殊战斗奖励界面,
+        static (s, v) => s.启用特殊战斗奖励界面 = v);
     public static readonly ModSettingsValueBinding<JanusConfig, bool> KittenCardGameEnabledBinding = new(
         MainFile.ModId, DataKey, SaveScope.Profile,
         static s => s.会出现小猫的卡牌游戏事件,
@@ -118,6 +123,11 @@ public static class JanusConfigPage
                         new(JanusCardFrameMode.卡框二, Text("config.cardFrame.second", "Frame 2"))
                     ],
                     presentation: ModSettingsChoicePresentation.Dropdown)
+                .AddToggle(
+                    "custom_battle_rewards",
+                    Text("config.customBattleRewards.label", "Enable Janus battle results screen"),
+                    CustomBattleRewardsBinding,
+                    Text("config.customBattleRewards.description", "Local visual setting. Disable to use the original rewards screen. Applies to the next rewards screen."))
                 .AddToggle(
                     "queen_elizabeth_enabled",
                     Text("config.queenElizabethEnabled.label", "Enable Queen Elizabeth (host setting; next run)"),

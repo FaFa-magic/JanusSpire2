@@ -14,6 +14,9 @@ internal static class JanusWorkshopVoteUi
 
     public static void Register(ModPatcher patcher)
     {
+        if (!MainFile.EnableWorkshopVote)
+            return;
+
         ModNodeAttachmentRegistry.For(MainFile.ModId)
             .RegisterReadyChildFromScene<NCharacterSelectScreen, JanusWorkshopVoteButton>(
                 "workshop_vote", ScenePath,

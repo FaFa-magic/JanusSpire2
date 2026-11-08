@@ -1,6 +1,7 @@
 using Godot;
 using JanusSpire2.JanusSpire2Code.Audio;
 using JanusSpire2.JanusSpire2Code.Configs;
+using JanusSpire2.JanusSpire2Code.Nodes.UI;
 using MegaCrit.Sts2.Core.Animation;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
 using MegaCrit.Sts2.Core.Entities.Characters;
@@ -111,6 +112,11 @@ public class JanusCharacter : ModCharacterTemplate<JanusCardPool, JanusRelicPool
             // VanillaPotionVisualOverrides: []
         ));
 	
+	 protected override IEnumerable<string> ExtraAssetPaths =>
+		 JanusConfigPage.CustomBattleRewardsBinding.Read()
+			 ? JanusBattleRewardsAssets.ForSkin((int)CurrentSkin)
+			 : Array.Empty<string>();
+
 	 // 攻击和施法动画延迟，以对齐动画
 	 public override float AttackAnimDelay => 0f;
 	 public override float CastAnimDelay => 0f;
