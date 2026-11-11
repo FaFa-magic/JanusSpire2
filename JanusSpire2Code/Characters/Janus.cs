@@ -119,7 +119,7 @@ public class JanusCharacter : ModCharacterTemplate<JanusCardPool, JanusRelicPool
 			 "res://JanusSpire2/images/packed/sprite_fonts/Janus_energy_icon.png",
 			 "res://JanusSpire2/images/vfx/ianvs_white_flower.png",
 			 "res://JanusSpire2/images/enchantments/HallucinationEnchantment.png"
-		 }.Concat(JanusConfigPage.CustomBattleRewardsBinding.Read()
+		 }.Concat(JanusReactions.AssetPaths).Concat(JanusConfigPage.CustomBattleRewardsBinding.Read()
 			 ? JanusBattleRewardsAssets.ForSkin((int)CurrentSkin)
 			 : Array.Empty<string>());
 

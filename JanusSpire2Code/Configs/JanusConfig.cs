@@ -23,6 +23,7 @@ public enum JanusCardFrameMode
 public sealed class JanusConfig
 {
     public FjordMosaicMode 多人模式使用哪种模型 { get; set; } = FjordMosaicMode.手部模型;
+    public bool 多人游戏使用雅努斯专属表情 { get; set; } = true;
     public JanusCardFrameMode 选用哪种卡框 { get; set; } = JanusCardFrameMode.卡框一;
     public bool 启用特殊战斗奖励界面 { get; set; } = true;
     public bool 会出现先古之民伊丽莎白女王 { get; set; } = true;
@@ -48,6 +49,10 @@ public static class JanusConfigPage
         MainFile.ModId, DataKey, SaveScope.Profile,
         static s => s.多人模式使用哪种模型,
         static (s, v) => s.多人模式使用哪种模型 = v);
+    public static readonly ModSettingsValueBinding<JanusConfig, bool> CustomMultiplayerReactionsBinding = new(
+        MainFile.ModId, DataKey, SaveScope.Profile,
+        static s => s.多人游戏使用雅努斯专属表情,
+        static (s, v) => s.多人游戏使用雅努斯专属表情 = v);
     public static readonly ModSettingsValueBinding<JanusConfig, JanusCardFrameMode> CardFrameBinding = new(
         MainFile.ModId, DataKey, SaveScope.Profile,
         static s => s.选用哪种卡框,
@@ -116,6 +121,11 @@ public static class JanusConfigPage
                         new(FjordMosaicMode.腿部模型, Text("config.modelMode.legs", "Leg model"))
                     ],
                     presentation: ModSettingsChoicePresentation.Dropdown)
+                .AddToggle(
+                    "custom_multiplayer_reactions",
+                    Text("config.customMultiplayerReactions.label", "Use Janus emotes in multiplayer (press V)"),
+                    CustomMultiplayerReactionsBinding,
+                    Text("config.customMultiplayerReactions.description", "Controls the emote wheel and pop-ups on your screen. Disable to use the original emotes."))
                 .AddChoice("card_frame_mode", Text("config.cardFrame.label", "Custom card frame"),
                     CardFrameBinding,
                     [

@@ -5,6 +5,8 @@
   "config.modelMode.label": "多人模式模型",
   "config.modelMode.hand": "手部模型",
   "config.modelMode.legs": "腿部模型",
+  "config.customMultiplayerReactions.label": "多人游戏使用雅努斯专属表情(按V键)",
+  "config.customMultiplayerReactions.description": "控制本机显示的表情轮盘和弹出表情。关闭后使用原版表情。",
   "config.cardFrame.label": "自定义卡框",
   "config.cardFrame.first": "卡框一",
   "config.cardFrame.second": "卡框二",

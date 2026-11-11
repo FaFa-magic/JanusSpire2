@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Cards.DynamicVars;
 
@@ -48,7 +49,8 @@ public sealed class Involuntarily() : JanusCardModel(1, CardType.Power, CardRari
             cardSource?.Owner != Owner ||
             cardSource.Pile?.Type != PileType.Play ||
             target.Side != CombatSide.Enemy ||
-            amount <= 0M)
+            amount <= 0M ||
+            target.GetPower<SlipperyPower>() is { Amount: > 0 })
         {
             return amount;
         }

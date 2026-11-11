@@ -145,6 +145,9 @@ public static class MainFile
 		patcher.RegisterPatch<JanusSkinSelectPatch>();
 		patcher.RegisterPatch<JanusDiaryTransitionPatch>();
 		patcher.RegisterPatch<JanusLiquidEnergyCounterPatch>();
+		patcher.RegisterPatch<JanusReactionWheelPatch>();
+		patcher.RegisterPatch<JanusLocalReactionPatch>();
+		patcher.RegisterPatch<JanusRemoteReactionPatch>();
 		patcher.RegisterPatch<JanusCharacterSelectVoicePatch>();
 		patcher.RegisterPatch<JanusSkinSelectEmbarkPatch>();
 		patcher.RegisterPatch<JanusSkinSelectUnreadyPatch>();

@@ -5,6 +5,8 @@
   "config.modelMode.label": "멀티플레이 모델",
   "config.modelMode.hand": "손 모델",
   "config.modelMode.legs": "다리 모델",
+  "config.customMultiplayerReactions.label": "멀티플레이에서 재너스 전용 감정 표현 사용 (V 키)",
+  "config.customMultiplayerReactions.description": "내 화면의 감정 표현 휠과 팝업에 적용됩니다. 끄면 기본 감정 표현을 사용합니다.",
   "config.cardFrame.label": "사용자 지정 카드 프레임",
   "config.cardFrame.first": "카드 프레임 1",
   "config.cardFrame.second": "카드 프레임 2",

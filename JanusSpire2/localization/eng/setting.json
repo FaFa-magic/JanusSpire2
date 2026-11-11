@@ -5,6 +5,8 @@
   "config.modelMode.label": "Multiplayer model",
   "config.modelMode.hand": "Hand model",
   "config.modelMode.legs": "Leg model",
+  "config.customMultiplayerReactions.label": "Use Janus emotes in multiplayer (press V)",
+  "config.customMultiplayerReactions.description": "Controls the emote wheel and pop-ups on your screen. Disable to use the original emotes.",
   "config.cardFrame.label": "Custom card frame",
   "config.cardFrame.first": "Frame 1",
   "config.cardFrame.second": "Frame 2",

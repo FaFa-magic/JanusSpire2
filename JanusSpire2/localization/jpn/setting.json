@@ -5,6 +5,8 @@
   "config.modelMode.label": "マルチプレイ用モデル",
   "config.modelMode.hand": "手のモデル",
   "config.modelMode.legs": "脚のモデル",
+  "config.customMultiplayerReactions.label": "マルチプレイでジェーナス専用エモートを使う（Vキー）",
+  "config.customMultiplayerReactions.description": "自分の画面のエモートホイールとポップアップに適用されます。無効にすると標準のエモートを使用します。",
   "config.cardFrame.label": "カスタムカードフレーム",
   "config.cardFrame.first": "カードフレーム1",
   "config.cardFrame.second": "カードフレーム2",

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bnq3e7ai06a3x"
-path="res://.godot/imported/4.jpg-cedcd092a5a9de349dec07d0c59b531d.ctex"
+uid="uid://c8kjelvplx40b"
+path="res://.godot/imported/happy_cultist.png-a7474f5aefc0b2c5f74bac578e0f0f55.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://JanusSpire2/4.jpg"
-dest_files=["res://.godot/imported/4.jpg-cedcd092a5a9de349dec07d0c59b531d.ctex"]
+source_file="res://JanusSpire2/images/ui/reactions/happy_cultist.png"
+dest_files=["res://.godot/imported/happy_cultist.png-a7474f5aefc0b2c5f74bac578e0f0f55.ctex"]
 
 [params]
 

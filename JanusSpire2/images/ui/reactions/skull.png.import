@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bsmr34wklk73h"
-path="res://.godot/imported/3.jpg-1e9141717636bd8554ac89f71d929ac0.ctex"
+uid="uid://bxtchlguvrlfy"
+path="res://.godot/imported/skull.png-994bade64266d0ff1417b1a519b6bca8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://JanusSpire2/3.jpg"
-dest_files=["res://.godot/imported/3.jpg-1e9141717636bd8554ac89f71d929ac0.ctex"]
+source_file="res://JanusSpire2/images/ui/reactions/skull.png"
+dest_files=["res://.godot/imported/skull.png-994bade64266d0ff1417b1a519b6bca8.ctex"]
 
 [params]
 
