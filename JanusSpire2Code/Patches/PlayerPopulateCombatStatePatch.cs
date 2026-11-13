@@ -17,10 +17,11 @@ public sealed class PlayerPopulateCombatStatePatch : IPatchMethod
 
     public static bool IsCritical => false;
 
-    public static ModPatchTarget[] GetTargets() => [new(typeof(Player), nameof(Player.PopulateCombatState))];
+    public static ModPatchTarget[] GetTargets() =>
+        [new(typeof(Player), nameof(Player.PopulateCombatState), [typeof(Rng), typeof(ICombatState)])];
 
     [HarmonyPrefix]
-    public static bool Prefix(Player __instance, Rng rng, CombatState state)
+    public static bool Prefix(Player __instance, Rng rng, ICombatState state)
     {
         foreach (CardModel deckCard in __instance.Deck.Cards.ToList())
         {

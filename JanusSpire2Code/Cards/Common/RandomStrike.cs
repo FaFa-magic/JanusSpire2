@@ -39,11 +39,8 @@ public sealed class RandomStrike() : JanusCardModel(2, CardType.Attack, CardRari
 
         var combatState = CombatState
             ?? throw new InvalidOperationException("RandomStrike must be played during combat.");
-        CardMultiplayerConstraint runConstraint = Owner.RunState.CardMultiplayerConstraint;
         IEnumerable<CardModel> strikeCards = JanusRandomGenerationPool.Filter(ModelDb.AllCards, Owner.RunState).Where(card =>
             card.Tags.Contains(CardTag.Strike)
-            && (card.MultiplayerConstraint == CardMultiplayerConstraint.None
-                || card.MultiplayerConstraint == runConstraint)
             && (card.Rarity == CardRarity.Basic
                 || (card.CanBeGeneratedInCombat
                     && card.Rarity != CardRarity.Ancient

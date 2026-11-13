@@ -8,20 +8,22 @@ namespace JanusSpire2.JanusSpire2Code.Cards;
 
 internal static class JanusRandomGenerationPool
 {
-    internal static IEnumerable<CardModel> Filter(IEnumerable<CardModel> candidates, IRunState runState) =>
-        JanusConfigPage.RestrictRandomGeneration(runState)
-            ? candidates.Where(IsBaseCharacterOrJanusCard)
-            : candidates;
+    internal static IEnumerable<CardModel> Filter(IEnumerable<CardModel> candidates, IRunState runState)
+    {
+        bool restrictPool = JanusConfigPage.RestrictRandomGeneration(runState);
+        return candidates.Where(card => card.IsAllowedInRun(runState) &&
+                                        (!restrictPool || IsBaseCharacterOrJanusCard(card)));
+    }
 
     internal static bool IsBaseCharacterOrJanusCard(CardModel card)
     {
-        if (card.Pool is JanusCardPool)
+        if (card.GetType().Assembly == typeof(JanusCardModel).Assembly)
         {
-            return card.GetType().Assembly == typeof(JanusCardModel).Assembly;
+            return card.Pool is JanusCardPool;
         }
 
         return card.GetType().Assembly == typeof(CardModel).Assembly &&
                card.Pool is IroncladCardPool or SilentCardPool or DefectCardPool or
-                   NecrobinderCardPool or RegentCardPool;
+                   NecrobinderCardPool or RegentCardPool or FoolCardPool;
     }
 }

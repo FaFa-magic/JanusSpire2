@@ -2,7 +2,7 @@ using Godot;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect;
+using MegaCrit.Sts2.Core.Multiplayer.Game.Lobby;
 using JanusSpire2.JanusSpire2Code.Characters;
 
 namespace JanusSpire2.JanusSpire2Code.Nodes;
@@ -25,7 +25,7 @@ public partial class JanusSkinSelectPanel : Control
 	private TextureButton _rightArrow = null!;
 	private Control _visualContainer = null!;
 	private Label _skinNameLabel = null!;
-	private NCharacterSelectScreen _selectScreen = null!;
+	private StartRunLobby _lobby = null!;
 	private Node2D? _currentVisualNode;
 	private ModelId? _renderedSkinId;
 	private int _currentIndex;
@@ -61,9 +61,20 @@ public partial class JanusSkinSelectPanel : Control
 		}
 	}
 
-	public void ShowAndSync(NCharacterSelectScreen screen, JanusCharacter selectedSkin)
+	internal void SetDreadLayout()
 	{
-		_selectScreen = screen;
+		var content = GetNode<Control>("VBoxContainer");
+		content.AnchorLeft = content.AnchorRight = 0.75f;
+		content.AnchorTop = content.AnchorBottom = 0.48f;
+		content.OffsetLeft = -350f;
+		content.OffsetRight = 350f;
+		content.OffsetTop = -180f;
+		content.OffsetBottom = 180f;
+	}
+
+	internal void ShowAndSync(StartRunLobby lobby, JanusCharacter selectedSkin)
+	{
+		_lobby = lobby;
 		Visible = true;
 
 		var selectedIndex = Array.FindIndex(Skins, skin => skin.Id == selectedSkin.Id);
@@ -75,20 +86,26 @@ public partial class JanusSkinSelectPanel : Control
 
 	private void OnLeftPressed()
 	{
-		_currentIndex = (_currentIndex + Skins.Length - 1) % Skins.Length;
-		ApplySelection();
+		ApplySelection(-1);
 	}
 
 	private void OnRightPressed()
 	{
-		_currentIndex = (_currentIndex + 1) % Skins.Length;
-		ApplySelection();
+		ApplySelection(1);
 	}
 
-	private void ApplySelection()
+	private void ApplySelection(int offset)
 	{
+		if (!_interactable || !IsVisibleInTree())
+			return;
+
+		var player = _lobby.LocalPlayer;
+		if (player.isReady || player.isRotatingDread || player.character is not JanusCharacter)
+			return;
+
+		_currentIndex = (_currentIndex + Skins.Length + offset) % Skins.Length;
 		var skin = Skins[_currentIndex];
-		_selectScreen.Lobby.SetLocalCharacter(skin);
+		_lobby.SetLocalCharacter(skin);
 		RenderSkinVisuals(skin);
 	}
 

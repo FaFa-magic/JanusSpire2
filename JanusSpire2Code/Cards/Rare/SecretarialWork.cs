@@ -3,17 +3,31 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes.CommonUi;
+using STS2RitsuLib.Cards.Transforms;
 
 namespace JanusSpire2.JanusSpire2Code.Cards.Rare;
 
 public sealed class SecretarialWork() : JanusCardModel(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
 {
-    private CardModel? _pendingTransformation;
+    internal static void RegisterTransformation()
+    {
+        // Vanilla determines the result pile before OnPlay, when the selection may still be empty.
+        // Move only the replacement from this play after vanilla has updated its table node.
+        ModCardTransformRegistry.For(MainFile.ModId).Register(
+            "secretarial_work_to_hand",
+            context => context.Original is SecretarialWork original &&
+                       context.OriginalPile.Type == PileType.Play &&
+                       context.Replacement.Pile?.Type == PileType.Play &&
+                       ReferenceEquals(original.TransformIntoAfterPlay, context.Replacement),
+            async context =>
+            {
+                await CardPileCmd.Add(context.Replacement, PileType.Hand);
+            });
+    }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        if (Pile?.Type != PileType.Play)
+        if (!cardPlay.IsLastInSeries || Pile?.Type != PileType.Play || CombatState is not { } combatState)
         {
             return;
         }
@@ -25,37 +39,11 @@ public sealed class SecretarialWork() : JanusCardModel(1, CardType.Skill, CardRa
             player: Owner,
             filter: card => card is not SecretarialWork &&
                             (card.Type is CardType.Skill or CardType.Attack))).FirstOrDefault();
-        if (cardModel != null)
+        if (cardModel != null && ReferenceEquals(CombatState, combatState) && Pile?.Type == PileType.Play)
         {
             CardModel cardClone = cardModel.CreateClone();
             cardClone.SetToFreeThisCombat();
-            _pendingTransformation = cardClone;
-        }
-    }
-
-    public override async Task AfterCardChangedPiles(
-        CardModel card,
-        PileType oldPileType,
-        AbstractModel? clonedBy)
-    {
-        if (card != this ||
-            oldPileType != PileType.Play ||
-            Pile?.Type == PileType.Play ||
-            _pendingTransformation is not { } replacement)
-        {
-            return;
-        }
-
-        // Transforming the card while OnPlay is still running leaves its active table node
-        // behind. Wait until vanilla has moved it out of Play, then transform from that pile.
-        _pendingTransformation = null;
-        CardPileAddResult? transformResult = await CardCmd.Transform(
-            this,
-            replacement,
-            CardPreviewStyle.None);
-        if (transformResult?.cardAdded is { } transformedCard)
-        {
-            await CardPileCmd.Add(transformedCard, PileType.Hand);
+            TransformIntoAfterPlay = cardClone;
         }
     }
     

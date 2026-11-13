@@ -3,6 +3,7 @@ using JanusSpire2.JanusSpire2Code.Ancients;
 using JanusSpire2.JanusSpire2Code.Audio;
 using JanusSpire2.JanusSpire2Code.Cards.Ancient;
 using JanusSpire2.JanusSpire2Code.Cards.Basic;
+using JanusSpire2.JanusSpire2Code.Cards.Rare;
 using JanusSpire2.JanusSpire2Code.Configs;
 using JanusSpire2.JanusSpire2Code.Keywords;
 using JanusSpire2.JanusSpire2Code.Nodes;
@@ -46,6 +47,7 @@ public static class MainFile
 		JanusAudio.Register();
 		JanusKeywords.RegisterPersistence();
 		MagicGlovesTransformReward.Register();
+		SecretarialWork.RegisterTransformation();
 
 		JanusConfigPage.Register();
 		NJanusBattleRewardsController.Register();
@@ -110,7 +112,6 @@ public static class MainFile
 		patcher.RegisterPatch<DiaryOnPlayWrapperPatch>();
 		patcher.RegisterPatch<DiaryUnplayableAutoPlayResultPatch>();
 		patcher.RegisterPatch<PerkDiarySelectionRightClickPatch>();
-		patcher.RegisterPatch<CardSelectionExtraTurnReadyPatch>();
 		patcher.RegisterPatch<PreventMultipleCardGenerationPatch>();
 		patcher.RegisterPatch<PreventRejectedGeneratedCardAutoPlayPatch>();
 		patcher.RegisterPatch<PreventForgeCardGenerationPatch>();
@@ -151,6 +152,8 @@ public static class MainFile
 		patcher.RegisterPatch<JanusCharacterSelectVoicePatch>();
 		patcher.RegisterPatch<JanusSkinSelectEmbarkPatch>();
 		patcher.RegisterPatch<JanusSkinSelectUnreadyPatch>();
+		patcher.RegisterPatch<JanusDreadRotationTogglePatch>();
+		patcher.RegisterPatch<JanusSpecialModeRemoteSelectionPatch>();
 		patcher.RegisterPatch<JanusCombatSpineIdleBootstrapPatch>();
 		patcher.RegisterPatch<JanusIdleCardActivityPatch>();
 		patcher.RegisterPatch<JanusIdlePotionActivityPatch>();

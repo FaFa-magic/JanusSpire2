@@ -52,6 +52,7 @@ public sealed class CentennialPuzzleDelayedFlushPatch : IPatchMethod
     {
         __state = null;
         if (!CombatManager.Instance.IsInProgress ||
+            target.CombatState is not { } combatState ||
             target != __instance.Owner.Creature ||
             result.UnblockedDamage <= 0 ||
             __instance.UsedThisCombat ||
@@ -60,7 +61,7 @@ public sealed class CentennialPuzzleDelayedFlushPatch : IPatchMethod
             return;
         }
 
-        __state = CentennialPuzzleDrawScope.Enter();
+        __state = CentennialPuzzleDrawScope.Enter(combatState);
     }
 
     // A finalizer restores the caller's execution context even if another patch throws.
@@ -120,9 +121,9 @@ public sealed class CentennialPuzzleDrawCapturePatch : IPatchMethod
         CentennialPuzzleDrawScope.DrawCall drawCall)
     {
         CardModel? card = await originalTask;
-        if (drawCall.Depth == 1 && card?.Pile?.Type == PileType.Hand)
+        if (drawCall.Depth == 1 && card != null)
         {
-            JanusSingleton.ProtectFromNextDelayedFlush(card);
+            JanusSingleton.ProtectFromNextDelayedFlush(drawCall.CombatState, card);
         }
 
         return card;
@@ -134,10 +135,10 @@ internal static class CentennialPuzzleDrawScope
     private static readonly AsyncLocal<Scope?> Current = new();
     private static readonly AsyncLocal<int> CurrentDrawDepth = new();
 
-    internal static IDisposable Enter()
+    internal static IDisposable Enter(ICombatState combatState)
     {
         Scope? previous = Current.Value;
-        Scope scope = new();
+        Scope scope = new(combatState);
         Current.Value = scope;
         return new ScopeLease(scope, previous);
     }
@@ -153,11 +154,12 @@ internal static class CentennialPuzzleDrawScope
         int previousDepth = CurrentDrawDepth.Value;
         int depth = previousDepth + 1;
         CurrentDrawDepth.Value = depth;
-        return new DrawCall(depth, previousDepth);
+        return new DrawCall(scope.CombatState, depth, previousDepth);
     }
 
-    internal sealed class Scope
+    private sealed class Scope(ICombatState combatState)
     {
+        public ICombatState CombatState { get; } = combatState;
     }
 
     private sealed class ScopeLease(Scope scope, Scope? previous) : IDisposable
@@ -171,8 +173,9 @@ internal static class CentennialPuzzleDrawScope
         }
     }
 
-    internal sealed class DrawCall(int depth, int previousDepth)
+    internal sealed class DrawCall(ICombatState combatState, int depth, int previousDepth)
     {
+        internal ICombatState CombatState { get; } = combatState;
         internal int Depth { get; } = depth;
 
         internal void RestoreCallerDepth()

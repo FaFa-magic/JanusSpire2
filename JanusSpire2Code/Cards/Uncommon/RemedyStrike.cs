@@ -39,12 +39,12 @@ public sealed class RemedyStrike() : JanusCardModel(2, CardType.Attack, CardRari
             cardPools.Remove(Owner.Character.CardPool);
         }
 
-        IEnumerable<CardModel> candidates = JanusRandomGenerationPool.Filter(
+        List<CardModel> candidates = CardFactory.FilterForCombat(JanusRandomGenerationPool.Filter(
             cardPools.SelectMany(pool => pool.GetUnlockedCards(
                 Owner.UnlockState,
                 Owner.RunState.CardMultiplayerConstraint)),
-            Owner.RunState);
-        if (!CardFactory.FilterForCombat(candidates).Any())
+            Owner.RunState)).ToList();
+        if (candidates.Count == 0)
         {
             return;
         }

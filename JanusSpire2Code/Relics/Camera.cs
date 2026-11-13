@@ -30,27 +30,28 @@ public sealed class Camera : JanusRelicModel
             return false;
         }
 
-        List<CardModel> possibleCards = options.GetPossibleCards(player)
-            .Where(card => player.RunState.Players.Count > 1
-                ? card.MultiplayerConstraint != CardMultiplayerConstraint.SingleplayerOnly
-                : card.MultiplayerConstraint != CardMultiplayerConstraint.MultiplayerOnly)
-            .ToList();
-        if (possibleCards.Count == 0)
+        HashSet<ModelId> eligibleIds = options.GetPossibleCards(player)
+            .Where(card => card.IsAllowedInRun(player.RunState) &&
+                           IsRollableRarity(card.Rarity, options.RarityOdds))
+            .Select(card => card.Id)
+            .ToHashSet();
+        if (eligibleIds.Count == 0)
         {
             return false;
         }
 
-        bool allowDuplicates = !possibleCards.Any(card =>
-            cardRewards.All(reward => reward.originalCard.Id != card.Id));
+        HashSet<ModelId> newIds = new(eligibleIds);
+        newIds.ExceptWith(cardRewards.Select(reward => reward.originalCard.Id));
+        HashSet<ModelId> extraCardIds = newIds.Count > 0 ? newIds : eligibleIds;
         CardCreationOptions extraOptions = new(
             options.CardPools,
             CardCreationSource.Other,
             options.RarityOdds,
-            card => (options.CardPoolFilter?.Invoke(card) ?? true) &&
-                    (allowDuplicates || cardRewards.All(reward => reward.originalCard.Id != card.Id)));
+            card => extraCardIds.Contains(card.Id));
         extraOptions.WithFlags(CardCreationFlags.NoModifyHooks |
                                CardCreationFlags.NoCardPoolModifications |
-                               (options.Flags & CardCreationFlags.NoUpgradeRoll));
+                               (options.Flags & (CardCreationFlags.NoUpgrades |
+                                                 CardCreationFlags.NoRarityModification)));
         if (options.RngOverride != null)
         {
             extraOptions.WithRngOverride(options.RngOverride);
@@ -70,4 +71,11 @@ public sealed class Camera : JanusRelicModel
         cardRewards.Add(extraReward);
         return true;
     }
+
+    private static bool IsRollableRarity(CardRarity rarity, CardRarityOddsType odds) => odds switch
+    {
+        CardRarityOddsType.None => false,
+        CardRarityOddsType.Uniform => rarity is not (CardRarity.Basic or CardRarity.Ancient),
+        _ => rarity is CardRarity.Common or CardRarity.Uncommon or CardRarity.Rare
+    };
 }

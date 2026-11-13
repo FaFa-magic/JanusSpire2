@@ -18,6 +18,7 @@ using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Models;
+using STS2RitsuLib.Utils;
 using JanusSpire2.JanusSpire2Code.Relics;
 
 namespace JanusSpire2.JanusSpire2Code.Singleton;
@@ -25,10 +26,15 @@ namespace JanusSpire2.JanusSpire2Code.Singleton;
 [RegisterSingleton]
 public class JanusSingleton : HookedSingletonModel
 {
-    private static readonly HashSet<CardModel> CardsWithDiaryPlayResult = [];
-    private static readonly HashSet<CardModel> CardsProtectedFromNextDelayedFlush = [];
-    private readonly Dictionary<CardModel, (int TurnNumber, int TriggerCount)> _counterattackTriggerCounts = new();
-    private readonly HashSet<Player> _playersRetainingDelayedHand = [];
+    private static readonly AttachedState<ICombatState, CombatData> CombatStates = new(static () => new());
+
+    private sealed class CombatData
+    {
+        public HashSet<CardModel> DiaryPlayResults { get; } = [];
+        public HashSet<CardModel> ProtectedFromDelayedFlush { get; } = [];
+        public Dictionary<CardModel, (int TurnNumber, int TriggerCount)> CounterattackCounts { get; } = [];
+        public HashSet<Player> PlayersRetainingDelayedHand { get; } = [];
+    }
 
     public static JanusSingleton? Instance { get; private set; }
 
@@ -41,16 +47,18 @@ public class JanusSingleton : HookedSingletonModel
         CardModel card,
         Creature? target = null)
     {
-        bool addedMarker = CardsWithDiaryPlayResult.Add(card);
+        ICombatState? combatState = card.Owner?.Creature.CombatState;
+        CombatData? data = combatState != null ? CombatStates.GetOrCreate(combatState) : null;
+        bool addedMarker = data?.DiaryPlayResults.Add(card) == true;
         try
         {
             await CardCmd.AutoPlay(choiceContext, card, target);
         }
         finally
         {
-            if (addedMarker)
+            if (addedMarker && data != null)
             {
-                CardsWithDiaryPlayResult.Remove(card);
+                data.DiaryPlayResults.Remove(card);
             }
         }
     }
@@ -59,10 +67,12 @@ public class JanusSingleton : HookedSingletonModel
         PlayerChoiceContext choiceContext,
         CardModel card)
     {
+        ICombatState? combatState = card.Owner?.Creature.CombatState;
         card.ExhaustOnNextPlay = true;
         await CardCmd.AutoPlay(choiceContext, card, null);
 
-        if (CombatManager.Instance.IsOverOrEnding || card.Owner.Creature.IsDead ||
+        if (combatState == null || !ReferenceEquals(card.Owner?.Creature.CombatState, combatState) ||
+            CombatManager.Instance.IsOverOrEnding || card.Owner.Creature.IsDead ||
             card.Pile is not { } pile || !pile.Type.IsCombatPile() ||
             pile.Type == PileType.Exhaust ||
             CombatManager.Instance.History.Entries.OfType<CardExhaustedEntry>()
@@ -74,19 +84,21 @@ public class JanusSingleton : HookedSingletonModel
         await CardCmd.Exhaust(choiceContext, card);
     }
 
-    internal static bool HasDiaryPlayResult(CardModel card) => CardsWithDiaryPlayResult.Contains(card);
+    internal static bool HasDiaryPlayResult(CardModel card) =>
+        card.Owner?.Creature.CombatState is { } combatState &&
+        CombatStates.TryGetValue(combatState, out CombatData? data) &&
+        data.DiaryPlayResults.Contains(card);
 
-    internal static void ProtectFromNextDelayedFlush(CardModel card)
+    internal static void ProtectFromNextDelayedFlush(ICombatState combatState, CardModel card)
     {
-        CardsProtectedFromNextDelayedFlush.Add(card);
+        if (card.Pile?.Type == PileType.Hand && ReferenceEquals(card.Owner.Creature.CombatState, combatState))
+        {
+            CombatStates.GetOrCreate(combatState).ProtectedFromDelayedFlush.Add(card);
+        }
     }
 
     public override async Task BeforeCombatStart()
     {
-        CardsWithDiaryPlayResult.Clear();
-        CardsProtectedFromNextDelayedFlush.Clear();
-        _counterattackTriggerCounts.Clear();
-        _playersRetainingDelayedHand.Clear();
         foreach (Player player in CurrentCombatState?.Players ?? [])
         {
             await RecordExtraHandManager.SyncPlayer(player);
@@ -98,13 +110,13 @@ public class JanusSingleton : HookedSingletonModel
         CombatSide side,
         IEnumerable<Creature> participants)
     {
-        if (side != CombatSide.Player || CurrentCombatState == null)
+        if (side != CombatSide.Player || CurrentCombatState is not { } combatState)
         {
             return Task.CompletedTask;
         }
 
         HashSet<Creature> participantSet = participants.ToHashSet();
-        foreach (Player player in CurrentCombatState.Players)
+        foreach (Player player in combatState.Players)
         {
             if (!participantSet.Contains(player.Creature) ||
                 player.Relics.All(relic => relic is not ISkipPlayerFlushRelic))
@@ -114,11 +126,11 @@ public class JanusSingleton : HookedSingletonModel
 
             if (player.Creature.HasPower<RetainHandPower>())
             {
-                _playersRetainingDelayedHand.Add(player);
+                CombatStates.GetOrCreate(combatState).PlayersRetainingDelayedHand.Add(player);
             }
-            else
+            else if (CombatStates.TryGetValue(combatState, out CombatData? data))
             {
-                _playersRetainingDelayedHand.Remove(player);
+                data.PlayersRetainingDelayedHand.Remove(player);
             }
         }
 
@@ -130,14 +142,20 @@ public class JanusSingleton : HookedSingletonModel
         CombatSide side,
         IEnumerable<Creature> participants)
     {
-        if (side != CombatSide.Enemy || CurrentCombatState == null)
+        if (side != CombatSide.Enemy || CurrentCombatState is not { } combatState)
         {
             return;
         }
 
-        foreach (Player player in CurrentCombatState.Players)
+        CombatData data = CombatStates.GetOrCreate(combatState);
+        foreach (Player player in combatState.Players)
         {
-            bool retainDelayedHand = _playersRetainingDelayedHand.Remove(player);
+            if (!ReferenceEquals(CurrentCombatState, combatState))
+            {
+                return;
+            }
+
+            bool retainDelayedHand = data.PlayersRetainingDelayedHand.Remove(player);
             if (player.Relics.All(relic => relic is not ISkipPlayerFlushRelic))
             {
                 continue;
@@ -145,9 +163,10 @@ public class JanusSingleton : HookedSingletonModel
 
             await FlushDelayedHand(
                 choiceContext,
-                CurrentCombatState,
+                combatState,
                 player,
-                retainDelayedHand);
+                retainDelayedHand,
+                data.ProtectedFromDelayedFlush);
         }
     }
 
@@ -155,9 +174,11 @@ public class JanusSingleton : HookedSingletonModel
         PlayerChoiceContext choiceContext,
         ICombatState combatState,
         Player player,
-        bool retainHand)
+        bool retainHand,
+        HashSet<CardModel> protectedCards)
     {
-        if (player.Creature.IsDead || player.PlayerCombatState == null)
+        if (!ReferenceEquals(player.Creature.CombatState, combatState) ||
+            player.Creature.IsDead || player.PlayerCombatState == null)
         {
             return;
         }
@@ -169,8 +190,7 @@ public class JanusSingleton : HookedSingletonModel
 
         foreach (CardModel card in hand.Cards.ToArray())
         {
-            bool protectedByCentennialPuzzle =
-                CardsProtectedFromNextDelayedFlush.Remove(card);
+            bool protectedByCentennialPuzzle = protectedCards.Remove(card);
             if (!shouldFlush || card.ShouldRetainThisTurn || protectedByCentennialPuzzle)
             {
                 cardsToRetain.Add(card);
@@ -184,6 +204,11 @@ public class JanusSingleton : HookedSingletonModel
         List<CardModel> flushedCards = [];
         foreach (CardModel card in cardsToFlush)
         {
+            if (!ReferenceEquals(player.Creature.CombatState, combatState))
+            {
+                return;
+            }
+
             if (!ReferenceEquals(card.Pile, hand))
             {
                 continue;
@@ -196,12 +221,15 @@ public class JanusSingleton : HookedSingletonModel
             }
         }
 
-        await Hook.AfterFlush(
-            combatState,
-            player,
-            choiceContext,
-            flushedCards,
-            cardsToRetain);
+        if (ReferenceEquals(player.Creature.CombatState, combatState))
+        {
+            await Hook.AfterFlush(
+                combatState,
+                player,
+                choiceContext,
+                flushedCards,
+                cardsToRetain);
+        }
     }
 
     public override async Task AfterCardChangedPiles(
@@ -209,9 +237,11 @@ public class JanusSingleton : HookedSingletonModel
         PileType oldPileType,
         AbstractModel? clonedBy)
     {
-        if (oldPileType == PileType.Hand && card.Pile?.Type != PileType.Hand)
+        if (oldPileType == PileType.Hand && card.Pile?.Type != PileType.Hand &&
+            CurrentCombatState is { } combatState &&
+            CombatStates.TryGetValue(combatState, out CombatData? data))
         {
-            CardsProtectedFromNextDelayedFlush.Remove(card);
+            data.ProtectedFromDelayedFlush.Remove(card);
         }
 
         if (card is not JanusRecordMappingCard && card.Owner?.PlayerCombatState != null)
@@ -237,12 +267,12 @@ public class JanusSingleton : HookedSingletonModel
         await TriggerCounterattacks(choiceContext, player);
     }
 
-    private async Task TriggerCounterattacks(
+    private static async Task TriggerCounterattacks(
         PlayerChoiceContext choiceContext,
         Player player)
     {
         PlayerCombatState? playerCombatState = player.PlayerCombatState;
-        if (playerCombatState == null ||
+        if (playerCombatState == null || player.Creature.CombatState is not { } combatState ||
             CombatManager.Instance.IsOverOrEnding ||
             player.Creature.IsDead)
         {
@@ -265,12 +295,20 @@ public class JanusSingleton : HookedSingletonModel
             card.Keywords.Contains(JanusKeywords.Counterattack) &&
             !counterattackCards.Contains(card)));
 
+        if (counterattackCards.Count == 0)
+        {
+            return;
+        }
+
+        var counts = CombatStates.GetOrCreate(combatState).CounterattackCounts;
         foreach (CardModel card in counterattackCards)
         {
             // Earlier counterattacks can move another candidate during their hooks
             // or choices. Preserve snapshot order, but recheck current eligibility.
             PileType? sourcePile = card.Pile?.Type;
-            if (CombatManager.Instance.IsOverOrEnding || player.Creature.IsDead)
+            if (!ReferenceEquals(player.Creature.CombatState, combatState) ||
+                !ReferenceEquals(player.PlayerCombatState, playerCombatState) ||
+                CombatManager.Instance.IsOverOrEnding || player.Creature.IsDead)
                 break;
             if (sourcePile == null || sourcePile == PileType.None || sourcePile == PileType.Play ||
                 sourcePile == PileType.Exhaust || card.Owner != player ||
@@ -281,7 +319,7 @@ public class JanusSingleton : HookedSingletonModel
             int triggerLimit = card.EnergyCost.CostsX ? 1 : card.EnergyCost.GetAmountToSpend();
             int turnNumber = playerCombatState.TurnNumber;
             (int TurnNumber, int TriggerCount) triggerState =
-                _counterattackTriggerCounts.GetValueOrDefault(card);
+                counts.GetValueOrDefault(card);
             int triggerCount = triggerState.TurnNumber == turnNumber
                 ? triggerState.TriggerCount
                 : 0;
@@ -290,19 +328,18 @@ public class JanusSingleton : HookedSingletonModel
                 continue;
             }
 
-            _counterattackTriggerCounts[card] = (turnNumber, triggerCount + 1);
+            counts[card] = (turnNumber, triggerCount + 1);
             CardModel copy = card.CreateClone();
             copy.ExhaustOnNextPlay = true;
             CardPileAddResult addResult = await CardPileCmd.AddGeneratedCardToCombat(
                 copy,
                 PileType.Play,
                 player);
-            if (addResult.success)
-                await AutoPlayGeneratedCardAndExhaust(choiceContext, addResult.cardAdded);
-
-            if (CombatManager.Instance.IsOverOrEnding || player.Creature.IsDead)
+            if (addResult.success &&
+                ReferenceEquals(player.Creature.CombatState, combatState) &&
+                ReferenceEquals(player.PlayerCombatState, playerCombatState))
             {
-                break;
+                await AutoPlayGeneratedCardAndExhaust(choiceContext, addResult.cardAdded);
             }
         }
     }
@@ -336,7 +373,7 @@ public class JanusSingleton : HookedSingletonModel
             return cardLocation;
         }
 
-        if (CardsWithDiaryPlayResult.Contains(card) &&
+        if (HasDiaryPlayResult(card) &&
             cardLocation.pileType.IsCombatPile() &&
             cardLocation.pileType != PileType.Play)
         {
