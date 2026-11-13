@@ -18,7 +18,7 @@ internal static class JanusSkinSelectPanelController
 	private static JanusSkinSelectPanel? _panelInstance;
 	private static NCharacterSelectScreen? _audioOwnerScreen;
 
-	public static void OnCharacterSelected(NCharacterSelectScreen screen, CharacterModel character)
+	public static void OnCharacterSelected(NCharacterSelectScreen screen, CharacterModel? character)
 	{
 		if (!ReferenceEquals(_audioOwnerScreen, screen))
 		{
@@ -40,7 +40,7 @@ internal static class JanusSkinSelectPanelController
 			return;
 		}
 
-		var infoPanel = screen.GetNodeOrNull<Control>("%InfoPanel");
+		var infoPanel = screen.GetNodeOrNull<Control>("InfoPanel");
 		if (infoPanel is null)
 			return;
 
@@ -80,13 +80,14 @@ public sealed class JanusSkinSelectPatch : IPatchMethod
 		new(
 			typeof(NCharacterSelectScreen),
 			nameof(NCharacterSelectScreen.SelectCharacter),
-			[typeof(NCharacterSelectButton), typeof(CharacterModel)])
+			[typeof(NCharacterSelectButton)])
 	];
 
 	[HarmonyPostfix]
-	public static void Postfix(NCharacterSelectScreen __instance, CharacterModel characterModel)
+	public static void Postfix(NCharacterSelectScreen __instance, NCharacterSelectButton charSelectButton)
 	{
-		JanusSkinSelectPanelController.OnCharacterSelected(__instance, characterModel);
+		JanusSkinSelectPanelController.OnCharacterSelected(
+			__instance, charSelectButton.IsRandom ? null : charSelectButton.Character);
 	}
 
 	[HarmonyPrefix]

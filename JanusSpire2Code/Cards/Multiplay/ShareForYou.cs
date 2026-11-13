@@ -3,7 +3,6 @@ using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Multiplayer;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
@@ -33,7 +32,6 @@ public sealed class ShareForYou() : JanusCardModel(1, CardType.Skill, CardRarity
             BranchingPlayerChoiceContext allyChoiceContext = new(
                 this,
                 localPlayerId,
-                GameActionType.Combat,
                 choiceContext);
             Task shareTask = ShareWithAlly(allyChoiceContext, ally, diaryCards);
             await allyChoiceContext.AssignTaskAndWaitForPauseOrCompletion(shareTask);

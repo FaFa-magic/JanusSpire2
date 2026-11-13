@@ -28,7 +28,7 @@ public sealed class RelicFragment : JanusRelicModel
             await RelicCmd.Remove(fragment);
         }
 
-        RelicModel randomRelic = RelicFactory.PullNextRelicFromFront(Owner).ToMutable();
+        RelicModel randomRelic = RelicFactory.PullNextRelicForRewardFromFront(Owner).ToMutable();
         await RelicCmd.Obtain(randomRelic, Owner);
     }
 }
