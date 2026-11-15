@@ -1,5 +1,6 @@
 ﻿using STS2RitsuLib;
 using STS2RitsuLib.Data;
+using JanusSpire2.JanusSpire2Code.Characters;
 using STS2RitsuLib.Settings;
 using STS2RitsuLib.Utils;
 using STS2RitsuLib.Utils.Persistence;
@@ -29,6 +30,7 @@ public sealed class JanusConfig
     public bool 会出现先古之民伊丽莎白女王 { get; set; } = true;
     public bool 会出现小猫的卡牌游戏事件 { get; set; } = true;
     public bool 随机生成仅限原版角色和雅努斯卡牌 { get; set; } = true;
+    public JanusSkin LastPlayedSkin { get; set; } = JanusSkin.Default;
 }
 
 public sealed class JanusGenerationRunSettings
@@ -73,6 +75,10 @@ public static class JanusConfigPage
         MainFile.ModId, DataKey, SaveScope.Profile,
         static s => s.随机生成仅限原版角色和雅努斯卡牌,
         static (s, v) => s.随机生成仅限原版角色和雅努斯卡牌 = v);
+    internal static readonly ModSettingsValueBinding<JanusConfig, JanusSkin> LastPlayedSkinBinding = new(
+        MainFile.ModId, DataKey, SaveScope.Profile,
+        static s => s.LastPlayedSkin,
+        static (s, v) => s.LastPlayedSkin = v);
 
     public static bool RestrictRandomGeneration(IRunState runState) =>
         runState is not RunState liveRun ||

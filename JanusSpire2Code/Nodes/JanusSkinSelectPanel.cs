@@ -32,6 +32,9 @@ public partial class JanusSkinSelectPanel : Control
 	private bool _interactable = true;
 	private NJanusIdleAnimation? _idleAnimation;
 
+	internal static JanusCharacter ResolvePreferredSkin(JanusSkin preferred, JanusCharacter fallback) =>
+		Array.Find(Skins, skin => skin.CurrentSkin == preferred) ?? fallback;
+
 	public override void _Ready()
 	{
 		_leftArrow = GetNode<TextureButton>("VBoxContainer/HBoxContainer/LeftArrow");
@@ -61,15 +64,16 @@ public partial class JanusSkinSelectPanel : Control
 		}
 	}
 
-	internal void SetDreadLayout()
+	internal void SetScreenLayout(Vector2 anchor, float scale = 1f)
 	{
 		var content = GetNode<Control>("VBoxContainer");
-		content.AnchorLeft = content.AnchorRight = 0.75f;
-		content.AnchorTop = content.AnchorBottom = 0.48f;
-		content.OffsetLeft = -350f;
-		content.OffsetRight = 350f;
-		content.OffsetTop = -180f;
-		content.OffsetBottom = 180f;
+		content.AnchorLeft = content.AnchorRight = anchor.X;
+		content.AnchorTop = content.AnchorBottom = anchor.Y;
+		content.OffsetLeft = -350f * scale;
+		content.OffsetTop = -180f * scale;
+		content.OffsetRight = content.OffsetLeft + 700f;
+		content.OffsetBottom = content.OffsetTop + 360f;
+		content.Scale = Vector2.One * scale;
 	}
 
 	internal void ShowAndSync(StartRunLobby lobby, JanusCharacter selectedSkin)
@@ -100,12 +104,12 @@ public partial class JanusSkinSelectPanel : Control
 			return;
 
 		var player = _lobby.LocalPlayer;
-		if (player.isReady || player.isRotatingDread || player.character is not JanusCharacter)
+		if (player.isReady || player.character is not JanusCharacter)
 			return;
 
 		_currentIndex = (_currentIndex + Skins.Length + offset) % Skins.Length;
 		var skin = Skins[_currentIndex];
-		_lobby.SetLocalCharacter(skin);
+		_lobby.SetLocalCharacter(skin, player.isRotatingDread);
 		RenderSkinVisuals(skin);
 	}
 

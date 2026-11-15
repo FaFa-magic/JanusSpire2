@@ -144,6 +144,8 @@ public static class MainFile
 		patcher.RegisterPatch<JanusSkinAncientDialogueLookupPatch>();
 		patcher.RegisterPatch<JanusSharedGameOverProgressionPatch>();
 		patcher.RegisterPatch<JanusSkinSelectPatch>();
+		patcher.RegisterPatch<JanusRestorePreferredSkinPatch>();
+		patcher.RegisterPatch<JanusSavePreferredSkinPatch>();
 		patcher.RegisterPatch<JanusDiaryTransitionPatch>();
 		patcher.RegisterPatch<JanusLiquidEnergyCounterPatch>();
 		patcher.RegisterPatch<JanusReactionWheelPatch>();
@@ -152,7 +154,11 @@ public static class MainFile
 		patcher.RegisterPatch<JanusCharacterSelectVoicePatch>();
 		patcher.RegisterPatch<JanusSkinSelectEmbarkPatch>();
 		patcher.RegisterPatch<JanusSkinSelectUnreadyPatch>();
+		patcher.RegisterPatch<JanusDreadSkinPanelPatch>();
 		patcher.RegisterPatch<JanusDreadRotationTogglePatch>();
+		patcher.RegisterPatch<JanusDreadRotationIdPatch>();
+		patcher.RegisterPatch<JanusDreadSaveRotationPatch>();
+		patcher.RegisterPatch<JanusDreadPreferredCharacterPatch>();
 		patcher.RegisterPatch<JanusSpecialModeRemoteSelectionPatch>();
 		patcher.RegisterPatch<JanusCombatSpineIdleBootstrapPatch>();
 		patcher.RegisterPatch<JanusIdleCardActivityPatch>();
