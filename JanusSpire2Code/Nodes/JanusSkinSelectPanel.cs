@@ -64,13 +64,13 @@ public partial class JanusSkinSelectPanel : Control
 		}
 	}
 
-	internal void SetScreenLayout(Vector2 anchor, float scale = 1f)
+	internal void SetScreenLayout(Vector2 anchor, float scale = 1f, Vector2 centerOffset = default)
 	{
 		var content = GetNode<Control>("VBoxContainer");
 		content.AnchorLeft = content.AnchorRight = anchor.X;
 		content.AnchorTop = content.AnchorBottom = anchor.Y;
-		content.OffsetLeft = -350f * scale;
-		content.OffsetTop = -180f * scale;
+		content.OffsetLeft = centerOffset.X - 350f * scale;
+		content.OffsetTop = centerOffset.Y - 180f * scale;
 		content.OffsetRight = content.OffsetLeft + 700f;
 		content.OffsetBottom = content.OffsetTop + 360f;
 		content.Scale = Vector2.One * scale;

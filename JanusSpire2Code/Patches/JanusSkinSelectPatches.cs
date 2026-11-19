@@ -82,7 +82,10 @@ internal static class JanusSkinSelectPanelController
 			panel = scene.Instantiate<JanusSkinSelectPanel>(PackedScene.GenEditState.Disabled);
 			parent.AddChildSafely(panel);
 			if (screen is NDreadScreen)
-				panel.SetScreenLayout(new Vector2(0.75f, 0.48f));
+			{
+				// Dread has no InfoPanel. Match the standard panel's center relative to the screen.
+				panel.SetScreenLayout(new Vector2(0.5f, 0.5f), centerOffset: new Vector2(613f, 22f));
+			}
 			else if (screen is NCustomRunScreen)
 				panel.SetScreenLayout(new Vector2(0.07f, 0.43f), scale: 0.36f);
 			else

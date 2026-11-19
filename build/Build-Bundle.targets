@@ -1,0 +1,24 @@
+<Project>
+    <PropertyGroup>
+        <BuildBundle Condition="'$(BuildBundle)' == ''">true</BuildBundle>
+        <DeployBundle Condition="'$(DeployBundle)' == ''">true</DeployBundle>
+        <ModsPath Condition="'$(ModsPath)' == '' and '$(IsOSX)' == 'true'">$(Sts2Path)/SlayTheSpire2.app/Contents/MacOS/mods</ModsPath>
+        <ModsPath Condition="'$(ModsPath)' == ''">$(Sts2Path)/mods</ModsPath>
+        <_BundleModsPath Condition="'$(DeployBundle)' == 'true'">$(ModsPath)</_BundleModsPath>
+        <StableSts2DataDir Condition="'$(StableSts2DataDir)' == '' and Exists('$(MSBuildProjectDirectory)/../TashkentSpire2/.artifacts/references/g0.111.0/sts2.dll')">$(MSBuildProjectDirectory)/../TashkentSpire2/.artifacts/references/g0.111.0</StableSts2DataDir>
+        <StableSts2DataDir Condition="'$(StableSts2DataDir)' == ''">$(MSBuildProjectDirectory)/temp/references/g0.111.0</StableSts2DataDir>
+        <PowerShellPath Condition="'$(PowerShellPath)' == '' and '$(IsWindows)' == 'true'">$(SystemRoot)/System32/WindowsPowerShell/v1.0/powershell.exe</PowerShellPath>
+        <PowerShellPath Condition="'$(PowerShellPath)' == ''">pwsh</PowerShellPath>
+        <BundlePowerShellPolicy Condition="'$(IsWindows)' == 'true'">-ExecutionPolicy RemoteSigned</BundlePowerShellPolicy>
+    </PropertyGroup>
+
+    <Target Name="BuildJanusBundle" AfterTargets="Build"
+            Condition="'$(BuildBundle)' == 'true' and '$(DesignTimeBuild)' != 'true' and '$(IsInnerGodotExport)' != 'true'">
+        <Error Text="Set StableSts2DataDir to the game 0.111.0 assembly directory."
+               Condition="!Exists('$(StableSts2DataDir)/sts2.dll')" />
+        <Error Text="Godot 4.5.1 Mono not found at '$(GodotPath)'." Condition="!Exists('$(GodotPath)')" />
+        <Exec Command="&quot;$(PowerShellPath)&quot; -NoProfile -NonInteractive $(BundlePowerShellPolicy) -File &quot;$(MSBuildProjectDirectory)/build/Build-Bundle.ps1&quot;"
+              EnvironmentVariables="JANUS_CONFIGURATION=$(Configuration);JANUS_GODOT=$(GodotPath);JANUS_STABLE_DATA=$(StableSts2DataDir);JANUS_CURRENT_DATA=$(Sts2DataDir);JANUS_CURRENT_GAME=$(Sts2Path);JANUS_STABLE_REF=$(StableSourceRef);JANUS_CURRENT_DLL=$(TargetPath);JANUS_BUNDLE_MODS_PATH=$(_BundleModsPath)"
+              WorkingDirectory="$(MSBuildProjectDirectory)" UseUtf8Encoding="Always" />
+    </Target>
+</Project>

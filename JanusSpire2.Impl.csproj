@@ -1,12 +1,17 @@
 ﻿<Project Sdk="Godot.NET.Sdk/4.5.1" InitialTargets="CheckDependencyPaths">
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
+        <AssemblyName>JanusSpire2.Impl</AssemblyName>
+        <RootNamespace>JanusSpire2</RootNamespace>
+        <Version>$([System.Text.RegularExpressions.Regex]::Match($([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)/mod_manifest.json')), '&quot;version&quot;\s*:\s*&quot;v?([0-9.]+)&quot;').Groups[1].Value)</Version>
         <!-- This DLL is loaded by the host game on Windows, macOS and Linux. -->
         <PlatformTarget>AnyCPU</PlatformTarget>
         <ImplicitUsings>true</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <DefaultItemExcludes>$(DefaultItemExcludes);packages/**;temp/**</DefaultItemExcludes>
+        <DefaultItemExcludes>$(DefaultItemExcludes);packages/**;temp/**;build/**</DefaultItemExcludes>
+        <RitsuLibVersion Condition="'$(RitsuLibVersion)' == ''">0.6.12</RitsuLibVersion>
+        <RitsuLibAutoCopy>false</RitsuLibAutoCopy>
         <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
         <PathMap>$(AppOutputBase)=.\</PathMap>
     </PropertyGroup>
@@ -21,34 +26,30 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(IsWindows)' == 'true'">
-        <AutoSteamPath>$(registry:HKEY_CURRENT_USER\Software\Valve\Steam@SteamPath)\steamapps</AutoSteamPath>
-        <SteamLibraryPath Condition="Exists('$(AutoSteamPath)/common/Slay the Spire 2')">$(AutoSteamPath)</SteamLibraryPath>
+        <AutoSteamPath Condition="'$(AutoSteamPath)' == '' and '$(SteamLibraryPath)' == '' and !Exists('D:/STEAM/steamapps/common/Slay the Spire 2')">$(registry:HKEY_CURRENT_USER\Software\Valve\Steam@SteamPath)\steamapps</AutoSteamPath>
+        <SteamLibraryPath Condition="'$(SteamLibraryPath)' == '' and Exists('$(AutoSteamPath)/common/Slay the Spire 2')">$(AutoSteamPath)</SteamLibraryPath>
         <SteamLibraryPath Condition="'$(SteamLibraryPath)' == ''">D:/STEAM/steamapps</SteamLibraryPath>
 
-        <Sts2Path>$(SteamLibraryPath)/common/Slay the Spire 2</Sts2Path>
-        <ModsPath>$(Sts2Path)/mods/</ModsPath>
-        <Sts2DataDir>$(Sts2Path)/data_sts2_windows_x86_64</Sts2DataDir>
-        <GodotPath>D:/Godot/Godot_v4.5.1-stable_mono_win64/Godot_v4.5.1-stable_mono_win64_console.exe</GodotPath>
+        <Sts2Path Condition="'$(Sts2Path)' == ''">$(SteamLibraryPath)/common/Slay the Spire 2</Sts2Path>
+        <Sts2DataDir Condition="'$(Sts2DataDir)' == ''">$(Sts2Path)/data_sts2_windows_x86_64</Sts2DataDir>
+        <GodotPath Condition="'$(GodotPath)' == ''">D:/Godot/Godot_v4.5.1-stable_mono_win64/Godot_v4.5.1-stable_mono_win64_console.exe</GodotPath>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(IsLinux)' == 'true'">
-        <SteamLibraryPath>$(HOME)/.local/share/Steam/steamapps</SteamLibraryPath>
-        <GodotPath>$(SteamLibraryPath)/common/Godot Engine/godot.x11.opt.tools.64</GodotPath>
-        <Sts2Path>$(SteamLibraryPath)/common/Slay the Spire 2</Sts2Path>
-        <ModsPath>$(Sts2Path)/mods/</ModsPath>
-        <Sts2DataDir>$(Sts2Path)/data_sts2_linuxbsd_x86_64</Sts2DataDir>
+        <SteamLibraryPath Condition="'$(SteamLibraryPath)' == ''">$(HOME)/.local/share/Steam/steamapps</SteamLibraryPath>
+        <GodotPath Condition="'$(GodotPath)' == ''">$(SteamLibraryPath)/common/Godot Engine/godot.x11.opt.tools.64</GodotPath>
+        <Sts2Path Condition="'$(Sts2Path)' == ''">$(SteamLibraryPath)/common/Slay the Spire 2</Sts2Path>
+        <Sts2DataDir Condition="'$(Sts2DataDir)' == ''">$(Sts2Path)/data_sts2_linuxbsd_x86_64</Sts2DataDir>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(IsOSX)' == 'true'">
-        <SteamLibraryPath>$(HOME)/Library/Application Support/Steam/steamapps</SteamLibraryPath>
-        <GodotPath>$(HOME)/Applications/Godot_mono.app/Contents/MacOS/Godot</GodotPath>
-        <Sts2Path>$(SteamLibraryPath)/common/Slay the Spire 2</Sts2Path>
-        <ModsPath>$(Sts2Path)/SlayTheSpire2.app/Contents/MacOS/mods/</ModsPath>
-        <Sts2DataDir>$(Sts2Path)/SlayTheSpire2.app/Contents/Resources/data_sts2_macos_x86_64</Sts2DataDir>
+        <SteamLibraryPath Condition="'$(SteamLibraryPath)' == ''">$(HOME)/Library/Application Support/Steam/steamapps</SteamLibraryPath>
+        <GodotPath Condition="'$(GodotPath)' == ''">$(HOME)/Applications/Godot_mono.app/Contents/MacOS/Godot</GodotPath>
+        <Sts2Path Condition="'$(Sts2Path)' == ''">$(SteamLibraryPath)/common/Slay the Spire 2</Sts2Path>
+        <Sts2DataDir Condition="'$(Sts2DataDir)' == ''">$(Sts2Path)/SlayTheSpire2.app/Contents/Resources/data_sts2_macos_x86_64</Sts2DataDir>
     </PropertyGroup>
 
     <PropertyGroup>
-        <RitsuLibDeployDir>$(ModsPath)STS2-RitsuLib/</RitsuLibDeployDir>
         <NoWarn>$(NoWarn);MSB3270</NoWarn>
     </PropertyGroup>
 
@@ -63,7 +64,9 @@
         </Reference>
         <Reference Include="sts2">
             <HintPath>$(Sts2DataDir)/sts2.dll</HintPath>
-            <Private>false</Private>
+            <!-- The Godot editor loads Debug assemblies while exporting PCKs. -->
+            <Private Condition="'$(Configuration)' == 'Debug'">true</Private>
+            <Private Condition="'$(Configuration)' != 'Debug'">false</Private>
         </Reference>
         <Reference Include="Steamworks.NET" Condition="'$(DisableSteamworks)' != 'true' and Exists('$(Sts2DataDir)/Steamworks.NET.dll')">
             <HintPath>$(Sts2DataDir)/Steamworks.NET.dll</HintPath>
@@ -72,7 +75,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="STS2.RitsuLib" Version="0.6.11" PrivateAssets="All" GeneratePathProperty="true" />
+        <PackageReference Include="STS2.RitsuLib" Version="$(RitsuLibVersion)" PrivateAssets="All" />
         <AdditionalFiles Include="JanusSpire2/localization/**/*.json"/>
     </ItemGroup>
 
@@ -92,7 +95,7 @@
 
     <ItemGroup>
         <None Include=".gitignore"/>
-        <None Include="JanusSpire2.json" />
+        <None Update="mod_manifest.json" />
         <None Include="project.godot"/>
         <None Include="JanusSpire2/**"/>
     </ItemGroup>
@@ -115,27 +118,8 @@
     <Target Name="CheckDependencyPaths">
         <Error
                 Text=" Slay the Spire 2 data not found at path '$(Sts2DataDir)'"
-                Condition="'$(Sts2DataDir)' == '' or !Exists('$(Sts2DataDir)')"/>
-        <Error
-                Text=" Godot not found at path '$(GodotPath)'"
-                Condition="'$(GodotPath)' == '' or !Exists('$(GodotPath)')"/>
+                Condition="!Exists('$(Sts2DataDir)/sts2.dll')"/>
     </Target>
 
-    <Target Name="CopyToModsFolderOnBuild" AfterTargets="PostBuildEvent" Condition="'$(IsInnerGodotExport)' != 'true'">
-        <Message Text="Copying .dll and manifest to mods folder." Importance="high"/>
-        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ModsPath)$(MSBuildProjectName)/"/>
-        <Copy SourceFiles="JanusSpire2.json" DestinationFolder="$(ModsPath)$(MSBuildProjectName)/"/>
-    </Target>
-
-    <Target Name="GodotPublish" AfterTargets="Publish" Condition="'$(GodotPath)' != '' and Exists('$(GodotPath)') and '$(IsInnerGodotExport)' != 'true'">
-        <Message Text="Exporting Godot .pck to mods folder" Importance="high"/>
-        <Exec Command="&quot;$(GodotPath)&quot; --headless --export-pack &quot;Windows Desktop&quot; &quot;$(ModsPath)$(MSBuildProjectName)/$(MSBuildProjectName).pck&quot;"
-              EnvironmentVariables="IsInnerGodotExport=true;MSBUILDDISABLENODEREUSE=1"/>
-        <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)/tools/Finalize-ModPack.ps1&quot; -PackPath &quot;$(ModsPath)$(MSBuildProjectName)/$(MSBuildProjectName).pck&quot;"
-              Condition="'$(IsWindows)' == 'true'"/>
-    </Target>
-
-    <Target Name="GodotPublishSkipped" AfterTargets="Publish" Condition="'$(GodotPath)' == '' or !Exists('$(GodotPath)')">
-        <Message Text="Skipping Godot .pck export because GodotPath is not configured." Importance="high"/>
-    </Target>
+    <Import Project="build/Build-Bundle.targets" Condition="Exists('build/Build-Bundle.targets')" />
 </Project>

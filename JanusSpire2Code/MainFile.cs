@@ -15,7 +15,6 @@ using JanusSpire2.JanusSpire2Code.Rewards;
 using JanusSpire2.JanusSpire2Code.Workshop;
 using JanusSpire2.Scripts.Telemetry;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Modding;
 using MegaCrit.Sts2.Core.Nodes.Screens.Capstones;
 using STS2RitsuLib;
 using STS2RitsuLib.CardPiles;
@@ -25,7 +24,6 @@ using Logger = MegaCrit.Sts2.Core.Logging.Logger;
 
 namespace JanusSpire2.JanusSpire2Code;
 
-[ModInitializer(nameof(Initialize))]
 public static class MainFile
 {
 	public const string ModId = "JanusSpire2";
