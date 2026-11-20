@@ -76,6 +76,16 @@ public partial class JanusSkinSelectPanel : Control
 		content.Scale = Vector2.One * scale;
 	}
 
+	internal void PlaceAboveSeed(Control seedInput)
+	{
+		var layout = GetNode<VBoxContainer>("VBoxContainer");
+		var size = layout.Size;
+		layout.SetAnchorsAndOffsetsPreset(LayoutPreset.CenterTop, LayoutPresetMode.KeepSize);
+		layout.GrowVertical = GrowDirection.Begin;
+		layout.Position = new Vector2((Size.X - size.X) / 2f,
+			seedInput.GlobalPosition.Y - GlobalPosition.Y - size.Y - 12f);
+	}
+
 	internal void ShowAndSync(StartRunLobby lobby, JanusCharacter selectedSkin)
 	{
 		_lobby = lobby;

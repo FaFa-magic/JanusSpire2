@@ -86,8 +86,8 @@ internal static class JanusSkinSelectPanelController
 				// Dread has no InfoPanel. Match the standard panel's center relative to the screen.
 				panel.SetScreenLayout(new Vector2(0.5f, 0.5f), centerOffset: new Vector2(613f, 22f));
 			}
-			else if (screen is NCustomRunScreen)
-				panel.SetScreenLayout(new Vector2(0.07f, 0.43f), scale: 0.36f);
+			else if (screen is NCustomRunScreen && screen.GetNodeOrNull<Control>("%SeedInput") is { } seedInput)
+				panel.PlaceAboveSeed(seedInput);
 			else
 				panel.Position = new Vector2(400f, 0f);
 		}
@@ -102,8 +102,12 @@ internal static class JanusSkinSelectPanelController
 	internal static void SetInteractable(Control screen, bool interactable) =>
 		GetPanelParent(screen)?.GetNodeOrNull<JanusSkinSelectPanel>(PanelName)?.SetInteractable(interactable);
 
-	private static Control? GetPanelParent(Control screen) =>
-		screen is NDreadScreen or NCustomRunScreen ? screen : screen.GetNodeOrNull<Control>("InfoPanel");
+	private static Control? GetPanelParent(Control screen) => screen switch
+	{
+		NDreadScreen => screen,
+		NCustomRunScreen => screen.GetNodeOrNull<Control>("LeftContainer"),
+		_ => screen.GetNodeOrNull<Control>("InfoPanel")
+	};
 }
 
 public sealed class JanusSkinSelectPatch : IPatchMethod

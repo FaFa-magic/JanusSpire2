@@ -10,7 +10,7 @@
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <DefaultItemExcludes>$(DefaultItemExcludes);packages/**;temp/**;build/**</DefaultItemExcludes>
-        <RitsuLibVersion Condition="'$(RitsuLibVersion)' == ''">0.6.12</RitsuLibVersion>
+        <RitsuLibVersion Condition="'$(RitsuLibVersion)' == ''">0.6.14</RitsuLibVersion>
         <RitsuLibAutoCopy>false</RitsuLibAutoCopy>
         <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
         <PathMap>$(AppOutputBase)=.\</PathMap>

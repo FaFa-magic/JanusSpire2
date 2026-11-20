@@ -23,8 +23,10 @@ internal static class MidsummerRejectedGeneration
 
     internal static void Clear(CardModel card) => RejectedCards.Remove(card);
 
-    internal static bool ShouldBlockAutoPlay(CardModel card)
+    internal static bool ShouldBlockAutoPlay(CardModel? card)
     {
+        if (card == null)
+            return true;
         if (!RejectedCards.TryGetValue(card, out _))
             return false;
         if (card.Pile != null)
@@ -54,13 +56,16 @@ public sealed class PreventMultipleCardGenerationPatch : IPatchMethod
         ref Task<IReadOnlyList<CardPileAddResult>> __result, out GenerationBatchState? __state)
     {
         __state = null;
-        CardModel[] requestedCards = cards.ToArray();
+        CardModel[] requestedCards = cards?.ToArray() ?? [];
         bool[] allowed = requestedCards
-            .Select(card => card.Owner.Creature.GetPower<MidsummerHolidayPower>() == null)
+            .Select(card => card?.Owner?.Creature is { } creature &&
+                            creature.GetPower<MidsummerHolidayPower>() == null)
             .ToArray();
 
         for (int i = 0; i < requestedCards.Length; i++)
         {
+            if (requestedCards[i] == null)
+                continue;
             if (allowed[i])
                 MidsummerRejectedGeneration.Clear(requestedCards[i]);
             else
@@ -80,6 +85,8 @@ public sealed class PreventMultipleCardGenerationPatch : IPatchMethod
             return true;
         }
 
+        // Keep a failed result for every rejected input, including null. The single-card
+        // vanilla wrapper reads index 0, and batch callers rely on the original order.
         __result = Task.FromResult<IReadOnlyList<CardPileAddResult>>(
             requestedCards.Select(card => BlockedResult(card, newPileType)).ToArray());
         return false;
@@ -168,6 +175,12 @@ public sealed class PreventForgeCardGenerationPatch : IPatchMethod
     internal static bool Prefix(decimal amount, Player player, AbstractModel? source,
         ref Task<IEnumerable<SovereignBlade>> __result)
     {
+        if (player?.Creature?.CombatState == null || player.PlayerCombatState == null)
+        {
+            __result = Task.FromResult<IEnumerable<SovereignBlade>>(Array.Empty<SovereignBlade>());
+            return false;
+        }
+
         if (CombatManager.Instance.IsOverOrEnding ||
             !player.Creature.HasPower<MidsummerHolidayPower>() ||
             GetSovereignBlades(player, false).Any())
